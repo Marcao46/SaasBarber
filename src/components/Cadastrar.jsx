@@ -1,118 +1,157 @@
 import { useState } from "react"
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore"
+import {collection, addDoc, getDocs, doc, updateDoc, deleteDoc
+} from "firebase/firestore"
+
 import { db } from "../fireBaseConfig"
 import "./Cadastrar.css"
+
 const Cadastrar = () => {
 
-    const [nome, setNome] = useState("")
-    const [endereco, setEndereco] = useState("")
+    const [nomeCompleto, setNomeCompleto] = useState("")
+    const [nomeBarbearia, setNomeBarbearia] = useState("")
+    const [quantidadeBarbeiros, setQuantidadeBarbeiros] = useState("")
     const [email, setEmail] = useState("")
+    const [telefone, setTelefone] = useState("")
     const [senha, setSenha] = useState("")
-    const [profissionais, setProfissionais] = useState([])
+
+    const [barbearias, setBarbearias] = useState([])
     const [idEditando, setIdEditando] = useState(null)
 
-
-
-
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        const profissional = {
-            nome,
-            endereco,
+        const barbearia = {
+            nomeCompleto,
+            nomeBarbearia,
+            quantidadeBarbeiros,
             email,
-
+            telefone,
+            senha
         }
+
         if (idEditando) {
 
-            const profissionalRef = doc(
+            const barbeariaRef = doc(
                 db,
-                "profissionais",
+                "barbearias",
                 idEditando
             )
+
             await updateDoc(
-                profissionalRef,
-                profissional
+                barbeariaRef,
+                barbearia
             )
-            console.log("Profissional Edidato com Sucesso!")
+
+            console.log("Barbearia editada com sucesso!")
+
             setIdEditando(null)
 
         } else {
 
             await addDoc(
-                collection(db, "profissionais"),
-                profissional
+                collection(db, "barbearias"),
+                barbearia
             )
 
-
-            console.log("Profissional cadastrado com sucesso!")
+            console.log("Barbearia cadastrada com sucesso!")
         }
 
+        limparCampos()
+    }
 
-
-    };
-    const buscarProfissionais = async () => {
+    const buscarBarbearias = async () => {
 
         const resultado = await getDocs(
-            collection(db, "profissionais")
+            collection(db, "barbearias")
         )
 
-        const listaProfissionais = resultado.docs.map((documento) => ({
+        const listaBarbearias = resultado.docs.map((documento) => ({
             id: documento.id,
             ...documento.data()
         }))
 
-        setProfissionais(listaProfissionais)
+        setBarbearias(listaBarbearias)
 
-        console.log(listaProfissionais)
+        console.log(listaBarbearias)
     }
 
-    const editarProfissional = (profissional) => {
+    const editarBarbearia = (barbearia) => {
 
-        setNome(profissional.nome)
-        setEndereco(profissional.endereco)
-        setEmail(profissional.email)
+        setNomeCompleto(barbearia.nomeCompleto)
+        setNomeBarbearia(barbearia.nomeBarbearia)
+        setQuantidadeBarbeiros(barbearia.quantidadeBarbeiros)
+        setEmail(barbearia.email)
+        setTelefone(barbearia.telefone)
+        setSenha(barbearia.senha)
 
-        setIdEditando(profissional.id)
+        setIdEditando(barbearia.id)
     }
-    const excluirProfissional = async (id) => {
 
-        const profissionalRef = doc(
+    const excluirBarbearia = async (id) => {
+
+        const barbeariaRef = doc(
             db,
-            "profissionais",
+            "barbearias",
             id
         )
 
-        await deleteDoc(profissionalRef)
-           setProfissionais(
-        profissionais.filter((profissional) =>
-            profissional.id !== id
+        await deleteDoc(barbeariaRef)
+
+        setBarbearias(
+            barbearias.filter(
+                (barbearia) => barbearia.id !== id
+            )
         )
-    )
-        console.log("Profissional excluído com sucesso!")
+
+        console.log("Barbearia excluída com sucesso!")
+    }
+
+    const limparCampos = () => {
+        setNomeCompleto("")
+        setNomeBarbearia("")
+        setQuantidadeBarbeiros("")
+        setEmail("")
+        setTelefone("")
+        setSenha("")
     }
 
     return (
         <div className="container">
 
             <form onSubmit={handleSubmit}>
-                <h1>Cadastro de Profissionais!</h1>
+
+                <h2>Cadastro Barbearia</h2>
 
                 <div>
                     <input
                         type="text"
-                        placeholder="Nome"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
+                        placeholder="Seu nome completo"
+                        value={nomeCompleto}
+                        onChange={(e) =>
+                            setNomeCompleto(e.target.value)
+                        }
                     />
                 </div>
 
                 <div>
                     <input
                         type="text"
-                        placeholder="Endereço"
-                        value={endereco}
-                        onChange={(e) => setEndereco(e.target.value)}
+                        placeholder="Nome da barbearia"
+                        value={nomeBarbearia}
+                        onChange={(e) =>
+                            setNomeBarbearia(e.target.value)
+                        }
+                    />
+                </div>
+
+                <div>
+                    <input
+                        type="number"
+                        placeholder="Quantos barbeiros?"
+                        value={quantidadeBarbeiros}
+                        onChange={(e) =>
+                            setQuantidadeBarbeiros(e.target.value)
+                        }
                     />
                 </div>
 
@@ -121,7 +160,20 @@ const Cadastrar = () => {
                         type="email"
                         placeholder="E-mail"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) =>
+                            setEmail(e.target.value)
+                        }
+                    />
+                </div>
+
+                <div>
+                    <input
+                        type="tel"
+                        placeholder="Telefone"
+                        value={telefone}
+                        onChange={(e) =>
+                            setTelefone(e.target.value)
+                        }
                     />
                 </div>
 
@@ -130,33 +182,67 @@ const Cadastrar = () => {
                         type="password"
                         placeholder="Senha"
                         value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
+                        onChange={(e) =>
+                            setSenha(e.target.value)
+                        }
                     />
                 </div>
 
                 <button type="submit">
-                    Cadastrar
+                    {idEditando ? "Salvar Alterações" : "Cadastrar"}
                 </button>
 
             </form>
-            <button onClick={buscarProfissionais}>
-                Buscar Profissionais
+
+            <button onClick={buscarBarbearias}>
+                Buscar Barbearias
             </button>
 
-            {profissionais.map((profissional) => (
-                <div key={profissional.id}>
-                    <p>Nome: {profissional.nome}</p>
-                    <p>Endereço: {profissional.endereco}</p>
-                    <p>E-mail: {profissional.email}</p>
+            {barbearias.map((barbearia) => (
 
-                    <button onClick={() => editarProfissional(profissional)}>
+                <div key={barbearia.id}>
+
+                    <p>
+                        Nome completo: {barbearia.nomeCompleto}
+                    </p>
+
+                    <p>
+                        Barbearia: {barbearia.nomeBarbearia}
+                    </p>
+
+                    <p>
+                        Quantidade de barbeiros:{" "}
+                        {barbearia.quantidadeBarbeiros}
+                    </p>
+
+                    <p>
+                        E-mail: {barbearia.email}
+                    </p>
+
+                    <p>
+                        Telefone: {barbearia.telefone}
+                    </p>
+
+                    <button
+                        onClick={() =>
+                            editarBarbearia(barbearia)
+                        }
+                    >
                         Editar
                     </button>
-                    <button onClick={() => excluirProfissional(profissional.id)}>
+
+                    <button
+                        onClick={() =>
+                            excluirBarbearia(barbearia.id)
+                        }
+                    >
                         Excluir
                     </button>
+
                     <hr />
+
                 </div>
+
             ))}
 
         </div>

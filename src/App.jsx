@@ -6,7 +6,7 @@ import Cadastrar from './components/Cadastrar'
 function App() {
   return (
     <div className="App">
-      <p>Saas Barbearia</p>
+      <h1>Sistema de Barbearia</h1>
 
       <Cadastrar />
     </div>
