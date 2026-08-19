@@ -32,14 +32,11 @@ const Cadastrar = () => {
         if (idEditando) {
 
             const barbeariaRef = doc(
-                db,
-                "barbearias",
-                idEditando
+                db, "barbearias", idEditando
             )
 
             await updateDoc(
-                barbeariaRef,
-                barbearia
+                barbeariaRef, barbearia
             )
 
             console.log("Barbearia editada com sucesso!")
@@ -71,7 +68,6 @@ const Cadastrar = () => {
         }))
 
         setBarbearias(listaBarbearias)
-
         console.log(listaBarbearias)
     }
 
@@ -90,9 +86,7 @@ const Cadastrar = () => {
     const excluirBarbearia = async (id) => {
 
         const barbeariaRef = doc(
-            db,
-            "barbearias",
-            id
+            db,"barbearias", id
         )
 
         await deleteDoc(barbeariaRef)
@@ -211,7 +205,7 @@ const Cadastrar = () => {
                     </p>
 
                     <p>
-                        Quantidade de barbeiros:{" "}
+                        Quantidade de barbeiros:
                         {barbearia.quantidadeBarbeiros}
                     </p>
 
