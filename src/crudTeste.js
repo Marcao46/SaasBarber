@@ -16,19 +16,22 @@ const id = process.argv[3]
 
 async function create() {
 
-    const profissional = {
-        nome: "Teste Terminal",
-        endereco: "Rua Terminal",
-        email: "terminal@gmail.com"
+    const barbearia = {
+        nomeCompleto: "Teste Terminal",
+        nomeBarbearia: "Barbearia Terminal",
+        quantidadeBarbeiros: "3",
+        email: "terminal@gmail.com",
+        telefone: "47999999999",
+        senha: "123456"
     }
 
     const documentoCriado = await addDoc(
-        collection(db, "profissionais"),
-        profissional
+        collection(db, "barbearias"),
+        barbearia
     )
 
     console.log("===== CREATE =====")
-    console.log("Profissional criado com sucesso!")
+    console.log("Barbearia criada com sucesso!")
     console.log("ID:", documentoCriado.id)
 }
 
@@ -36,17 +39,16 @@ async function create() {
 async function read() {
 
     const resultado = await getDocs(
-        collection(db, "profissionais")
+        collection(db, "barbearias")
     )
 
     console.log("===== READ =====")
 
     resultado.docs.forEach((documento) => {
 
-        console.log(
-            documento.id,
-            documento.data()
-        )
+        console.log("ID:", documento.id)
+        console.log(documento.data())
+        console.log("------------------------")
 
     })
 }
@@ -55,25 +57,30 @@ async function read() {
 async function update(id) {
 
     if (!id) {
-        console.log("Informe o ID do profissional.")
+        console.log("Informe o ID da barbearia.")
         return
     }
 
-    const profissionalRef = doc(
+    const barbeariaRef = doc(
         db,
-        "profissionais",
+        "barbearias",
         id
     )
 
     await updateDoc(
-        profissionalRef,
+        barbeariaRef,
         {
-            nome: "Teste Terminal Editado"
+            nomeCompleto: "Teste Terminal Editado",
+            nomeBarbearia: "Barbearia Terminal Editada",
+            quantidadeBarbeiros: "5",
+            email: "editado@gmail.com",
+            telefone: "47988888888",
+            senha: "654321"
         }
     )
 
     console.log("===== UPDATE =====")
-    console.log("Profissional atualizado com sucesso!")
+    console.log("Barbearia atualizada com sucesso!")
     console.log("ID:", id)
 }
 
@@ -81,20 +88,20 @@ async function update(id) {
 async function deletar(id) {
 
     if (!id) {
-        console.log("Informe o ID do profissional.")
+        console.log("Informe o ID da barbearia.")
         return
     }
 
-    const profissionalRef = doc(
+    const barbeariaRef = doc(
         db,
-        "profissionais",
+        "barbearias",
         id
     )
 
-    await deleteDoc(profissionalRef)
+    await deleteDoc(barbeariaRef)
 
     console.log("===== DELETE =====")
-    console.log("Profissional excluído com sucesso!")
+    console.log("Barbearia excluída com sucesso!")
     console.log("ID:", id)
 }
 
