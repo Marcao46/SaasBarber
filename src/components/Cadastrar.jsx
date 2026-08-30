@@ -2,8 +2,8 @@ import { useState } from "react"
 import {
     collection, addDoc, getDocs, doc, updateDoc, deleteDoc
 } from "firebase/firestore"
-
-import { db } from "../fireBaseConfig"
+import { auth, db } from "../fireBaseConfig"
+import { createUserWithEmailAndPassword } from "firebase/auth"
 import "./Cadastrar.css"
 
 
@@ -47,9 +47,21 @@ const Cadastrar = ({ voltarHome }) => {
 
         } else {
 
+            const usuarioCriado = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                senha
+            )
+
             await addDoc(
                 collection(db, "barbearias"),
-                barbearia
+                {
+                    nomeCompleto,
+                    nomeBarbearia,
+                    email,
+                    telefone,
+                    donoId: usuarioCriado.user.uid
+                }
             )
 
             console.log("Barbearia cadastrada com sucesso!")

@@ -1,8 +1,10 @@
-import { initializeApp } from "firebase/app"
+
 import { getFirestore } from "firebase/firestore"
+import { getAuth } from "firebase/auth"
+import { initializeApp, getApp, getApps } from "firebase/app"
 
 const firebaseConfig = {
-  apiKey: "SUA_CHAVE",
+  apiKey: "AIzaSyDooJPb9dQuKf9ybfXF3saZO8ncZFVO-DE",
   authDomain: "saasbarbe.firebaseapp.com",
   projectId: "saasbarbe",
   storageBucket: "saasbarbe.firebasestorage.app",
@@ -14,5 +16,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 const db = getFirestore(app)
+const auth = getAuth(app)
+const secondaryApp = getApps().some(
+  (app) => app.name === "Secondary"
+)
+  ? getApp("Secondary")
+  : initializeApp(firebaseConfig, "Secondary")
 
-export { db }
+const secondaryAuth = getAuth(secondaryApp)
+
+export { db, auth, secondaryAuth }

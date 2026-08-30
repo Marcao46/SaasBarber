@@ -1,7 +1,13 @@
 import { FaUser, FaLock } from 'react-icons/fa'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import './login.css'
 import Cadastrar from "./Cadastrar"
+import PainelAdmin from "./PainelAdmin"
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged
+} from "firebase/auth"
+import { auth } from "../fireBaseConfig"
 
 
 
@@ -10,17 +16,57 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [mostrarCadastro, setMostrarCadastro] = useState(false)
+  const [mostrarPainel, setMostrarPainel] = useState(false)
 
+  useEffect(() => {
+
+  const cancelarObservacao = onAuthStateChanged(
+    auth,
+    (usuario) => {
+
+      if (usuario) {
+        console.log("Usuário continua logado:", usuario.email)
+        setMostrarPainel(true)
+      } else {
+        setMostrarPainel(false)
+      }
+
+    }
+  )
+
+  return () => cancelarObservacao()
+
+}, [])
   if (mostrarCadastro) {
     return <Cadastrar voltarHome={() => setMostrarCadastro(false)} />
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert("Dados Enviados:  " + email + "----" + senha);
+  const handleSubmit = async (event) => {
+    event.preventDefault()
 
-  };
+    try {
+      const usuarioLogado = await signInWithEmailAndPassword(
+        auth,
+        email,
+        senha
+      )
 
+      console.log(
+        "Usuário logado:",
+        usuarioLogado.user.uid
+      )
+
+      setMostrarPainel(true)
+
+    } catch (erro) {
+      console.log(erro)
+      alert("E-mail ou senha incorretos")
+    }
+  }
+
+  if (mostrarPainel) {
+    return <PainelAdmin />
+  }
 
   return (
     <div className="container">
@@ -34,8 +80,8 @@ const Login = () => {
         </div>
 
         <div>
-          <input type="" placeholder="Senha"
-            onChange={(e) => setSenha(e.target.value)} />
+          <input type="password" placeholder="Senha"
+           onChange={(e) => setSenha(e.target.value)} />
           <FaLock className="icon" />
         </div>
 
@@ -51,7 +97,9 @@ const Login = () => {
 
         </div>
 
-        <button type="submit">Entrar</button>
+        <button type="submit">
+          Entrar
+        </button>
         <div>
           <a href="#" onClick={() => setMostrarCadastro(true)}>
             Cadastre-se
