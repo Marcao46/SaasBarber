@@ -1,6 +1,7 @@
 import { FaUser, FaLock } from 'react-icons/fa'
 import { useState } from "react"
 import './login.css'
+import Cadastrar from "./Cadastrar"
 
 
 
@@ -8,27 +9,33 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarCadastro, setMostrarCadastro] = useState(false)
+
+  if (mostrarCadastro) {
+    return <Cadastrar voltarHome={() => setMostrarCadastro(false)} />
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert("Dados Enviados:  " + email+"----"+ senha);
+    alert("Dados Enviados:  " + email + "----" + senha);
 
   };
+
 
   return (
     <div className="container">
 
-      <form onSubmit={handleSubmit}>  
+      <form onSubmit={handleSubmit}>
         <h1>Acesse o Sistema</h1>
         <div>
-          <input type="email" placeholder="E-mail Usuario" 
-          onChange={(e)=>setEmail(e.target.value)}/>
+          <input type="email" placeholder="E-mail Usuario"
+            onChange={(e) => setEmail(e.target.value)} />
           <FaUser className="icon" />
         </div>
 
         <div>
-          <input type="" placeholder="Senha" 
-          onChange={(e)=>setSenha(e.target.value)}/>
+          <input type="" placeholder="Senha"
+            onChange={(e) => setSenha(e.target.value)} />
           <FaLock className="icon" />
         </div>
 
@@ -46,7 +53,9 @@ const Login = () => {
 
         <button type="submit">Entrar</button>
         <div>
-          <p>Nao tem uma conta? <a href="#">Cadastre-se</a>  </p>
+          <a href="#" onClick={() => setMostrarCadastro(true)}>
+            Cadastre-se
+          </a>
         </div>
       </form>
     </div>

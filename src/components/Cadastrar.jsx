@@ -1,15 +1,16 @@
 import { useState } from "react"
-import {collection, addDoc, getDocs, doc, updateDoc, deleteDoc
+import {
+    collection, addDoc, getDocs, doc, updateDoc, deleteDoc
 } from "firebase/firestore"
 
 import { db } from "../fireBaseConfig"
 import "./Cadastrar.css"
 
-const Cadastrar = () => {
+
+const Cadastrar = ({ voltarHome }) => {
 
     const [nomeCompleto, setNomeCompleto] = useState("")
     const [nomeBarbearia, setNomeBarbearia] = useState("")
-    const [quantidadeBarbeiros, setQuantidadeBarbeiros] = useState("")
     const [email, setEmail] = useState("")
     const [telefone, setTelefone] = useState("")
     const [senha, setSenha] = useState("")
@@ -17,13 +18,14 @@ const Cadastrar = () => {
     const [barbearias, setBarbearias] = useState([])
     const [idEditando, setIdEditando] = useState(null)
 
+
+
     const handleSubmit = async (event) => {
         event.preventDefault()
 
         const barbearia = {
             nomeCompleto,
             nomeBarbearia,
-            quantidadeBarbeiros,
             email,
             telefone,
             senha
@@ -75,7 +77,6 @@ const Cadastrar = () => {
 
         setNomeCompleto(barbearia.nomeCompleto)
         setNomeBarbearia(barbearia.nomeBarbearia)
-        setQuantidadeBarbeiros(barbearia.quantidadeBarbeiros)
         setEmail(barbearia.email)
         setTelefone(barbearia.telefone)
         setSenha(barbearia.senha)
@@ -86,7 +87,7 @@ const Cadastrar = () => {
     const excluirBarbearia = async (id) => {
 
         const barbeariaRef = doc(
-            db,"barbearias", id
+            db, "barbearias", id
         )
 
         await deleteDoc(barbeariaRef)
@@ -103,7 +104,6 @@ const Cadastrar = () => {
     const limparCampos = () => {
         setNomeCompleto("")
         setNomeBarbearia("")
-        setQuantidadeBarbeiros("")
         setEmail("")
         setTelefone("")
         setSenha("")
@@ -111,7 +111,9 @@ const Cadastrar = () => {
 
     return (
         <div className="container">
-
+            <button type="button" onClick={voltarHome}>
+                Home
+            </button>
             <form onSubmit={handleSubmit}>
 
                 <h2>Cadastro Barbearia</h2>
@@ -134,17 +136,6 @@ const Cadastrar = () => {
                         value={nomeBarbearia}
                         onChange={(e) =>
                             setNomeBarbearia(e.target.value)
-                        }
-                    />
-                </div>
-
-                <div>
-                    <input
-                        type="number"
-                        placeholder="Quantos barbeiros?"
-                        value={quantidadeBarbeiros}
-                        onChange={(e) =>
-                            setQuantidadeBarbeiros(e.target.value)
                         }
                     />
                 </div>
@@ -204,10 +195,7 @@ const Cadastrar = () => {
                         Barbearia: {barbearia.nomeBarbearia}
                     </p>
 
-                    <p>
-                        Quantidade de barbeiros:
-                        {barbearia.quantidadeBarbeiros}
-                    </p>
+
 
                     <p>
                         E-mail: {barbearia.email}

@@ -1,6 +1,7 @@
 import './App.css'
 
 import Cadastrar from './components/Cadastrar'
+import Login from './components/Login'
 
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
     <div className="App">
       <h1>Sistema de Barbearia</h1>
 
-      <Cadastrar />
+      <Login />
     </div>
   )
 }
