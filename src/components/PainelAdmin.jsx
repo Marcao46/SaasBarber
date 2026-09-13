@@ -2,13 +2,18 @@ import { useState } from "react"
 import CadastrarBarbeiro from "./CadastrarBarbeiro"
 import { signOut } from "firebase/auth"
 import { auth } from "../fireBaseConfig"
+import "./PainelAdmin.css"
+
 
 const PainelAdmin = () => {
 
     const [mostrarCadastroBarbeiro, setMostrarCadastroBarbeiro] = useState(false)
-
     if (mostrarCadastroBarbeiro) {
-        return <CadastrarBarbeiro />
+        return (
+            <CadastrarBarbeiro
+                voltarPainel={() => setMostrarCadastroBarbeiro(false)}
+            />
+        )
     }
     const sair = async () => {
         try {
@@ -20,23 +25,134 @@ const PainelAdmin = () => {
     }
 
     return (
-        <div>
-            <h1>Painel Administrativo</h1>
+        <div className="painel-page">
 
-            <h2>Minha Barbearia</h2>
+            <div className="painel-container">
 
-            <button
-                onClick={() => setMostrarCadastroBarbeiro(true)}
-            >
-                Cadastrar Barbeiro
-            </button>
+                <div className="painel-topo">
+                    <div>
+                        <span className="painel-subtitulo">
+                            SISTEMA DE BARBEARIA
+                        </span>
 
-            <button>Gerenciar Barbeiros</button>
-            <button>Agendamentos</button>
-            <button>Editar Barbearia</button>
-            <button onClick={sair}>
-  Sair
-</button>
+                        <h1>Painel Administrativo</h1>
+
+                        <p>
+                            Gerencie sua barbearia em um só lugar.
+                        </p>
+                    </div>
+
+                    <button
+                        className="botao-sair"
+                        onClick={sair}
+                    >
+                        Sair
+                    </button>
+                </div>
+
+                <section className="painel-conteudo">
+
+                    <div className="painel-titulo-secao">
+                        <h2>Minha Barbearia</h2>
+                        <p>
+                            Escolha uma opção para continuar.
+                        </p>
+                    </div>
+
+                    <div className="painel-grid">
+
+                        <button
+                            className="painel-card"
+                            onClick={() =>
+                                setMostrarCadastroBarbeiro(true)
+                            }
+                        >
+                            <span className="card-icone">✂</span>
+
+                            <div>
+                                <h3>Cadastrar Barbeiro</h3>
+                                <p>
+                                    Adicione um novo profissional.
+                                </p>
+                            </div>
+                        </button>
+
+
+                        <button className="painel-card">
+
+                            <span className="card-icone">👤</span>
+
+                            <div>
+                                <h3>Gerenciar Barbeiros</h3>
+                                <p>
+                                    Consulte, edite ou remova profissionais.
+                                </p>
+                            </div>
+
+                        </button>
+
+
+                        <button className="painel-card">
+
+                            <span className="card-icone">📅</span>
+
+                            <div>
+                                <h3>Agendamentos</h3>
+                                <p>
+                                    Consulte os horários agendados da barbearia.
+                                </p>
+                            </div>
+
+                        </button>
+
+
+                        <button className="painel-card">
+
+                            <span className="card-icone">👥</span>
+
+                            <div>
+                                <h3>Clientes</h3>
+                                <p>
+                                    Consulte clientes e históricos de atendimento.
+                                </p>
+                            </div>
+
+                        </button>
+
+
+                        <button className="painel-card">
+
+                            <span className="card-icone">💈</span>
+
+                            <div>
+                                <h3>Serviços</h3>
+                                <p>
+                                    Cadastre serviços, preços e duração.
+                                </p>
+                            </div>
+
+                        </button>
+
+
+                        <button className="painel-card">
+
+                            <span className="card-icone">⚙</span>
+
+                            <div>
+                                <h3>Editar Barbearia</h3>
+                                <p>
+                                    Atualize os dados do estabelecimento.
+                                </p>
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
         </div>
     )
 }

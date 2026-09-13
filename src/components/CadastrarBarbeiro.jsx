@@ -8,9 +8,10 @@ import {
     query,
     where
 } from "firebase/firestore"
+import "./CadastrarBarbeiro.css"
 
 
-const CadastrarBarbeiro = () => {
+const CadastrarBarbeiro = ({ voltarPainel }) => {
 
     const [nome, setNome] = useState("")
     const [email, setEmail] = useState("")
@@ -79,73 +80,125 @@ const CadastrarBarbeiro = () => {
         }
     }
 
-    return (
-        <div>
-            <h1>Cadastrar Barbeiro</h1>
+   return (
+    <div className="cadastro-barbeiro-page">
 
-            <form onSubmit={handleSubmit}>
+        <div className="cadastro-barbeiro-container">
+
+            <div className="cadastro-barbeiro-topo">
 
                 <div>
+                    <span className="cadastro-barbeiro-subtitulo">
+                        SISTEMA DE BARBEARIA
+                    </span>
+
+                    <h1>Cadastrar Barbeiro</h1>
+
+                    <p>
+                        Crie o acesso de um novo profissional.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    className="botao-voltar"
+                    onClick={voltarPainel}
+                >
+                    Voltar ao Painel
+                </button>
+
+            </div>
+
+            <form
+                className="form-barbeiro"
+                onSubmit={handleSubmit}
+            >
+
+                <div className="campo-barbeiro">
+                    <label>Nome completo</label>
+
                     <input
                         type="text"
-                        placeholder="Nome completo"
+                        placeholder="Digite o nome completo"
                         value={nome}
                         onChange={(e) => setNome(e.target.value)}
+                        required
                     />
                 </div>
 
-                <div>
+                <div className="campo-barbeiro">
+                    <label>E-mail</label>
+
                     <input
                         type="email"
-                        placeholder="E-mail"
+                        placeholder="barbeiro@email.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
 
-                <div>
+                <div className="campo-barbeiro">
+                    <label>Telefone</label>
+
                     <input
                         type="text"
-                        placeholder="Telefone"
+                        placeholder="(47) 99999-9999"
                         value={telefone}
                         onChange={(e) => setTelefone(e.target.value)}
+                        required
                     />
                 </div>
 
-                <div>
+                <div className="campo-barbeiro">
+                    <label>Especialidade</label>
+
                     <input
                         type="text"
-                        placeholder="Especialidade"
+                        placeholder="Ex: Corte, barba, degradê"
                         value={especialidade}
                         onChange={(e) => setEspecialidade(e.target.value)}
+                        required
                     />
                 </div>
 
-                <div>
+                <div className="campo-barbeiro">
+                    <label>Senha de acesso</label>
+
                     <input
                         type="password"
-                        placeholder="Senha de acesso"
+                        placeholder="Digite uma senha"
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
+                        required
                     />
                 </div>
 
-                <div>
+                <div className="campo-barbeiro">
+                    <label>Confirmar senha</label>
+
                     <input
                         type="password"
-                        placeholder="Confirmar senha"
+                        placeholder="Digite a senha novamente"
                         value={confirmarSenha}
                         onChange={(e) => setConfirmarSenha(e.target.value)}
+                        required
                     />
                 </div>
 
-                <button type="submit">
+                <button
+                    type="submit"
+                    className="botao-cadastrar-barbeiro"
+                >
                     Cadastrar Barbeiro
                 </button>
 
             </form>
+
         </div>
-    )
+
+    </div>
+)
 }
 
 export default CadastrarBarbeiro

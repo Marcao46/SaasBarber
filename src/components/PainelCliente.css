@@ -1,0 +1,188 @@
+.cliente-painel-page {
+    min-height: 100vh;
+    width: 100%;
+
+    background: #080808;
+    color: #ffffff;
+
+    padding: 50px 30px;
+}
+
+.cliente-painel-container {
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto;
+}
+
+.cliente-painel-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 30px;
+
+    border-bottom: 1px solid #222222;
+}
+
+.cliente-painel-subtitulo {
+    color: #32c961;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.cliente-painel-topo h1 {
+    margin: 8px 0;
+
+    color: #ffffff;
+
+    font-size: 34px;
+}
+
+.cliente-painel-topo p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 16px;
+}
+
+.cliente-painel-sair {
+    background: transparent;
+
+    color: #ffffff;
+
+    border: 1px solid #353535;
+    border-radius: 10px;
+
+    padding: 12px 24px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.cliente-painel-sair:hover {
+    border-color: #32c961;
+    color: #32c961;
+}
+
+.cliente-painel-conteudo {
+    margin-top: 40px;
+}
+
+.cliente-painel-titulo {
+    margin-bottom: 25px;
+}
+
+.cliente-painel-titulo h2 {
+    margin: 0 0 5px;
+
+    font-size: 26px;
+}
+
+.cliente-painel-titulo p {
+    margin: 0;
+
+    color: #777777;
+}
+
+.cliente-painel-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.cliente-painel-card {
+    min-height: 135px;
+
+    background: #111113;
+
+    border: 1px solid #292929;
+    border-radius: 14px;
+
+    padding: 25px;
+
+    color: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    transition: 0.2s;
+}
+
+.cliente-painel-card:hover {
+    border-color: #32c961;
+    transform: translateY(-2px);
+}
+
+.cliente-painel-icone {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 12px;
+
+    background: #0d2715;
+
+    color: #32c961;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 26px;
+
+    flex-shrink: 0;
+}
+
+.cliente-painel-card h3 {
+    margin: 0 0 7px;
+
+    font-size: 19px;
+}
+
+.cliente-painel-card p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+@media (max-width: 750px) {
+
+    .cliente-painel-page {
+        padding: 30px 20px;
+    }
+
+    .cliente-painel-topo {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+    .cliente-painel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cliente-painel-sair {
+        width: 100%;
+    }
+}

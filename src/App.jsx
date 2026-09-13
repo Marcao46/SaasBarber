@@ -1,17 +1,8 @@
-import './App.css'
-
-import Cadastrar from './components/Cadastrar'
-import Login from './components/Login'
-
+import "./App.css"
+import Home from "./components/Home"
 
 function App() {
-  return (
-    <div className="App">
-      <h1>Sistema de Barbearia</h1>
-
-      <Login />
-    </div>
-  )
+  return <Home />
 }
 
 export default App

@@ -1,0 +1,467 @@
+/* ==============================
+   HOME
+============================== */
+
+.home-page {
+    width: 100%;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.68),
+            rgba(0, 0, 0, 0.80)
+        ),
+        url("../assets/barbearia-home.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: white;
+}
+
+
+/* ==============================
+   CABEÇALHO
+============================== */
+
+.home-header {
+    height: 95px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+
+    background: rgba(5, 5, 5, 0.92);
+
+    border-bottom: 1px solid #252525;
+
+    position: relative;
+    z-index: 10;
+}
+
+
+.home-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.home-logo-icone {
+    font-size: 38px;
+
+    color: #32c961;
+}
+
+
+.home-logo h1 {
+    margin: 0;
+
+    font-size: 31px;
+}
+
+
+.home-logo h1 span {
+    color: #32c961;
+}
+
+
+.home-logo p {
+    margin: 2px 0 0;
+
+    color: #999999;
+
+    font-size: 13px;
+}
+
+
+/* ==============================
+   MENU
+============================== */
+
+.home-menu {
+    display: flex;
+
+    gap: 40px;
+}
+
+
+.home-menu a {
+    color: #d5d5d5;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    transition: 0.2s;
+}
+
+
+.home-menu a:hover {
+    color: #32c961;
+}
+
+
+/* ==============================
+   BOTÃO ADMIN SAAS
+============================== */
+
+.botao-admin-saas {
+    background: #0c0c0c;
+
+    color: #ffffff;
+
+    border: 1px solid #32c961;
+    border-radius: 10px;
+
+    padding: 13px 22px;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.botao-admin-saas:hover {
+    background: #32c961;
+
+    color: #050505;
+}
+
+
+/* ==============================
+   CONTEÚDO PRINCIPAL
+============================== */
+
+.home-principal {
+    width: 100%;
+
+    min-height: calc(100vh - 95px);
+
+    max-width: 1500px;
+
+    margin: 0 auto;
+
+    padding: 65px 6%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(420px, 520px)
+        1fr;
+
+    gap: 80px;
+
+    align-items: center;
+}
+
+
+/* ==============================
+   LOGIN
+============================== */
+
+.home-login {
+    width: 100%;
+}
+
+
+.home-login .login-page {
+    width: 100%;
+
+    min-height: auto;
+
+    padding: 0;
+
+    background: transparent;
+}
+
+
+.home-login .login-container {
+    width: 100%;
+
+    max-width: 520px;
+
+    margin: 0;
+
+    background: rgba(10, 10, 12, 0.94);
+
+    border: 1px solid #294532;
+
+    border-radius: 18px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.55);
+
+    backdrop-filter: blur(4px);
+}
+
+
+/* ==============================
+   APRESENTAÇÃO
+============================== */
+
+.home-apresentacao {
+    max-width: 750px;
+}
+
+
+.home-destaque {
+    display: inline-block;
+
+    margin-bottom: 20px;
+
+    color: #32c961;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+
+.home-apresentacao h2 {
+    margin: 0;
+
+    font-size: clamp(
+        42px,
+        5vw,
+        70px
+    );
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    text-shadow:
+        0 3px 15px rgba(0, 0, 0, 0.8);
+}
+
+
+.home-apresentacao h2 strong {
+    color: #32c961;
+}
+
+
+.home-descricao {
+    max-width: 650px;
+
+    margin-top: 25px;
+
+    color: #d0d0d0;
+
+    font-size: 19px;
+
+    line-height: 1.6;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+
+/* ==============================
+   CARDS DE RECURSOS
+============================== */
+
+.home-recursos {
+    margin-top: 40px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+
+.recurso-card {
+    min-height: 130px;
+
+    background: rgba(
+        15,
+        15,
+        15,
+        0.88
+    );
+
+    border: 1px solid #343434;
+
+    border-radius: 14px;
+
+    padding: 20px 12px;
+
+    text-align: center;
+
+    backdrop-filter: blur(4px);
+
+    transition: 0.2s;
+}
+
+
+.recurso-card:hover {
+    border-color: #32c961;
+
+    transform: translateY(-3px);
+}
+
+
+.recurso-card span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 31px;
+}
+
+
+.recurso-card p {
+    margin: 0;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+
+/* ==============================
+   CHAMADA INFERIOR
+============================== */
+
+.home-chamada {
+    margin-top: 40px;
+
+    padding: 18px 20px;
+
+    background: rgba(
+        5,
+        5,
+        5,
+        0.72
+    );
+
+    border-left: 4px solid #32c961;
+
+    border-radius: 0 10px 10px 0;
+
+    backdrop-filter: blur(3px);
+}
+
+
+.home-chamada h3 {
+    margin: 0 0 10px;
+
+    font-size: 25px;
+}
+
+
+.home-chamada p {
+    margin: 0;
+
+    max-width: 600px;
+
+    color: #b5b5b5;
+
+    line-height: 1.6;
+}
+
+
+/* ==============================
+   RESPONSIVO
+============================== */
+
+@media (max-width: 1100px) {
+
+    .home-menu {
+        display: none;
+    }
+
+
+    .home-principal {
+        grid-template-columns: 1fr;
+
+        max-width: 750px;
+
+        gap: 60px;
+    }
+
+
+    .home-login .login-container {
+        margin: 0 auto;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .home-page {
+        background-attachment: scroll;
+        background-position: center;
+    }
+
+
+    .home-header {
+        padding: 0 20px;
+    }
+
+
+    .home-logo h1 {
+        font-size: 23px;
+    }
+
+
+    .home-logo p {
+        display: none;
+    }
+
+
+    .botao-admin-saas {
+        padding: 10px 13px;
+
+        font-size: 12px;
+    }
+
+
+    .home-principal {
+        padding:
+            40px
+            20px;
+    }
+
+
+    .home-recursos {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .home-apresentacao h2 {
+        font-size: 40px;
+    }
+
+}
+.home-login .painel-page,
+.home-login .barbeiro-page,
+.home-login .cliente-painel-page {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    min-height: 100vh;
+
+    z-index: 9999;
+
+    background: #080808;
+}

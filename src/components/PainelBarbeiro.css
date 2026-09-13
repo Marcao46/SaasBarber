@@ -1,0 +1,187 @@
+.barbeiro-page {
+    min-height: 100vh;
+    width: 100%;
+    background: #080808;
+    color: #ffffff;
+    padding: 50px 30px;
+}
+
+.barbeiro-container {
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.barbeiro-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 30px;
+
+    border-bottom: 1px solid #222222;
+}
+
+.barbeiro-subtitulo {
+    color: #32c961;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.barbeiro-topo h1 {
+    margin: 8px 0;
+
+    color: #ffffff;
+
+    font-size: 34px;
+}
+
+.barbeiro-topo p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 16px;
+}
+
+.barbeiro-sair {
+    background: transparent;
+
+    color: #ffffff;
+
+    border: 1px solid #353535;
+    border-radius: 10px;
+
+    padding: 12px 24px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.barbeiro-sair:hover {
+    border-color: #32c961;
+    color: #32c961;
+}
+
+.barbeiro-conteudo {
+    margin-top: 40px;
+}
+
+.barbeiro-titulo {
+    margin-bottom: 25px;
+}
+
+.barbeiro-titulo h2 {
+    margin: 0 0 5px;
+
+    font-size: 26px;
+
+    color: #ffffff;
+}
+
+.barbeiro-titulo p {
+    margin: 0;
+
+    color: #777777;
+}
+
+.barbeiro-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.barbeiro-card {
+    min-height: 135px;
+
+    background: #111113;
+
+    border: 1px solid #292929;
+    border-radius: 14px;
+
+    padding: 25px;
+
+    color: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    transition: 0.2s;
+}
+
+.barbeiro-card:hover {
+    border-color: #32c961;
+    transform: translateY(-2px);
+}
+
+.barbeiro-icone {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 12px;
+
+    background: #0d2715;
+
+    color: #32c961;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 26px;
+
+    flex-shrink: 0;
+}
+
+.barbeiro-card h3 {
+    margin: 0 0 7px;
+
+    font-size: 19px;
+}
+
+.barbeiro-card p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+@media (max-width: 750px) {
+
+    .barbeiro-page {
+        padding: 30px 20px;
+    }
+
+    .barbeiro-topo {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+    .barbeiro-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .barbeiro-sair {
+        width: 100%;
+    }
+}

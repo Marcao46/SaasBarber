@@ -1,0 +1,326 @@
+.cadastro-page {
+    min-height: 100vh;
+    width: 100%;
+
+    background: #080808;
+    color: #ffffff;
+
+    padding: 50px 30px;
+}
+
+.cadastro-container {
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto;
+}
+
+.cadastro-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    padding-bottom: 30px;
+
+    border-bottom: 1px solid #222222;
+}
+
+.cadastro-subtitulo {
+    color: #32c961;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.cadastro-topo h1 {
+    margin: 8px 0;
+
+    font-size: 34px;
+}
+
+.cadastro-topo p {
+    margin: 0;
+
+    color: #777777;
+}
+
+.cadastro-home {
+    background: #111113;
+
+    color: #ffffff;
+
+    border: 1px solid #353535;
+    border-radius: 10px;
+
+    padding: 12px 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.cadastro-home:hover {
+    color: #32c961;
+
+    border-color: #32c961;
+}
+
+.cadastro-conteudo {
+    margin-top: 35px;
+
+    display: grid;
+
+    grid-template-columns: 420px 1fr;
+
+    gap: 30px;
+
+    align-items: start;
+}
+
+.cadastro-form {
+    background: #111113;
+
+    border: 1px solid #292929;
+    border-radius: 16px;
+
+    padding: 28px;
+}
+
+.campo-cadastro {
+    margin-bottom: 20px;
+}
+
+.campo-cadastro label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #b5b5b5;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.campo-cadastro input {
+    width: 100%;
+    height: 52px;
+
+    padding: 0 14px;
+
+    background: #0d0d0f;
+
+    color: #ffffff;
+
+    border: 1px solid #292929;
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+.campo-cadastro input:focus {
+    border-color: #32c961;
+}
+
+.campo-cadastro input::placeholder {
+    color: #666666;
+}
+
+.botao-salvar {
+    width: 100%;
+    height: 54px;
+
+    background: #32c961;
+
+    color: #ffffff;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.botao-salvar:hover {
+    background: #2bb556;
+}
+
+.lista-barbearias {
+    min-width: 0;
+}
+
+.lista-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.lista-topo h2 {
+    margin: 0 0 5px;
+
+    font-size: 24px;
+}
+
+.lista-topo p {
+    margin: 0;
+
+    color: #777777;
+}
+
+.botao-buscar {
+    background: #111113;
+
+    color: #ffffff;
+
+    border: 1px solid #353535;
+    border-radius: 10px;
+
+    padding: 11px 18px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.botao-buscar:hover {
+    border-color: #32c961;
+    color: #32c961;
+}
+
+.lista-vazia {
+    padding: 30px;
+
+    background: #111113;
+
+    border: 1px dashed #333333;
+    border-radius: 14px;
+
+    color: #777777;
+
+    text-align: center;
+}
+
+.barbearias-grid {
+    display: grid;
+
+    gap: 15px;
+}
+
+.barbearia-card {
+    background: #111113;
+
+    border: 1px solid #292929;
+    border-radius: 14px;
+
+    padding: 22px;
+}
+
+.barbearia-card h3 {
+    margin: 0 0 16px;
+
+    color: #32c961;
+
+    font-size: 20px;
+}
+
+.barbearia-card p {
+    margin: 8px 0;
+
+    color: #b0b0b0;
+
+    font-size: 14px;
+}
+
+.barbearia-card strong {
+    color: #ffffff;
+}
+
+.acoes-barbearia {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.botao-editar,
+.botao-excluir {
+    flex: 1;
+
+    height: 42px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.botao-editar {
+    background: #0d2715;
+
+    color: #32c961;
+
+    border: 1px solid #1e7138;
+}
+
+.botao-editar:hover {
+    background: #12391f;
+}
+
+.botao-excluir {
+    background: #251010;
+
+    color: #ff6767;
+
+    border: 1px solid #693030;
+}
+
+.botao-excluir:hover {
+    background: #351515;
+}
+
+@media (max-width: 900px) {
+
+    .cadastro-conteudo {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .cadastro-page {
+        padding: 30px 20px;
+    }
+
+    .cadastro-topo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cadastro-home {
+        width: 100%;
+    }
+
+    .lista-topo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .botao-buscar {
+        width: 100%;
+    }
+
+}

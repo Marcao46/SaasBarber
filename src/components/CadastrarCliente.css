@@ -1,0 +1,162 @@
+.cliente-page {
+    min-height: 100vh;
+    width: 100%;
+
+    background: #080808;
+    color: #ffffff;
+
+    padding: 50px 30px;
+}
+
+.cliente-container {
+    width: 100%;
+    max-width: 850px;
+
+    margin: 0 auto;
+}
+
+.cliente-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    padding-bottom: 30px;
+    margin-bottom: 35px;
+
+    border-bottom: 1px solid #222222;
+}
+
+.cliente-subtitulo {
+    color: #32c961;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.cliente-topo h1 {
+    margin: 8px 0;
+
+    font-size: 34px;
+}
+
+.cliente-topo p {
+    margin: 0;
+
+    color: #777777;
+}
+
+.cliente-voltar {
+    background: #111113;
+
+    color: #ffffff;
+
+    border: 1px solid #353535;
+    border-radius: 10px;
+
+    padding: 12px 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.cliente-voltar:hover {
+    border-color: #32c961;
+    color: #32c961;
+}
+
+.cliente-form {
+    background: #111113;
+
+    border: 1px solid #292929;
+    border-radius: 16px;
+
+    padding: 30px;
+}
+
+.cliente-campo {
+    margin-bottom: 22px;
+}
+
+.cliente-campo label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #b5b5b5;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.cliente-campo input {
+    width: 100%;
+    height: 55px;
+
+    padding: 0 15px;
+
+    background: #0d0d0f;
+    color: #ffffff;
+
+    border: 1px solid #292929;
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+.cliente-campo input:focus {
+    border-color: #32c961;
+}
+
+.cliente-campo input::placeholder {
+    color: #666666;
+}
+
+.cliente-cadastrar {
+    width: 100%;
+    height: 58px;
+
+    margin-top: 5px;
+
+    background: #32c961;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.cliente-cadastrar:hover {
+    background: #2bb556;
+}
+
+@media (max-width: 700px) {
+
+    .cliente-page {
+        padding: 30px 20px;
+    }
+
+    .cliente-topo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cliente-voltar {
+        width: 100%;
+    }
+
+    .cliente-form {
+        padding: 22px;
+    }
+
+}
