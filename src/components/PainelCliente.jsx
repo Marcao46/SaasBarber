@@ -1,3 +1,4 @@
+import { FaCalendarAlt, FaClock, FaStore, FaUser } from "react-icons/fa"
 import { signOut } from "firebase/auth"
 import { auth } from "../fireBaseConfig"
 import "./PainelCliente.css"
@@ -56,7 +57,7 @@ const PainelCliente = () => {
                         <button className="cliente-painel-card">
 
                             <span className="cliente-painel-icone">
-                                📅
+                                <FaCalendarAlt className="icone-branco" />
                             </span>
 
                             <div>
@@ -72,7 +73,7 @@ const PainelCliente = () => {
                         <button className="cliente-painel-card">
 
                             <span className="cliente-painel-icone">
-                                🕐
+                                <FaClock className="icone-branco" />
                             </span>
 
                             <div>
@@ -88,7 +89,7 @@ const PainelCliente = () => {
                         <button className="cliente-painel-card">
 
                             <span className="cliente-painel-icone">
-                                💈
+                                <FaStore className="icone-branco" />
                             </span>
 
                             <div>
@@ -104,7 +105,7 @@ const PainelCliente = () => {
                         <button className="cliente-painel-card">
 
                             <span className="cliente-painel-icone">
-                                👤
+                                <FaUser className="icone-branco" />
                             </span>
 
                             <div>

@@ -1,12 +1,14 @@
 import { useState } from "react"
 
 import {
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    deleteUser
 } from "firebase/auth"
 
 import {
-    addDoc,
-    collection
+    doc,
+    setDoc,
+    serverTimestamp
 } from "firebase/firestore"
 
 import {
@@ -25,53 +27,151 @@ const CadastrarCliente = ({ voltarHome }) => {
     const [senha, setSenha] = useState("")
 
 
+    // Cadastro
+
     const handleSubmit = async (event) => {
 
         event.preventDefault()
 
         try {
 
-            // 1 - cria a conta do cliente no Firebase Authentication
+            // Validação
+
+            if (!nome.trim()) {
+                alert("Digite seu nome completo.")
+                return
+            }
+
+            if (!telefone.trim()) {
+                alert("Digite seu telefone.")
+                return
+            }
+
+            if (!email.trim()) {
+                alert("Digite seu e-mail.")
+                return
+            }
+
+            if (senha.length < 6) {
+                alert("A senha precisa ter pelo menos 6 caracteres.")
+                return
+            }
+
+
+            // Firebase
+
             const usuarioCriado =
                 await createUserWithEmailAndPassword(
                     auth,
-                    email,
+                    email.trim(),
                     senha
                 )
 
 
-            // 2 - salva os dados do cliente no Firestore
-            await addDoc(
-                collection(db, "clientes"),
-                {
-                    nome: nome,
-                    telefone: telefone,
-                    email: email,
-                    usuarioId: usuarioCriado.user.uid,
-                    tipoUsuario: "cliente"
+            const uid = usuarioCriado.user.uid
+
+
+            // Banco de dados
+
+            try {
+
+                await setDoc(
+                    doc(db, "clientes", uid),
+                    {
+                        nome: nome.trim(),
+                        telefone: telefone.trim(),
+                        email: email.trim(),
+                        usuarioId: uid,
+                        tipoUsuario: "cliente",
+                        criadoEm: serverTimestamp()
+                    }
+                )
+
+
+                // Sucesso
+
+                alert("Cliente cadastrado com sucesso!")
+
+                setNome("")
+                setTelefone("")
+                setEmail("")
+                setSenha("")
+
+
+            } catch (erroFirestore) {
+
+                console.error(
+                    "Erro ao salvar cliente:",
+                    erroFirestore
+                )
+
+                try {
+
+                    await deleteUser(usuarioCriado.user)
+
+                } catch (erroDelete) {
+
+                    console.error(
+                        "Erro ao remover usuário:",
+                        erroDelete
+                    )
+
                 }
-            )
 
+                alert(
+                    "Não foi possível salvar o cliente.\n\n" +
+                    erroFirestore.message
+                )
 
-            alert("Cliente cadastrado com sucesso!")
+            }
 
-
-            // limpa os campos
-            setNome("")
-            setTelefone("")
-            setEmail("")
-            setSenha("")
 
         } catch (erro) {
 
-            console.log("Erro ao cadastrar cliente:", erro)
+            console.error(
+                "Erro ao criar cliente:",
+                erro
+            )
 
-            alert("Erro ao cadastrar cliente")
+
+            // Erros
+
+            if (erro.code === "auth/email-already-in-use") {
+
+                alert(
+                    "Este e-mail já está cadastrado."
+                )
+
+            }
+            else if (erro.code === "auth/invalid-email") {
+
+                alert(
+                    "Digite um e-mail válido."
+                )
+
+            }
+            else if (erro.code === "auth/weak-password") {
+
+                alert(
+                    "A senha precisa ter pelo menos 6 caracteres."
+                )
+
+            }
+            else {
+
+                alert(
+                    "Erro ao cadastrar cliente:\n\n" +
+                    erro.message
+                )
+
+            }
 
         }
 
     }
 
+
+    // Tela
 
     return (
 
@@ -87,7 +187,9 @@ const CadastrarCliente = ({ voltarHome }) => {
                             SISTEMA DE BARBEARIA
                         </span>
 
-                        <h1>Cadastro de Cliente</h1>
+                        <h1>
+                            Cadastro de Cliente
+                        </h1>
 
                         <p>
                             Crie sua conta para realizar agendamentos.
@@ -114,7 +216,9 @@ const CadastrarCliente = ({ voltarHome }) => {
 
                     <div className="cliente-campo">
 
-                        <label>Nome completo</label>
+                        <label>
+                            Nome completo
+                        </label>
 
                         <input
                             type="text"
@@ -131,7 +235,9 @@ const CadastrarCliente = ({ voltarHome }) => {
 
                     <div className="cliente-campo">
 
-                        <label>Telefone</label>
+                        <label>
+                            Telefone
+                        </label>
 
                         <input
                             type="tel"
@@ -148,7 +254,9 @@ const CadastrarCliente = ({ voltarHome }) => {
 
                     <div className="cliente-campo">
 
-                        <label>E-mail</label>
+                        <label>
+                            E-mail
+                        </label>
 
                         <input
                             type="email"
@@ -165,7 +273,9 @@ const CadastrarCliente = ({ voltarHome }) => {
 
                     <div className="cliente-campo">
 
-                        <label>Senha</label>
+                        <label>
+                            Senha
+                        </label>
 
                         <input
                             type="password"
@@ -196,5 +306,6 @@ const CadastrarCliente = ({ voltarHome }) => {
     )
 
 }
+
 
 export default CadastrarCliente

@@ -1,3 +1,4 @@
+import { FaCut, FaLock, FaCalendarAlt, FaUsers, FaChartBar, FaStore } from "react-icons/fa"
 import { useState } from "react"
 import Login from "./Login"
 import LoginSaasAdmin from "./LoginSaasAdmin"
@@ -8,8 +9,6 @@ const Home = () => {
     const [mostrarAdminSaas, setMostrarAdminSaas] =
         useState(false)
 
-
-    // Abre a tela de Login do Admin SaaS
     if (mostrarAdminSaas) {
 
         return (
@@ -32,7 +31,7 @@ const Home = () => {
                 <div className="home-logo">
 
                     <div className="home-logo-icone">
-                        ✂
+                        <FaCut className="icone-branco" />
                     </div>
 
                     <div>
@@ -77,7 +76,7 @@ const Home = () => {
                         setMostrarAdminSaas(true)
                     }
                 >
-                    🔒 Admin SaaS
+                    <><FaLock className="icone-branco" /> Admin SaaS</>
                 </button>
 
             </header>
@@ -140,7 +139,7 @@ const Home = () => {
                         <div className="recurso-card">
 
                             <span>
-                                📅
+                                <FaCalendarAlt className="icone-branco" />
                             </span>
 
                             <p>
@@ -155,7 +154,7 @@ const Home = () => {
                         <div className="recurso-card">
 
                             <span>
-                                👥
+                                <FaUsers className="icone-branco" />
                             </span>
 
                             <p>
@@ -170,7 +169,7 @@ const Home = () => {
                         <div className="recurso-card">
 
                             <span>
-                                📊
+                                <FaChartBar className="icone-branco" />
                             </span>
 
                             <p>
@@ -185,7 +184,7 @@ const Home = () => {
                         <div className="recurso-card">
 
                             <span>
-                                💈
+                                <FaStore className="icone-branco" />
                             </span>
 
                             <p>

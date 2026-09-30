@@ -1,196 +1,199 @@
 .painel-page {
-    min-height: 100vh;
     width: 100%;
-
-    background: #080808;
-
-    color: #ffffff;
-
-    padding: 50px 30px;
+    min-height: 100vh;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 30px 0 50px;
 }
 
 .painel-container {
-    width: 100%;
-    max-width: 1150px;
-
+    width: 82%;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
 .painel-topo {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-
-    padding-bottom: 30px;
-
-    border-bottom: 1px solid #222222;
+    align-items: flex-start;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #252525;
 }
 
 .painel-subtitulo {
-    color: #32c961;
-
+    display: block;
+    color: #00d95f;
     font-size: 13px;
-    font-weight: bold;
-
-    letter-spacing: 2px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 14px;
 }
 
 .painel-topo h1 {
-    margin: 8px 0;
-
-    color: #ffffff;
-
-    font-size: 34px;
+    margin: 0;
+    color: white;
+    font-size: 38px;
 }
 
 .painel-topo p {
-    margin: 0;
-
-    color: #777777;
-
+    margin: 12px 0 0;
+    color: #777;
     font-size: 16px;
 }
 
 .botao-sair {
     background: transparent;
-
-    color: #ffffff;
-
-    border: 1px solid #353535;
-
+    color: white;
+    border: 1px solid #333;
     border-radius: 10px;
-
-    padding: 12px 24px;
-
+    padding: 12px 26px;
     font-size: 15px;
-    font-weight: bold;
-
+    font-weight: 700;
     cursor: pointer;
-
-    transition: 0.2s;
 }
 
 .botao-sair:hover {
-    border-color: #32c961;
-    color: #32c961;
+    border-color: #00d95f;
+    color: #00d95f;
 }
 
 .painel-conteudo {
-    margin-top: 40px;
-}
-
-.painel-titulo-secao {
-    margin-bottom: 25px;
+    margin-top: 35px;
+    padding-bottom: 20px;
 }
 
 .painel-titulo-secao h2 {
-    margin: 0 0 5px;
-
-    font-size: 26px;
-
-    color: #ffffff;
+    margin: 0;
+    color: white;
+    font-size: 27px;
 }
 
 .painel-titulo-secao p {
-    margin: 0;
-
-    color: #777777;
+    margin: 7px 0 0;
+    color: #777;
+    font-size: 15px;
 }
 
 .painel-grid {
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px;
+    gap: 18px;
+    margin-top: 22px;
+    padding-bottom: 20px;
 }
 
 .painel-card {
-    min-height: 135px;
-
-    background: #111113;
-
-    border: 1px solid #292929;
-
-    border-radius: 14px;
-
-    padding: 25px;
-
-    color: #ffffff;
-
-    text-align: left;
-
-    cursor: pointer;
-
+    width: 100%;
+    min-height: 105px;
     display: flex;
     align-items: center;
-
-    gap: 20px;
-
+    gap: 18px;
+    padding: 20px 24px;
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 15px;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
     transition: 0.2s;
 }
 
 .painel-card:hover {
-    border-color: #32c961;
-
+    border-color: #00d95f;
     transform: translateY(-2px);
 }
 
 .card-icone {
-    width: 55px;
-    height: 55px;
-
-    border-radius: 12px;
-
-    background: #0d2715;
-
-    color: #32c961;
-
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-
+    background: #07351d;
+    border-radius: 13px;
+    color: white;
     font-size: 26px;
+}
 
-    flex-shrink: 0;
+.card-icone svg {
+    color: white;
+    fill: white;
 }
 
 .painel-card h3 {
-    margin: 0 0 7px;
-
-    font-size: 19px;
+    margin: 0 0 5px;
+    color: white;
+    font-size: 20px;
+    line-height: 1.2;
 }
 
 .painel-card p {
     margin: 0;
-
-    color: #777777;
-
+    color: #777;
     font-size: 14px;
-
     line-height: 1.4;
 }
 
-@media (max-width: 750px) {
 
-    .painel-page {
-        padding: 30px 20px;
-    }
+@media (max-width: 900px) {
 
-    .painel-topo {
-        align-items: flex-start;
-
-        gap: 20px;
-
-        flex-direction: column;
+    .painel-container {
+        width: 90%;
     }
 
     .painel-grid {
         grid-template-columns: 1fr;
     }
 
-    .botao-sair {
-        width: 100%;
+}
+
+
+@media (max-width: 600px) {
+
+    .painel-page {
+        padding: 20px 0 40px;
+    }
+
+    .painel-container {
+        width: 92%;
+    }
+
+    .painel-topo {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .painel-topo h1 {
+        font-size: 30px;
+    }
+
+    .painel-topo p {
+        font-size: 14px;
+    }
+
+    .painel-card {
+        min-height: 95px;
+        padding: 17px;
+        gap: 14px;
+    }
+
+    .card-icone {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        font-size: 23px;
+    }
+
+    .painel-card h3 {
+        font-size: 18px;
+    }
+
+    .painel-card p {
+        font-size: 13px;
     }
 
 }

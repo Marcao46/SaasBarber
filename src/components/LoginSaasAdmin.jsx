@@ -1,3 +1,4 @@
+import { FaCut, FaLock, FaUserShield } from "react-icons/fa"
 import { useState } from "react"
 
 import {
@@ -132,7 +133,7 @@ const LoginSaasAdmin = ({ voltarHome }) => {
 
 
                 <div className="saas-logo">
-                    ✂
+                    <FaCut className="icone-branco" />
                 </div>
 
 
@@ -196,14 +197,14 @@ const LoginSaasAdmin = ({ voltarHome }) => {
                         type="submit"
                         className="saas-entrar"
                     >
-                        🔒 Entrar como Admin
+                        <><FaLock className="icone-branco" /> Entrar como Admin</>
                     </button>
 
                 </form>
 
 
                 <div className="saas-seguranca">
-                    🔐 Área restrita ao administrador
+                    <><FaUserShield className="icone-branco" /> Área restrita ao administrador</>
                     do SaaSBarber
                 </div>
 

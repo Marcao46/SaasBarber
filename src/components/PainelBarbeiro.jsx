@@ -1,3 +1,4 @@
+import { FaCalendarAlt, FaClock, FaUsers, FaUser } from "react-icons/fa"
 import { signOut } from "firebase/auth"
 import { auth } from "../fireBaseConfig"
 import "./PainelBarbeiro.css"
@@ -56,7 +57,7 @@ const PainelBarbeiro = () => {
                         <button className="barbeiro-card">
 
                             <span className="barbeiro-icone">
-                                📅
+                                <FaCalendarAlt className="icone-branco" />
                             </span>
 
                             <div>
@@ -72,7 +73,7 @@ const PainelBarbeiro = () => {
                         <button className="barbeiro-card">
 
                             <span className="barbeiro-icone">
-                                🕐
+                                <FaClock className="icone-branco" />
                             </span>
 
                             <div>
@@ -85,7 +86,7 @@ const PainelBarbeiro = () => {
                         <button className="barbeiro-card">
 
                             <span className="barbeiro-icone">
-                                👥
+                                <FaUsers className="icone-branco" />
                             </span>
 
                             <div>
@@ -101,7 +102,7 @@ const PainelBarbeiro = () => {
                         <button className="barbeiro-card">
 
                             <span className="barbeiro-icone">
-                                👤
+                                <FaUser className="icone-branco" />
                             </span>
 
                             <div>
