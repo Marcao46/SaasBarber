@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react"
 import { FaCut, FaUserTie, FaUsers } from "react-icons/fa"
 import "./login.css"
@@ -7,118 +8,304 @@ import PainelAdmin from "./PainelAdmin"
 import PainelBarbeiro from "./PainelBarbeiro"
 import CadastrarCliente from "./CadastrarCliente"
 import PainelCliente from "./PainelCliente"
+import PainelSaasAdmin from "./PainelSaasAdmin"
 
 import {
   signInWithEmailAndPassword,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from "firebase/auth"
 
-import { auth } from "../fireBaseConfig"
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc
+} from "firebase/firestore"
+
+import { auth, db } from "../fireBaseConfig"
 
 
 const Login = () => {
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
-  const [tipoLogin, setTipoLogin] = useState("dono")
 
-  const [mostrarCadastro, setMostrarCadastro] = useState(false)
-  const [mostrarPainel, setMostrarPainel] = useState(false)
+  const [tipoCadastro, setTipoCadastro] = useState("")
   const [painelUsuario, setPainelUsuario] = useState("")
 
+  const [carregando, setCarregando] = useState(true)
+  const [entrando, setEntrando] = useState(false)
+  const [erroLogin, setErroLogin] = useState("")
+
+
+  // IDENTIFICAR O USUÁRIO NO FIRESTORE
+
+// IDENTIFICAR O USUÁRIO NO FIRESTORE
+
+const identificarUsuario = async (uid) => {
+
+  // ADMINISTRADOR SAAS
+
+  const consultaSaas = query(
+    collection(db, "adminsSaas"),
+    where("usuarioId", "==", uid)
+  )
+
+  const adminsSaas = await getDocs(consultaSaas)
+
+  if (!adminsSaas.empty) {
+
+    const administradorAtivo = adminsSaas.docs.some(
+      (documento) => documento.data().ativo === true
+    )
+
+    if (!administradorAtivo) {
+      throw new Error("ADMIN_SAAS_INATIVO")
+    }
+
+    return "saasadmin"
+  }
+
+
+  // DONO DA BARBEARIA
+
+  const consultaDono = query(
+    collection(db, "barbearias"),
+    where("donoId", "==", uid)
+  )
+
+  const donos = await getDocs(consultaDono)
+
+  if (!donos.empty) {
+    return "dono"
+  }
+
+
+  // BARBEIRO
+
+  const consultaBarbeiro = query(
+    collection(db, "barbeiros"),
+    where("usuarioId", "==", uid)
+  )
+
+  const barbeiros = await getDocs(consultaBarbeiro)
+
+  if (!barbeiros.empty) {
+    return "barbeiro"
+  }
+
+
+  // CLIENTE
+
+  const cliente = await getDoc(
+    doc(db, "clientes", uid)
+  )
+
+  if (cliente.exists()) {
+    return "cliente"
+  }
+
+  return null
+}
+
+  // RESTAURAR SESSÃO AO ATUALIZAR A PÁGINA
 
   useEffect(() => {
 
+    let ativo = true
+
     const cancelarObservacao = onAuthStateChanged(
       auth,
-      (usuario) => {
+      async (usuario) => {
 
-        if (usuario) {
+        if (!ativo) return
 
-          console.log(
-            "Usuário continua logado:",
-            usuario.email
+        if (!usuario) {
+
+          setPainelUsuario("")
+          setCarregando(false)
+          return
+
+        }
+
+        try {
+
+          const perfil = await identificarUsuario(usuario.uid)
+
+          if (!ativo) return
+
+          setPainelUsuario(perfil || "")
+
+        } catch (erro) {
+
+          console.error(
+            "Erro ao restaurar sessão:",
+            erro
           )
 
-        } else {
+          if (ativo) {
+            setPainelUsuario("")
+          }
 
-          setMostrarPainel(false)
-          setPainelUsuario("")
+        } finally {
 
+          if (ativo) {
+            setCarregando(false)
+          }
+
+        }
+
+      },
+      (erro) => {
+
+        console.error("Erro de autenticação:", erro)
+
+        if (ativo) {
+          setCarregando(false)
         }
 
       }
     )
 
-    return () => cancelarObservacao()
+    return () => {
+      ativo = false
+      cancelarObservacao()
+    }
 
   }, [])
 
-if (mostrarCadastro) {
 
-    if (tipoLogin === "cliente") {
-
-        return (
-            <CadastrarCliente
-                voltarHome={() => setMostrarCadastro(false)}
-            />
-        )
-
-    }
-
-    return (
-        <Cadastrar
-            voltarHome={() => setMostrarCadastro(false)}
-        />
-    )
-}
-
+  // REALIZAR LOGIN AUTOMÁTICO
 
   const handleSubmit = async (event) => {
 
     event.preventDefault()
 
+    if (entrando) return
+
+    setEntrando(true)
+    setErroLogin("")
+
     try {
 
-      const usuarioLogado =
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          senha
+      const resultado = await signInWithEmailAndPassword(
+        auth,
+        email.trim(),
+        senha
+      )
+
+      const uid = resultado.user.uid
+
+      const perfil = await identificarUsuario(uid)
+
+      if (!perfil) {
+
+        await signOut(auth)
+
+        setPainelUsuario("")
+
+        setErroLogin(
+          "Sua conta foi autenticada, mas não encontramos seu cadastro no sistema."
         )
 
-      console.log(
-        "Usuário logado:",
-        usuarioLogado.user.uid
-      )
+        return
+      }
+
+      // ABRE AUTOMATICAMENTE O PAINEL CORRETO
+
+      setPainelUsuario(perfil)
 
       console.log(
-        "Tipo de login selecionado:",
-        tipoLogin
+        "Login realizado. Perfil:",
+        perfil
       )
-
-      // Guarda qual painel deverá abrir
-      setPainelUsuario(tipoLogin)
-
-      // Abre o painel
-      setMostrarPainel(true)
 
     } catch (erro) {
 
-      console.log(erro)
+      console.error("Erro no login:", erro)
 
-      alert("E-mail ou senha incorretos")
+      if (
+        erro.code === "auth/invalid-credential" ||
+        erro.code === "auth/wrong-password" ||
+        erro.code === "auth/user-not-found"
+      ) {
+
+        setErroLogin("E-mail ou senha incorretos.")
+
+      } else if (erro.code === "permission-denied") {
+
+        setErroLogin(
+          "O Firebase não permitiu consultar seu perfil. Verifique as regras do Firestore."
+        )
+
+      } else {
+
+        setErroLogin(
+          "Não foi possível entrar. Tente novamente."
+        )
+
+      }
+
+    } finally {
+
+      setEntrando(false)
 
     }
 
   }
 
 
-  
-  // ESCOLHA DO PAINEL
- 
+  // EXIBIR TELA DE CARREGAMENTO
 
-if (mostrarPainel) {
+  if (carregando) {
+
+    return (
+      <div className="login-page">
+        <div className="login-container">
+          <p>Verificando sua conta...</p>
+        </div>
+      </div>
+    )
+
+  }
+
+
+  // CADASTRO DE CLIENTE
+
+  if (tipoCadastro === "cliente") {
+
+    return (
+      <CadastrarCliente
+        voltarHome={() => setTipoCadastro("")}
+      />
+    )
+
+  }
+
+
+  // CADASTRO DE DONO
+
+  if (tipoCadastro === "dono") {
+
+    return (
+      <Cadastrar
+        voltarHome={() => setTipoCadastro("")}
+      />
+    )
+
+  }
+
+
+  // DIRECIONAMENTO AUTOMÁTICO
+if (painelUsuario === "saasadmin") {
+  return <PainelSaasAdmin />
+}
+  if (painelUsuario === "dono") {
+    return <PainelAdmin />
+  }
 
   if (painelUsuario === "barbeiro") {
     return <PainelBarbeiro />
@@ -128,21 +315,8 @@ if (mostrarPainel) {
     return <PainelCliente />
   }
 
-  if (painelUsuario === "dono") {
-    return <PainelAdmin />
-  }
 
-}
-
-
-  const nomesLogin = {
-
-    barbeiro: "Barbeiro",
-    dono: "Dono barbearia",
-    cliente: "Cliente"
-
-  }
-
+  // FORMULÁRIO DE LOGIN
 
   return (
 
@@ -150,25 +324,20 @@ if (mostrarPainel) {
 
       <div className="login-container">
 
-
         {/* LOGO */}
 
         <div className="logo-area">
 
           <div className="logo-circulo">
-            ✕
+            <FaCut />
           </div>
 
-          <h1>
-            Sistema de Barbearia
-          </h1>
+          <h1>SaasBarber</h1>
 
-          <h2>
-            Sistema Barbearia
-          </h2>
+          <h2>Sistema de Barbearia</h2>
 
           <p>
-            Gestão completa para profissionais
+            Entre na sua conta para continuar
           </p>
 
         </div>
@@ -178,90 +347,11 @@ if (mostrarPainel) {
 
         <form onSubmit={handleSubmit}>
 
-          <span className="titulo-tipo">
-            TIPO DE LOGIN
-          </span>
-
-
-          {/* TIPOS DE LOGIN */}
-
-          <div className="tipo-login">
-
-
-            {/* BARBEIRO */}
-
-            <button
-              type="button"
-              className={
-                tipoLogin === "barbeiro"
-                  ? "tipo ativo"
-                  : "tipo"
-              }
-              onClick={() =>
-                setTipoLogin("barbeiro")
-              }
-            >
-
-              <FaCut />
-
-              Barbeiro
-
-            </button>
-
-
-            {/* DONO */}
-
-            <button
-              type="button"
-              className={
-                tipoLogin === "dono"
-                  ? "tipo ativo"
-                  : "tipo"
-              }
-              onClick={() =>
-                setTipoLogin("dono")
-              }
-            >
-
-              <FaUserTie />
-
-              Dono barbearia
-
-            </button>
-
-
-            {/* CLIENTE */}
-
-            <button
-              type="button"
-              className={
-                tipoLogin === "cliente"
-                  ? "tipo ativo"
-                  : "tipo"
-              }
-              onClick={() =>
-                setTipoLogin("cliente")
-              }
-            >
-
-              <FaUsers />
-
-              Cliente
-
-            </button>
-
-          </div>
-
-
           {/* EMAIL */}
 
           <div className="campo">
 
-            <label>
-
-              E-mail do {nomesLogin[tipoLogin]}
-
-            </label>
+            <label>E-mail</label>
 
             <input
               type="email"
@@ -280,9 +370,7 @@ if (mostrarPainel) {
 
           <div className="campo">
 
-            <label>
-              Senha
-            </label>
+            <label>Senha</label>
 
             <input
               type="password"
@@ -301,16 +389,6 @@ if (mostrarPainel) {
 
           <div className="opcoes-login">
 
-            <label className="lembrar">
-
-              <input
-                type="checkbox"
-              />
-
-              Lembrar-me
-
-            </label>
-
             <a href="#">
               Esqueceu a senha?
             </a>
@@ -318,33 +396,107 @@ if (mostrarPainel) {
           </div>
 
 
-          {/* BOTÕES */}
+          {/* MENSAGEM DE ERRO */}
+
+          {erroLogin && (
+
+            <p
+              style={{
+                color: "#ef4444",
+                textAlign: "center",
+                marginBottom: "12px"
+              }}
+            >
+              {erroLogin}
+            </p>
+
+          )}
+
+
+          {/* BOTÃO LOGIN */}
 
           <div className="acoes-login">
 
             <button
               type="submit"
               className="botao-entrar"
+              disabled={entrando}
             >
 
-              Entrar como {nomesLogin[tipoLogin]}
+              {entrando ? "Entrando..." : "Entrar"}
 
             </button>
-
-
-            {tipoLogin !== "barbeiro" && (
-              <button
-                type="button"
-                className="botao-cadastro"
-                onClick={() => setMostrarCadastro(true)}
-              >
-                Solicitar Cadastro
-              </button>
-            )}
 
           </div>
 
         </form>
+
+
+        {/* CRIAR CONTA */}
+
+        <div
+          className="area-criar-conta"
+          style={{
+            marginTop: "25px",
+            textAlign: "center"
+          }}
+        >
+
+          <p>
+            Ainda não tem uma conta?
+          </p>
+
+          <h3
+            style={{
+              marginTop: "10px",
+              marginBottom: "15px"
+            }}
+          >
+            Criar conta
+          </h3>
+
+
+          <div
+            className="acoes-login"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px"
+            }}
+          >
+
+            {/* CRIAR CONTA DONO */}
+
+            <button
+              type="button"
+              className="botao-cadastro"
+              onClick={() => setTipoCadastro("dono")}
+            >
+
+              <FaUserTie style={{ marginRight: "8px" }} />
+
+              Criar conta Dono Barbearia
+
+            </button>
+
+
+            {/* CRIAR CONTA CLIENTE */}
+
+            <button
+              type="button"
+              className="botao-cadastro"
+              onClick={() => setTipoCadastro("cliente")}
+            >
+
+              <FaUsers style={{ marginRight: "8px" }} />
+
+              Criar conta Cliente
+
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -353,6 +505,5 @@ if (mostrarPainel) {
   )
 
 }
-
 
 export default Login
