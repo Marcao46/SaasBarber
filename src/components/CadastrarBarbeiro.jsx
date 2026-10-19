@@ -1,204 +1,364 @@
-import { useState } from "react"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth, db, secondaryAuth } from "../fireBaseConfig"
+import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db, secondaryAuth } from "../fireBaseConfig";
 import {
     collection,
     addDoc,
     getDocs,
     query,
     where
-} from "firebase/firestore"
-import "./CadastrarBarbeiro.css"
+} from "firebase/firestore";
+import {
+    FaArrowLeft,
+    FaCut,
+    FaUser,
+    FaEnvelope,
+    FaPhone,
+    FaLock,
+    FaCheck,
+    FaPlus
+} from "react-icons/fa";
+import "./CadastrarBarbeiro.css";
 
+const OPCOES_ESPECIALIDADE = [
+    "Corte masculino",
+    "Barba",
+    "Degradê",
+    "Corte infantil",
+    "Pezinho",
+    "Pigmentação",
+    "Sobrancelha",
+    "Nevou"
+];
 
 const CadastrarBarbeiro = ({ voltarPainel }) => {
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [telefone, setTelefone] = useState("");
+    const [especialidades, setEspecialidades] = useState([]);
+    const [senha, setSenha] = useState("");
+    const [confirmarSenha, setConfirmarSenha] = useState("");
+    const [carregando, setCarregando] = useState(false);
 
-    const [nome, setNome] = useState("")
-    const [email, setEmail] = useState("")
-    const [telefone, setTelefone] = useState("")
-    const [especialidade, setEspecialidade] = useState("")
-    const [senha, setSenha] = useState("")
-    const [confirmarSenha, setConfirmarSenha] = useState("")
-
+    const alternarEspecialidade = (opcao) => {
+        setEspecialidades((atuais) =>
+            atuais.includes(opcao)
+                ? atuais.filter((item) => item !== opcao)
+                : [...atuais, opcao]
+        );
+    };
 
     const handleSubmit = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
+
+        if (especialidades.length === 0) {
+            alert("Selecione pelo menos uma especialidade.");
+            return;
+        }
 
         if (senha !== confirmarSenha) {
-            alert("As senhas não são iguais")
-            return
+            alert("As senhas não são iguais.");
+            return;
+        }
+
+        if (senha.length < 6) {
+            alert("A senha deve ter pelo menos 6 caracteres.");
+            return;
         }
 
         try {
-            const donoId = auth.currentUser?.uid
+            setCarregando(true);
+
+            const donoId = auth.currentUser?.uid;
 
             if (!donoId) {
-                alert("Nenhum dono está logado")
-                return
+                alert("Nenhum proprietário está logado.");
+                return;
             }
 
             const consultaBarbearia = query(
                 collection(db, "barbearias"),
                 where("donoId", "==", donoId)
-            )
+            );
 
-            const resultadoBarbearia = await getDocs(consultaBarbearia)
+            const resultadoBarbearia = await getDocs(consultaBarbearia);
 
             if (resultadoBarbearia.empty) {
-                alert("Barbearia do dono não encontrada")
-                return
+                alert("Barbearia do proprietário não encontrada.");
+                return;
             }
 
-            const barbeariaId = resultadoBarbearia.docs[0].id
-
-            console.log("Barbearia encontrada:", barbeariaId)
+            const barbeariaId = resultadoBarbearia.docs[0].id;
 
             const usuarioCriado = await createUserWithEmailAndPassword(
                 secondaryAuth,
-                email,
+                email.trim(),
                 senha
-            )
+            );
+
             await addDoc(collection(db, "barbeiros"), {
-                nome,
-                email,
-                telefone,
-                especialidade,
+                nome: nome.trim(),
+                email: email.trim(),
+                telefone: telefone.trim(),
+                especialidade: especialidades.join(", "),
+                especialidades,
                 usuarioId: usuarioCriado.user.uid,
                 tipoUsuario: "barbeiro",
-                barbeariaId: barbeariaId
-            })
+                donoId,
+                barbeariaId
+            });
 
-            console.log("Usuário criado:", usuarioCriado.user.uid)
+            alert("Acesso do barbeiro criado com sucesso!");
 
-            alert("Acesso do barbeiro criado com sucesso")
-
+            setNome("");
+            setEmail("");
+            setTelefone("");
+            setEspecialidades([]);
+            setSenha("");
+            setConfirmarSenha("");
         } catch (erro) {
+            console.error("Erro ao cadastrar barbeiro:", erro);
 
-            console.log(erro)
-
-            alert("Erro ao criar acesso do barbeiro")
+            if (erro.code === "auth/email-already-in-use") {
+                alert("Este e-mail já está cadastrado.");
+            } else if (erro.code === "auth/invalid-email") {
+                alert("Digite um e-mail válido.");
+            } else if (erro.code === "auth/weak-password") {
+                alert("A senha é muito fraca. Use pelo menos 6 caracteres.");
+            } else {
+                alert("Não foi possível cadastrar o barbeiro. Verifique os dados e tente novamente.");
+            }
+        } finally {
+            setCarregando(false);
         }
-    }
+    };
 
-   return (
-    <div className="cadastro-barbeiro-page">
+    return (
+        <main className="cadastro-barbeiro-page">
+            <div className="cadastro-barbeiro-container">
+                <header className="cadastro-barbeiro-topo">
+                    <div className="cadastro-barbeiro-titulo">
+                        <span className="cadastro-barbeiro-subtitulo">
+                            SAASBARBER / PROPRIETÁRIO
+                        </span>
 
-        <div className="cadastro-barbeiro-container">
+                        <h1>Cadastrar barbeiro</h1>
 
-            <div className="cadastro-barbeiro-topo">
+                        <p>
+                            Crie o acesso de um novo profissional para sua equipe.
+                        </p>
+                    </div>
 
-                <div>
-                    <span className="cadastro-barbeiro-subtitulo">
-                        SISTEMA DE BARBEARIA
-                    </span>
+                    <button
+                        type="button"
+                        className="botao-voltar"
+                        onClick={voltarPainel}
+                    >
+                        <FaArrowLeft />
+                        Voltar ao painel
+                    </button>
+                </header>
 
-                    <h1>Cadastrar Barbeiro</h1>
+                <section className="cadastro-barbeiro-conteudo">
+                    <div className="cadastro-barbeiro-introducao">
+                        <div className="cadastro-barbeiro-icone-principal">
+                            <FaCut />
+                        </div>
 
-                    <p>
-                        Crie o acesso de um novo profissional.
-                    </p>
-                </div>
+                        <div>
+                            <span className="cadastro-barbeiro-etiqueta">
+                                NOVO PROFISSIONAL
+                            </span>
 
-                <button
-                    type="button"
-                    className="botao-voltar"
-                    onClick={voltarPainel}
-                >
-                    Voltar ao Painel
-                </button>
+                            <h2>Dados do barbeiro</h2>
 
+                            <p>
+                                Preencha os dados e selecione as especialidades
+                                que ele oferece.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form
+                        className="form-barbeiro"
+                        onSubmit={handleSubmit}
+                    >
+                        <div className="form-barbeiro-grid">
+                            <div className="campo-barbeiro">
+                                <label htmlFor="nome-barbeiro">
+                                    <FaUser />
+                                    Nome completo
+                                </label>
+
+                                <input
+                                    id="nome-barbeiro"
+                                    type="text"
+                                    placeholder="Digite o nome completo"
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
+                                    autoComplete="name"
+                                    required
+                                />
+                            </div>
+
+                            <div className="campo-barbeiro">
+                                <label htmlFor="email-barbeiro">
+                                    <FaEnvelope />
+                                    E-mail
+                                </label>
+
+                                <input
+                                    id="email-barbeiro"
+                                    type="email"
+                                    placeholder="barbeiro@email.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    autoComplete="email"
+                                    required
+                                />
+                            </div>
+
+                            <div className="campo-barbeiro campo-barbeiro-largura">
+                                <label htmlFor="telefone-barbeiro">
+                                    <FaPhone />
+                                    Telefone
+                                </label>
+
+                                <input
+                                    id="telefone-barbeiro"
+                                    type="tel"
+                                    placeholder="(47) 99999-9999"
+                                    value={telefone}
+                                    onChange={(e) => setTelefone(e.target.value)}
+                                    autoComplete="tel"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="campo-barbeiro campo-especialidades">
+                            <div className="especialidades-cabecalho">
+                                <div>
+                                    <label>
+                                        <FaCut />
+                                        Especialidades
+                                    </label>
+
+                                    <p>
+                                        Selecione todas as opções que se aplicam.
+                                    </p>
+                                </div>
+
+                                <span className="especialidades-contador">
+                                    {especialidades.length} selecionada(s)
+                                </span>
+                            </div>
+
+                            <div
+                                className="especialidades-pills"
+                                role="group"
+                                aria-label="Selecionar especialidades do barbeiro"
+                            >
+                                {OPCOES_ESPECIALIDADE.map((opcao) => {
+                                    const selecionada =
+                                        especialidades.includes(opcao);
+
+                                    return (
+                                        <button
+                                            key={opcao}
+                                            type="button"
+                                            className={`especialidade-pill ${
+                                                selecionada
+                                                    ? "selecionada"
+                                                    : ""
+                                            }`}
+                                            aria-pressed={selecionada}
+                                            onClick={() =>
+                                                alternarEspecialidade(opcao)
+                                            }
+                                        >
+                                            {selecionada ? (
+                                                <FaCheck />
+                                            ) : (
+                                                <FaPlus />
+                                            )}
+                                            {opcao}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="form-barbeiro-grid">
+                            <div className="campo-barbeiro">
+                                <label htmlFor="senha-barbeiro">
+                                    <FaLock />
+                                    Senha de acesso
+                                </label>
+
+                                <input
+                                    id="senha-barbeiro"
+                                    type="password"
+                                    placeholder="Mínimo de 6 caracteres"
+                                    value={senha}
+                                    onChange={(e) => setSenha(e.target.value)}
+                                    autoComplete="new-password"
+                                    minLength={6}
+                                    required
+                                />
+                            </div>
+
+                            <div className="campo-barbeiro">
+                                <label htmlFor="confirmar-senha-barbeiro">
+                                    <FaLock />
+                                    Confirmar senha
+                                </label>
+
+                                <input
+                                    id="confirmar-senha-barbeiro"
+                                    type="password"
+                                    placeholder="Digite a senha novamente"
+                                    value={confirmarSenha}
+                                    onChange={(e) =>
+                                        setConfirmarSenha(e.target.value)
+                                    }
+                                    autoComplete="new-password"
+                                    minLength={6}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="cadastro-barbeiro-acoes">
+                            <button
+                                type="button"
+                                className="botao-cancelar-barbeiro"
+                                onClick={voltarPainel}
+                                disabled={carregando}
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="botao-cadastrar-barbeiro"
+                                disabled={carregando}
+                            >
+                                <FaCheck />
+                                {carregando
+                                    ? "Cadastrando..."
+                                    : "Cadastrar barbeiro"}
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <footer className="cadastro-barbeiro-rodape">
+                    SaaSBarber · Gestão inteligente da sua barbearia
+                </footer>
             </div>
+        </main>
+    );
+};
 
-            <form
-                className="form-barbeiro"
-                onSubmit={handleSubmit}
-            >
-
-                <div className="campo-barbeiro">
-                    <label>Nome completo</label>
-
-                    <input
-                        type="text"
-                        placeholder="Digite o nome completo"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="campo-barbeiro">
-                    <label>E-mail</label>
-
-                    <input
-                        type="email"
-                        placeholder="barbeiro@email.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="campo-barbeiro">
-                    <label>Telefone</label>
-
-                    <input
-                        type="text"
-                        placeholder="(47) 99999-9999"
-                        value={telefone}
-                        onChange={(e) => setTelefone(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="campo-barbeiro">
-                    <label>Especialidade</label>
-
-                    <input
-                        type="text"
-                        placeholder="Ex: Corte, barba, degradê"
-                        value={especialidade}
-                        onChange={(e) => setEspecialidade(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="campo-barbeiro">
-                    <label>Senha de acesso</label>
-
-                    <input
-                        type="password"
-                        placeholder="Digite uma senha"
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="campo-barbeiro">
-                    <label>Confirmar senha</label>
-
-                    <input
-                        type="password"
-                        placeholder="Digite a senha novamente"
-                        value={confirmarSenha}
-                        onChange={(e) => setConfirmarSenha(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    className="botao-cadastrar-barbeiro"
-                >
-                    Cadastrar Barbeiro
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-)
-}
-
-export default CadastrarBarbeiro
+export default CadastrarBarbeiro;

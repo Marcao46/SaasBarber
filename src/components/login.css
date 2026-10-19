@@ -1,284 +1,413 @@
+
+/* ========================================
+   CONFIGURAÇÕES GERAIS
+======================================== */
+
 * {
   box-sizing: border-box;
 }
 
-body {
+html,
+body,
+#root {
+  min-height: 100%;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #080808;
 }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #050908;
+}
+
+/* ========================================
+   FUNDO DA TELA DE LOGIN
+======================================== */
 
 .login-page {
   min-height: 100vh;
   width: 100%;
-  background: #080808;
-
   display: flex;
-  justify-content: center;
   align-items: center;
-
-  padding: 40px 20px;
+  justify-content: center;
+  padding: 36px 20px 54px;
+  background:
+    radial-gradient(
+      ellipse at 50% 45%,
+      rgba(0, 72, 46, 0.15) 0%,
+      rgba(0, 30, 20, 0.08) 48%,
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse at top left,
+      rgba(0, 70, 43, 0.09),
+      transparent 45%
+    ),
+    #050908;
+  color: #f5f7f6;
 }
+
+/* ========================================
+   CONTAINER CENTRAL
+======================================== */
 
 .login-container {
   width: 100%;
-  max-width: 760px;
+  max-width: 392px;
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
+/* ========================================
+   LOGO E CABEÇALHO
+======================================== */
+
 .logo-area {
+  width: 100%;
   text-align: center;
-  margin-bottom: 42px;
+  margin-bottom: 18px;
 }
 
 .logo-circulo {
-  width: 120px;
-  height: 120px;
-
-  border: 3px solid #32c961;
-  border-radius: 50%;
-
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 12px;
   display: flex;
-  justify-content: center;
   align-items: center;
-
-  margin: 0 auto 18px;
-
-  color: #32c961;
-  font-size: 40px;
-  font-weight: 300;
+  justify-content: center;
+  border: 1.5px solid #00df83;
+  border-radius: 50%;
+  background: transparent;
+  color: #00df83;
+  font-size: 27px;
+  box-shadow: 0 0 18px rgba(0, 223, 131, 0.04);
 }
 
 .logo-area h1 {
-  margin: 0;
-  color: #32c961;
-
-  font-size: 34px;
-  font-weight: 700;
+  margin: 0 0 6px;
+  color: #00df83;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.5px;
 }
 
 .logo-area h2 {
-  margin: 10px 0 3px;
-
-  color: #ffffff;
-
-  font-size: 22px;
+  margin: 0 0 5px;
+  color: #f1f3f2;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 700;
 }
 
 .logo-area p {
   margin: 0;
-
-  color: #777777;
-
-  font-size: 17px;
+  color: #9da8a4;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
-.titulo-tipo {
-  display: block;
+/* ========================================
+   CAIXA TRANSPARENTE DO LOGIN
+======================================== */
 
-  color: #777777;
-
-  font-size: 14px;
-  font-weight: bold;
-
-  letter-spacing: 2px;
-
-  margin-bottom: 10px;
-}
-
-.tipo-login {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 12px;
-
-  margin-bottom: 28px;
-}
-
-.tipo {
-  height: 62px;
-
-  border: 1px solid #292929;
-  border-radius: 12px;
-
-  background: #111113;
-  color: #858585;
-
-  font-size: 16px;
-  font-weight: bold;
-
-  cursor: pointer;
-
+.login-form {
+  width: 100%;
+  padding: 29px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 9px;
-
-  transition: 0.2s;
+  flex-direction: column;
+  gap: 19px;
+  border: 1px solid rgba(0, 220, 131, 0.24);
+  border-radius: 13px;
+  background: rgba(12, 23, 20, 0.72);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.14);
 }
 
-.tipo:hover {
-  border-color: #32c961;
+/* ========================================
+   CAMPOS DE E-MAIL E SENHA
+======================================== */
+
+.login-form .campo {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.tipo.ativo {
-  background: #32c961;
-  color: #ffffff;
-
-  border-color: #32c961;
-}
-
-.campo {
-  margin-bottom: 24px;
-}
-
-.campo label {
-  display: block;
-
-  margin-bottom: 10px;
-
-  color: #898989;
-
-  font-size: 20px;
+.login-form .campo label {
+  color: #aebbb6;
+  font-size: 12px;
+  line-height: 1.4;
   font-weight: 600;
 }
 
-.campo input {
+.login-form .campo input {
   width: 100%;
-  height: 58px;
-
-  background: #111113;
-
-  border: 1px solid #292929;
-  border-radius: 12px;
-
-  padding: 0 16px;
-
-  color: #ffffff;
-
-  font-size: 18px;
-
+  height: 34px;
+  padding: 0 11px;
   outline: none;
+  border: 1px solid #26322e;
+  border-radius: 7px;
+  background: #101715;
+  color: #f2f5f3;
+  font-family: inherit;
+  font-size: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.campo input::placeholder {
-  color: #666666;
+.login-form .campo input::placeholder {
+  color: #67736e;
 }
 
-.campo input:focus {
-  border-color: #32c961;
+.login-form .campo input:focus {
+  border-color: #00c978;
+  box-shadow: 0 0 0 2px rgba(0, 201, 120, 0.09);
 }
+
+/* ========================================
+   ESQUECEU A SENHA?
+   Mantém a posição definida no JSX
+======================================== */
 
 .opcoes-login {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-top: 2px;
-  margin-bottom: 26px;
-}
-
-.lembrar {
-  color: #ffffff;
-
-  font-size: 18px;
-
+  width: 100%;
   display: flex;
   align-items: center;
-
-  gap: 9px;
+  justify-content: flex-start;
+  margin-top: -12px;
+  margin-bottom: -4px;
 }
 
-.lembrar input {
-  width: 19px;
-  height: 19px;
-
-  accent-color: #32c961;
-}
-
-.opcoes-login a {
-  color: #32c961;
-
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.acoes-login {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 14px;
-}
-
-.botao-entrar,
-.botao-cadastro {
-  height: 58px;
-
-  border-radius: 12px;
-
-  font-size: 17px;
-  font-weight: bold;
-
+.link-recuperar-senha {
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #00df83;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: left;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
+
+.link-recuperar-senha:hover {
+  color: #75ffc0;
+  text-decoration: underline;
+}
+
+.link-recuperar-senha:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ========================================
+   MENSAGENS DE ERRO E SUCESSO
+======================================== */
+
+.mensagem-login {
+  width: 100%;
+  margin: -5px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.mensagem-login.erro {
+  color: #ff9999;
+}
+
+.mensagem-login.sucesso {
+  color: #00df83;
+}
+
+/* ========================================
+   BOTÃO ENTRAR
+======================================== */
 
 .botao-entrar {
-  background: #32c961;
-
-  border: 1px solid #32c961;
-
+  width: 100%;
+  min-height: 34px;
+  padding: 9px 12px;
+  margin: -1px 0 0;
+  border: none;
+  border-radius: 7px;
+  background: #00d978;
   color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .botao-entrar:hover {
-  background: #2bb556;
+  background: #00ed86;
+}
+
+.botao-entrar:active {
+  transform: scale(0.99);
+}
+
+.botao-entrar:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* ========================================
+   ÁREA CRIAR CONTA
+======================================== */
+
+.area-criar-conta {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.area-criar-conta > p {
+  margin: 0 0 7px;
+  color: #f0f2f1;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.area-criar-conta h3 {
+  margin: 0 0 8px;
+  color: #f0f2f1;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* ========================================
+   BOTÕES DE CADASTRO
+======================================== */
+
+.botoes-cadastro {
+  width: 72%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .botao-cadastro {
-  background: #111113;
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  border: 1px solid rgba(0, 220, 131, 0.48);
+  border-radius: 9px;
+  background: rgba(9, 18, 15, 0.7);
+  color: #f0f3f1;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
 
-  border: 1px solid #292929;
-
-  color: #ffffff;
+.botao-cadastro svg {
+  flex-shrink: 0;
+  color: #00df83;
+  font-size: 19px;
 }
 
 .botao-cadastro:hover {
-  border-color: #32c961;
+  border-color: #00df83;
+  background: rgba(0, 220, 131, 0.08);
 }
 
-/* RESPONSIVO */
+.botao-cadastro:focus-visible,
+.botao-entrar:focus-visible,
+.link-recuperar-senha:focus-visible {
+  outline: 2px solid #00df83;
+  outline-offset: 3px;
+}
 
-@media (max-width: 700px) {
+/* ========================================
+   TELA DE CARREGAMENTO
+======================================== */
 
+.login-carregando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.login-carregando p {
+  margin-top: 14px;
+  color: #aebbb6;
+  font-size: 13px;
+}
+
+/* ========================================
+   RESPONSIVIDADE PARA CELULARES
+======================================== */
+
+@media (max-width: 480px) {
   .login-page {
-    align-items: flex-start;
-    padding-top: 25px;
+    padding: 28px 16px 36px;
+  }
+
+  .login-container {
+    max-width: 392px;
+  }
+
+  .logo-area {
+    margin-bottom: 18px;
   }
 
   .logo-circulo {
-    width: 90px;
-    height: 90px;
-
-    font-size: 30px;
+    width: 64px;
+    height: 64px;
+    font-size: 25px;
   }
 
   .logo-area h1 {
-    font-size: 28px;
+    font-size: 23px;
   }
 
-  .tipo-login {
-    grid-template-columns: 1fr;
+  .login-form {
+    padding: 24px 20px;
   }
 
-  .acoes-login {
-    grid-template-columns: 1fr;
+  .botoes-cadastro {
+    width: 86%;
+  }
+}
+
+/* ========================================
+   TELAS COM POUCA ALTURA
+======================================== */
+
+@media (max-height: 700px) {
+  .login-page {
+    align-items: flex-start;
   }
 
-  .opcoes-login {
-    gap: 15px;
-    flex-wrap: wrap;
+  .login-container {
+    margin-top: 0;
+    margin-bottom: 0;
   }
-
 }

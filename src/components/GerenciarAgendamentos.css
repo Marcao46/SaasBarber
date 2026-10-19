@@ -1,0 +1,550 @@
+
+.ga-pagina {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f5f7f6;
+  color: #202622;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.ga-pagina * {
+  box-sizing: border-box;
+}
+
+.ga-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.ga-voltar,
+.ga-atualizar,
+.ga-limpar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 15px;
+  border: 1px solid #dce4dd;
+  border-radius: 9px;
+  background: #fff;
+  color: #303932;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ga-voltar {
+  display: flex;
+  width: fit-content;
+  margin-bottom: 23px;
+}
+
+.ga-voltar:hover,
+.ga-atualizar:hover,
+.ga-limpar:hover {
+  border-color: #32c961;
+}
+
+.ga-atualizar:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.ga-etiqueta {
+  color: #269a49;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.ga-header h1 {
+  margin: 9px 0;
+  font-size: 30px;
+  color: #1b211d;
+}
+
+.ga-header p {
+  margin: 0;
+  color: #7b847d;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ga-resumos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.ga-resumo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e4e9e5;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(20, 40, 25, 0.03);
+}
+
+.ga-resumo-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 11px;
+  font-size: 18px;
+}
+
+.ga-icone-total {
+  background: #eaf0ff;
+  color: #4167bd;
+}
+
+.ga-icone-pendente {
+  background: #fff3dc;
+  color: #b77b16;
+}
+
+.ga-icone-confirmado {
+  background: #e5f8eb;
+  color: #229447;
+}
+
+.ga-icone-cancelado {
+  background: #ffeded;
+  color: #c54141;
+}
+
+.ga-resumo > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ga-resumo span {
+  color: #737d75;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ga-resumo strong {
+  color: #202622;
+  font-size: 26px;
+}
+
+.ga-lista-container {
+  overflow: hidden;
+  border: 1px solid #e3e9e4;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(20, 40, 25, 0.03);
+}
+
+.ga-lista-titulo {
+  padding: 23px 24px 18px;
+}
+
+.ga-lista-titulo h2 {
+  margin: 0 0 7px;
+  font-size: 20px;
+  color: #202622;
+}
+
+.ga-lista-titulo p {
+  margin: 0;
+  color: #7c857e;
+  font-size: 13px;
+}
+
+.ga-filtros {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 180px 170px auto;
+  gap: 12px;
+  align-items: end;
+  padding: 0 24px 22px;
+}
+
+.ga-busca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid #dfe6e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #7d887f;
+}
+
+.ga-busca:focus-within {
+  border-color: #32c961;
+}
+
+.ga-busca input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #202622;
+  font-size: 12px;
+}
+
+.ga-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.ga-filtro > span {
+  color: #6f7971;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ga-filtro select,
+.ga-filtro input {
+  width: 100%;
+  min-width: 0;
+  height: 43px;
+  padding: 0 10px;
+  border: 1px solid #dfe6e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #303932;
+  font-size: 12px;
+  outline: none;
+}
+
+.ga-filtro select:focus,
+.ga-filtro input:focus {
+  border-color: #32c961;
+}
+
+.ga-limpar {
+  height: 43px;
+  white-space: nowrap;
+}
+
+.ga-tabela-area {
+  width: 100%;
+  overflow-x: auto;
+  border-top: 1px solid #e9eeea;
+}
+
+.ga-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.ga-tabela th {
+  padding: 15px 17px;
+  background: #f8faf8;
+  color: #788179;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.ga-tabela td {
+  padding: 16px 17px;
+  border-top: 1px solid #edf0ed;
+  color: #454d47;
+  vertical-align: middle;
+}
+
+.ga-tabela tbody tr:hover {
+  background: #fbfdfb;
+}
+
+.ga-cliente {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.ga-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #203a28;
+  color: #8be5a2;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ga-cliente > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.ga-cliente strong {
+  color: #252d27;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.ga-cliente span {
+  color: #848d86;
+  font-size: 10px;
+}
+
+.ga-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.ga-info svg {
+  flex-shrink: 0;
+  color: #299d4b;
+}
+
+.ga-data {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.ga-data span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #7a847c;
+}
+
+.ga-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ga-status-pendente {
+  background: #fff4df;
+  color: #a96e0e;
+}
+
+.ga-status-confirmado {
+  background: #e7f8ec;
+  color: #258542;
+}
+
+.ga-status-cancelado {
+  background: #ffeded;
+  color: #bd3838;
+}
+
+.ga-status-concluido {
+  background: #e9efff;
+  color: #3f5db1;
+}
+
+.ga-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 115px;
+}
+
+.ga-acoes button {
+  padding: 7px 9px;
+  border: none;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ga-acao-confirmar {
+  background: #32c961;
+  color: #fff;
+}
+
+.ga-acao-concluir {
+  background: #e7efff;
+  color: #3e5db3;
+}
+
+.ga-acao-cancelar {
+  background: #ffeded;
+  color: #bd3838;
+}
+
+.ga-estado,
+.ga-vazio {
+  padding: 55px 22px;
+  text-align: center;
+  color: #7b847d;
+}
+
+.ga-vazio > svg {
+  color: #32b85a;
+  font-size: 35px;
+}
+
+.ga-vazio h3 {
+  margin: 15px 0 8px;
+  color: #273029;
+  font-size: 18px;
+}
+
+.ga-vazio p {
+  max-width: 520px;
+  margin: 0 auto;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.ga-spinner {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto 15px;
+  border: 3px solid #e0eee3;
+  border-top-color: #32c961;
+  border-radius: 50%;
+  animation: ga-girar 0.8s linear infinite;
+}
+
+@keyframes ga-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ga-alerta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ga-alerta button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.ga-alerta-erro {
+  border: 1px solid #f1cccc;
+  background: #fff0f0;
+  color: #a52d2d;
+}
+
+.ga-alerta-sucesso {
+  border: 1px solid #ccebd4;
+  background: #eaf8ee;
+  color: #237c3c;
+}
+
+@media (max-width: 1100px) {
+  .ga-resumos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ga-filtros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ga-busca {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+  .ga-pagina {
+    padding: 20px 14px;
+  }
+
+  .ga-header h1 {
+    font-size: 25px;
+  }
+
+  .ga-header {
+    align-items: flex-start;
+  }
+
+  .ga-header p {
+    line-height: 1.7;
+  }
+
+  .ga-resumos {
+    gap: 10px;
+  }
+
+  .ga-resumo {
+    padding: 13px;
+    gap: 10px;
+  }
+
+  .ga-resumo-icone {
+    width: 37px;
+    height: 37px;
+    font-size: 15px;
+  }
+
+  .ga-resumo strong {
+    font-size: 22px;
+  }
+
+  .ga-resumo span {
+    font-size: 10px;
+  }
+
+  .ga-filtros {
+    grid-template-columns: 1fr;
+    padding: 0 15px 18px;
+  }
+
+  .ga-busca {
+    grid-column: auto;
+  }
+
+  .ga-lista-titulo {
+    padding: 20px 15px;
+  }
+
+  .ga-tabela {
+    min-width: 850px;
+  }
+
+  .ga-voltar {
+    margin-bottom: 18px;
+  }
+}

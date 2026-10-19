@@ -1,131 +1,449 @@
-import { FaCalendarAlt, FaClock, FaStore, FaUser } from "react-icons/fa"
-import { signOut } from "firebase/auth"
-import { auth } from "../fireBaseConfig"
-import "./PainelCliente.css"
 
-const PainelCliente = () => {
+import { useEffect, useState } from "react";
+import { signOut } from "firebase/auth";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import {
+  FaCalendarAlt,
+  FaClock,
+  FaStore,
+  FaUser,
+  FaHome,
+  FaSignOutAlt,
+  FaArrowRight,
+  FaCut,
+  FaArrowLeft,
+} from "react-icons/fa";
 
-    const sair = async () => {
-        try {
-            await signOut(auth)
-            console.log("Cliente saiu do sistema")
-        } catch (erro) {
-            console.log("Erro ao sair:", erro)
+import { auth, db } from "../fireBaseConfig";
+import AgendarHorarioCliente from "./AgendarHorarioCliente";
+import "./PainelCliente.css";
+import "./Agendamento.css";
+
+export default function PainelCliente({ voltarHome }) {
+  const [telaAtiva, setTelaAtiva] = useState("inicio");
+  const [agendamentos, setAgendamentos] = useState([]);
+  const [dadosCliente, setDadosCliente] = useState(null);
+  const [carregando, setCarregando] = useState(false);
+  const [mensagem, setMensagem] = useState("");
+
+  const usuario = auth.currentUser;
+
+  const nomeCliente =
+    dadosCliente?.nome ||
+    dadosCliente?.nomeCompleto ||
+    usuario?.displayName ||
+    "Cliente";
+
+  useEffect(() => {
+    async function carregarPerfil() {
+      if (!usuario) return;
+
+      try {
+        const resultado = await getDoc(
+          doc(db, "clientes", usuario.uid)
+        );
+
+        if (resultado.exists()) {
+          setDadosCliente(resultado.data());
         }
+      } catch (erro) {
+        console.error("Erro ao carregar perfil:", erro);
+      }
     }
 
+    carregarPerfil();
+  }, [usuario?.uid]);
+
+  useEffect(() => {
+    async function carregarAgendamentos() {
+      if (!usuario || telaAtiva !== "agendamentos") return;
+
+      setCarregando(true);
+      setMensagem("");
+
+      try {
+        const consulta = query(
+          collection(db, "agendamentos"),
+          where("clienteId", "==", usuario.uid)
+        );
+
+        const resultado = await getDocs(consulta);
+
+        const lista = resultado.docs
+          .map((item) => ({ id: item.id, ...item.data() }))
+          .sort((a, b) =>
+            `${a.data || ""} ${a.horarioInicio || ""}`.localeCompare(
+              `${b.data || ""} ${b.horarioInicio || ""}`
+            )
+          );
+
+        setAgendamentos(lista);
+      } catch (erro) {
+        console.error("Erro ao carregar agendamentos:", erro);
+        setMensagem("Não foi possível carregar seus agendamentos.");
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarAgendamentos();
+  }, [usuario?.uid, telaAtiva]);
+
+  async function sair() {
+    try {
+      await signOut(auth);
+    } catch (erro) {
+      console.error("Erro ao sair:", erro);
+      setMensagem("Não foi possível sair da conta.");
+    }
+  }
+
+  function formatarData(data) {
+    if (!data) return "Data não informada";
+
+    const partes = data.split("-");
+    if (partes.length !== 3) return data;
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  const opcoes = [
+    {
+      id: "agendar",
+      titulo: "Agendar Horário",
+      descricao: "Escolha uma barbearia, serviço, barbeiro e horário.",
+      icone: <FaCalendarAlt />,
+    },
+    {
+      id: "agendamentos",
+      titulo: "Meus Agendamentos",
+      descricao:
+        "Consulte seus próximos horários e o histórico de agendamentos.",
+      icone: <FaClock />,
+    },
+    {
+      id: "barbearias",
+      titulo: "Barbearias",
+      descricao: "Consulte as barbearias disponíveis na sua região.",
+      icone: <FaStore />,
+    },
+    {
+      id: "perfil",
+      titulo: "Meu Perfil",
+      descricao: "Consulte seus dados pessoais.",
+      icone: <FaUser />,
+    },
+  ];
+
+  const tituloAtual =
+    opcoes.find((opcao) => opcao.id === telaAtiva)?.titulo || "Início";
+
+  function navegar(tela) {
+    setMensagem("");
+    setTelaAtiva(tela);
+  }
+
+  function conteudoInicio() {
     return (
-        <div className="cliente-painel-page">
+      <>
+        <section className="cliente-banner">
+          <div className="cliente-banner-texto">
+            <span className="cliente-etiqueta">
+              SISTEMA DE BARBEARIA
+            </span>
+            <h2>Sua área do cliente</h2>
+            <p>
+              Aqui você pode agendar horários, consultar seus
+              agendamentos e ver as barbearias disponíveis.
+            </p>
+          </div>
 
-            <div className="cliente-painel-container">
+          <FaCut className="cliente-banner-icone" />
+        </section>
 
-                <div className="cliente-painel-topo">
+        <section className="cliente-minha-area">
+          <h2>Minha Área</h2>
+          <p className="cliente-area-subtitulo">
+            Escolha uma opção para continuar.
+          </p>
 
-                    <div>
-                        <span className="cliente-painel-subtitulo">
-                            SISTEMA DE BARBEARIA
-                        </span>
+          <div className="cliente-cartoes">
+            {opcoes.map((opcao) => (
+              <button
+                type="button"
+                className="cliente-cartao"
+                key={opcao.id}
+                onClick={() => navegar(opcao.id)}
+              >
+                <span className="cliente-cartao-icone">
+                  {opcao.icone}
+                </span>
 
-                        <h1>Painel do Cliente</h1>
+                <span className="cliente-cartao-texto">
+                  <strong>{opcao.titulo}</strong>
+                  <span>{opcao.descricao}</span>
+                </span>
 
-                        <p>
-                            Agende seus serviços e acompanhe seus horários.
-                        </p>
-                    </div>
+                <FaArrowRight className="cliente-cartao-seta" />
+              </button>
+            ))}
+          </div>
+        </section>
+      </>
+    );
+  }
 
-                    <button
-                        className="cliente-painel-sair"
-                        onClick={sair}
-                    >
-                        Sair
-                    </button>
+  function conteudoAgendamentos() {
+    return (
+      <section className="cliente-secao">
+        <h2>Meus Agendamentos</h2>
+        <p className="cliente-area-subtitulo">
+          Consulte seus próximos horários e seu histórico.
+        </p>
 
-                </div>
+        {mensagem && (
+          <div className="cliente-alerta">{mensagem}</div>
+        )}
 
-                <section className="cliente-painel-conteudo">
+        {carregando && <p>Carregando agendamentos...</p>}
 
-                    <div className="cliente-painel-titulo">
-                        <h2>Minha Área</h2>
+        {!carregando &&
+          !mensagem &&
+          agendamentos.length === 0 && (
+            <div className="cliente-vazio">
+              <FaCalendarAlt />
+              <h3>Nenhum agendamento encontrado</h3>
+              <p>
+                Quando você agendar um horário, ele aparecerá aqui.
+              </p>
+              <button
+                type="button"
+                className="cliente-botao"
+                onClick={() => navegar("agendar")}
+              >
+                Agendar horário
+              </button>
+            </div>
+          )}
 
-                        <p>
-                            Escolha uma opção para continuar.
-                        </p>
-                    </div>
+        <div className="cliente-lista-agendamentos">
+          {agendamentos.map((item) => (
+            <article
+              className="cliente-agendamento"
+              key={item.id}
+            >
+              <h3>{item.servicoNome || "Serviço"}</h3>
+              <p>
+                <strong>Barbeiro:</strong>{" "}
+                {item.barbeiroNome || "Não informado"}
+              </p>
+              <p>
+                <strong>Data:</strong> {formatarData(item.data)}
+              </p>
+              <p>
+                <strong>Horário:</strong>{" "}
+                {item.horarioInicio || "--:--"} às{" "}
+                {item.horarioFim || "--:--"}
+              </p>
+              <span className="cliente-status">
+                {item.status || "Não informado"}
+              </span>
+            </article>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
-                    <div className="cliente-painel-grid">
+  function conteudoPerfil() {
+    return (
+      <section className="cliente-secao">
+        <h2>Meu Perfil</h2>
+        <p className="cliente-area-subtitulo">
+          Consulte os dados da sua conta.
+        </p>
 
-                        <button className="cliente-painel-card">
+        <div className="cliente-perfil-card">
+          <span className="cliente-perfil-icone">
+            <FaUser />
+          </span>
+          <div>
+            <h3>{nomeCliente}</h3>
+            <p>
+              <strong>E-mail:</strong>{" "}
+              {dadosCliente?.email ||
+                usuario?.email ||
+                "Não informado"}
+            </p>
+            <p>
+              <strong>Telefone:</strong>{" "}
+              {dadosCliente?.telefone || "Não informado"}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-                            <span className="cliente-painel-icone">
-                                <FaCalendarAlt className="icone-branco" />
-                            </span>
+  function conteudoBarbearias() {
+    return (
+      <section className="cliente-secao">
+        <h2>Barbearias</h2>
+        <p className="cliente-area-subtitulo">
+          Consulte os profissionais e os serviços disponíveis para
+          agendar seu horário.
+        </p>
 
-                            <div>
-                                <h3>Agendar Horário</h3>
+        <div className="cliente-vazio">
+          <FaStore />
+          <h3>Encontre seu próximo horário</h3>
+          <p>
+            Acesse o agendamento para consultar os barbeiros e
+            serviços cadastrados no sistema.
+          </p>
+          <button
+            type="button"
+            className="cliente-botao"
+            onClick={() => navegar("agendar")}
+          >
+            Consultar horários
+          </button>
+        </div>
+      </section>
+    );
+  }
 
-                                <p>
-                                    Escolha uma barbearia, serviço e barbeiro.
-                                </p>
-                            </div>
+  return (
+    <div className="cliente-layout">
+      <aside className="cliente-sidebar">
+        <div className="cliente-marca">
+          <div className="cliente-logo">
+            <FaCut />
+          </div>
+          <div>
+            <h2>SaaSBarber</h2>
+            <p>Painel do Cliente</p>
+          </div>
+        </div>
 
-                        </button>
+        <div className="cliente-menu-titulo">
+          MENU PRINCIPAL
+        </div>
 
-                        <button className="cliente-painel-card">
+        <nav className="cliente-menu">
+          <button
+            type="button"
+            className={telaAtiva === "inicio" ? "ativo" : ""}
+            onClick={() => navegar("inicio")}
+          >
+            <FaHome />
+            <span>Início</span>
+          </button>
 
-                            <span className="cliente-painel-icone">
-                                <FaClock className="icone-branco" />
-                            </span>
+          {opcoes.map((opcao) => (
+            <button
+              type="button"
+              key={opcao.id}
+              className={telaAtiva === opcao.id ? "ativo" : ""}
+              onClick={() => navegar(opcao.id)}
+            >
+              {opcao.icone}
+              <span>{opcao.titulo}</span>
+            </button>
+          ))}
+        </nav>
 
-                            <div>
-                                <h3>Meus Agendamentos</h3>
+        <div className="cliente-sidebar-rodape">
+          <div className="cliente-identificacao">
+            <div className="cliente-avatar">
+              <FaUser />
+            </div>
+            <div>
+              <strong>{nomeCliente}</strong>
+              <span>Cliente do sistema</span>
+            </div>
+          </div>
 
-                                <p>
-                                    Consulte seus próximos horários.
-                                </p>
-                            </div>
+          <button
+            type="button"
+            className="cliente-sair"
+            onClick={sair}
+          >
+            <FaSignOutAlt />
+            <span>Sair da conta</span>
+          </button>
+        </div>
+      </aside>
 
-                        </button>
+      <main className="cliente-principal">
+        <header className="cliente-cabecalho">
+          <div>
+            <span className="cliente-sobretitulo">
+              PAINEL DO CLIENTE
+            </span>
+            <h1>
+              {telaAtiva === "inicio"
+                ? `Olá, ${nomeCliente}!`
+                : tituloAtual}
+            </h1>
+            <p>
+              {telaAtiva === "inicio"
+                ? "Agende seus serviços e acompanhe seus horários."
+                : "Gerencie suas informações no SaaSBarber."}
+            </p>
+          </div>
 
-                        <button className="cliente-painel-card">
-
-                            <span className="cliente-painel-icone">
-                                <FaStore className="icone-branco" />
-                            </span>
-
-                            <div>
-                                <h3>Barbearias</h3>
-
-                                <p>
-                                    Consulte as barbearias disponíveis.
-                                </p>
-                            </div>
-
-                        </button>
-
-                        <button className="cliente-painel-card">
-
-                            <span className="cliente-painel-icone">
-                                <FaUser className="icone-branco" />
-                            </span>
-
-                            <div>
-                                <h3>Meu Perfil</h3>
-
-                                <p>
-                                    Consulte e atualize seus dados.
-                                </p>
-                            </div>
-
-                        </button>
-
-                    </div>
-
-                </section>
-
+          <div className="cliente-cabecalho-acoes">
+            <div className="cliente-boas-vindas">
+              <FaUser />
+              <span>Bem-vindo(a)!</span>
             </div>
 
-        </div>
-    )
-}
+            {typeof voltarHome === "function" && (
+              <button
+                type="button"
+                className="cliente-voltar-home"
+                onClick={voltarHome}
+              >
+                <FaHome />
+                <span>Voltar para Home</span>
+              </button>
+            )}
+          </div>
+        </header>
 
-export default PainelCliente
+        {telaAtiva === "inicio" && conteudoInicio()}
+
+        {telaAtiva === "agendar" && (
+          <section className="cliente-secao">
+            <button
+              type="button"
+              className="cliente-voltar"
+              onClick={() => navegar("inicio")}
+            >
+              <FaArrowLeft /> Voltar ao início
+            </button>
+
+            <AgendarHorarioCliente
+              voltar={() => navegar("inicio")}
+            />
+          </section>
+        )}
+
+        {telaAtiva === "agendamentos" &&
+          conteudoAgendamentos()}
+
+        {telaAtiva === "barbearias" && conteudoBarbearias()}
+
+        {telaAtiva === "perfil" && conteudoPerfil()}
+      </main>
+    </div>
+  );
+}

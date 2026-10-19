@@ -1,8 +1,15 @@
-import "./App.css"
-import Home from "./components/Home"
+
+import "./App.css";
+import Home from "./components/Home";
+import AlertaGlobal from "./components/AlertaGlobal";
 
 function App() {
-  return <Home />
+  return (
+    <>
+      <Home />
+      <AlertaGlobal />
+    </>
+  );
 }
 
-export default App
+export default App;

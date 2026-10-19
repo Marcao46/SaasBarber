@@ -1,311 +1,245 @@
-import { useState } from "react"
+
+import { useState } from "react";
 
 import {
-    createUserWithEmailAndPassword,
-    deleteUser
-} from "firebase/auth"
+  createUserWithEmailAndPassword,
+  deleteUser
+} from "firebase/auth";
 
 import {
-    doc,
-    setDoc,
-    serverTimestamp
-} from "firebase/firestore"
+  doc,
+  setDoc,
+  serverTimestamp
+} from "firebase/firestore";
 
 import {
-    auth,
-    db
-} from "../fireBaseConfig"
+  auth,
+  db
+} from "../fireBaseConfig";
 
-import "./CadastrarCliente.css"
-
+import "./CadastrarCliente.css";
 
 const CadastrarCliente = ({ voltarHome }) => {
+  const [nome, setNome] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
 
-    const [nome, setNome] = useState("")
-    const [telefone, setTelefone] = useState("")
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-
-    // Cadastro
-
-    const handleSubmit = async (event) => {
-
-        event.preventDefault()
-
-        try {
-
-            // Validação
-
-            if (!nome.trim()) {
-                alert("Digite seu nome completo.")
-                return
-            }
-
-            if (!telefone.trim()) {
-                alert("Digite seu telefone.")
-                return
-            }
-
-            if (!email.trim()) {
-                alert("Digite seu e-mail.")
-                return
-            }
-
-            if (senha.length < 6) {
-                alert("A senha precisa ter pelo menos 6 caracteres.")
-                return
-            }
-
-
-            // Firebase
-
-            const usuarioCriado =
-                await createUserWithEmailAndPassword(
-                    auth,
-                    email.trim(),
-                    senha
-                )
-
-
-            const uid = usuarioCriado.user.uid
-
-
-            // Banco de dados
-
-            try {
-
-                await setDoc(
-                    doc(db, "clientes", uid),
-                    {
-                        nome: nome.trim(),
-                        telefone: telefone.trim(),
-                        email: email.trim(),
-                        usuarioId: uid,
-                        tipoUsuario: "cliente",
-                        criadoEm: serverTimestamp()
-                    }
-                )
-
-
-                // Sucesso
-
-                alert("Cliente cadastrado com sucesso!")
-
-                setNome("")
-                setTelefone("")
-                setEmail("")
-                setSenha("")
-
-
-            } catch (erroFirestore) {
-
-                console.error(
-                    "Erro ao salvar cliente:",
-                    erroFirestore
-                )
-
-                try {
-
-                    await deleteUser(usuarioCriado.user)
-
-                } catch (erroDelete) {
-
-                    console.error(
-                        "Erro ao remover usuário:",
-                        erroDelete
-                    )
-
-                }
-
-                alert(
-                    "Não foi possível salvar o cliente.\n\n" +
-                    erroFirestore.message
-                )
-
-            }
-
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao criar cliente:",
-                erro
-            )
-
-
-            // Erros
-
-            if (erro.code === "auth/email-already-in-use") {
-
-                alert(
-                    "Este e-mail já está cadastrado."
-                )
-
-            }
-            else if (erro.code === "auth/invalid-email") {
-
-                alert(
-                    "Digite um e-mail válido."
-                )
-
-            }
-            else if (erro.code === "auth/weak-password") {
-
-                alert(
-                    "A senha precisa ter pelo menos 6 caracteres."
-                )
-
-            }
-            else {
-
-                alert(
-                    "Erro ao cadastrar cliente:\n\n" +
-                    erro.message
-                )
-
-            }
-
-        }
-
+    // Validações dos campos
+    if (!nome.trim()) {
+      alert("Digite seu nome completo.");
+      return;
     }
 
+    if (!telefone.trim()) {
+      alert("Digite seu telefone.");
+      return;
+    }
 
-    // Tela
+    if (!email.trim()) {
+      alert("Digite seu e-mail.");
+      return;
+    }
 
-    return (
+    if (senha.length < 6) {
+      alert("A senha precisa ter pelo menos 6 caracteres.");
+      return;
+    }
 
-        <div className="cliente-page">
+    // Confere se as senhas são iguais antes de acessar o Firebase
+    if (senha !== confirmarSenha) {
+      alert("As senhas não coincidem. Confira e tente novamente.");
+      return;
+    }
 
-            <div className="cliente-container">
+    let usuarioCriado = null;
 
-                <div className="cliente-topo">
+    try {
+      // Cria a conta no Firebase Authentication
+      const resultado = await createUserWithEmailAndPassword(
+        auth,
+        email.trim(),
+        senha
+      );
 
-                    <div>
+      usuarioCriado = resultado.user;
 
-                        <span className="cliente-subtitulo">
-                            SISTEMA DE BARBEARIA
-                        </span>
+      const uid = usuarioCriado.uid;
 
-                        <h1>
-                            Cadastro de Cliente
-                        </h1>
+      // Salva os dados do cliente no Firestore
+      try {
+        await setDoc(doc(db, "clientes", uid), {
+          nome: nome.trim(),
+          telefone: telefone.trim(),
+          email: email.trim(),
+          usuarioId: uid,
+          tipoUsuario: "cliente",
+          criadoEm: serverTimestamp()
+        });
 
-                        <p>
-                            Crie sua conta para realizar agendamentos.
-                        </p>
+        alert("Cliente cadastrado com sucesso!");
 
-                    </div>
+        // Limpa os campos após o cadastro
+        setNome("");
+        setTelefone("");
+        setEmail("");
+        setSenha("");
+        setConfirmarSenha("");
+      } catch (erroFirestore) {
+        console.error("Erro ao salvar cliente:", erroFirestore);
 
+        // Tenta remover a conta se não conseguir salvar os dados
+        try {
+          await deleteUser(usuarioCriado);
+        } catch (erroDelete) {
+          console.error("Erro ao remover usuário:", erroDelete);
+        }
 
-                    <button
-                        type="button"
-                        className="cliente-voltar"
-                        onClick={voltarHome}
-                    >
-                        Voltar ao Login
-                    </button>
+        alert(
+          "Não foi possível salvar o cliente.\n\n" +
+          erroFirestore.message
+        );
+      }
+    } catch (erro) {
+      console.error("Erro ao criar cliente:", erro);
 
-                </div>
+      if (erro.code === "auth/email-already-in-use") {
+        alert("Este e-mail já está cadastrado.");
+      } else if (erro.code === "auth/invalid-email") {
+        alert("Digite um e-mail válido.");
+      } else if (erro.code === "auth/weak-password") {
+        alert("A senha precisa ter pelo menos 6 caracteres.");
+      } else {
+        alert("Erro ao cadastrar cliente:\n\n" + erro.message);
+      }
+    }
+  };
 
+  return (
+    <div className="cliente-page">
+      <div className="cliente-container">
+        <div className="cliente-topo">
+          <div>
+            <span className="cliente-subtitulo">
+              SISTEMA DE BARBEARIA
+            </span>
 
-                <form
-                    className="cliente-form"
-                    onSubmit={handleSubmit}
-                >
+            <h1>Cadastro de Cliente</h1>
 
-                    <div className="cliente-campo">
+            <p>
+              Crie sua conta para realizar agendamentos.
+            </p>
+          </div>
 
-                        <label>
-                            Nome completo
-                        </label>
-
-                        <input
-                            type="text"
-                            placeholder="Digite seu nome"
-                            value={nome}
-                            onChange={(e) =>
-                                setNome(e.target.value)
-                            }
-                            required
-                        />
-
-                    </div>
-
-
-                    <div className="cliente-campo">
-
-                        <label>
-                            Telefone
-                        </label>
-
-                        <input
-                            type="tel"
-                            placeholder="(47) 99999-9999"
-                            value={telefone}
-                            onChange={(e) =>
-                                setTelefone(e.target.value)
-                            }
-                            required
-                        />
-
-                    </div>
-
-
-                    <div className="cliente-campo">
-
-                        <label>
-                            E-mail
-                        </label>
-
-                        <input
-                            type="email"
-                            placeholder="seu@email.com"
-                            value={email}
-                            onChange={(e) =>
-                                setEmail(e.target.value)
-                            }
-                            required
-                        />
-
-                    </div>
-
-
-                    <div className="cliente-campo">
-
-                        <label>
-                            Senha
-                        </label>
-
-                        <input
-                            type="password"
-                            placeholder="Crie uma senha"
-                            value={senha}
-                            onChange={(e) =>
-                                setSenha(e.target.value)
-                            }
-                            required
-                        />
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        className="cliente-cadastrar"
-                    >
-                        Cadastrar Cliente
-                    </button>
-
-                </form>
-
-            </div>
-
+          <button
+            type="button"
+            className="cliente-voltar"
+            onClick={voltarHome}
+          >
+            Voltar ao Login
+          </button>
         </div>
 
-    )
+        <form
+          className="cliente-form"
+          onSubmit={handleSubmit}
+        >
+          <div className="cliente-campo">
+            <label htmlFor="cliente-nome">
+              Nome completo
+            </label>
 
-}
+            <input
+              id="cliente-nome"
+              type="text"
+              placeholder="Digite seu nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              autoComplete="name"
+              required
+            />
+          </div>
 
+          <div className="cliente-campo">
+            <label htmlFor="cliente-telefone">
+              Telefone
+            </label>
 
-export default CadastrarCliente
+            <input
+              id="cliente-telefone"
+              type="tel"
+              placeholder="(47) 99999-9999"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+              autoComplete="tel"
+              required
+            />
+          </div>
+
+          <div className="cliente-campo">
+            <label htmlFor="cliente-email">
+              E-mail
+            </label>
+
+            <input
+              id="cliente-email"
+              type="email"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
+            />
+          </div>
+
+          <div className="cliente-campo">
+            <label htmlFor="cliente-senha">
+              Senha
+            </label>
+
+            <input
+              id="cliente-senha"
+              type="password"
+              placeholder="Crie uma senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete="new-password"
+              minLength={6}
+              required
+            />
+          </div>
+
+          <div className="cliente-campo">
+            <label htmlFor="cliente-confirmar-senha">
+              Confirmar senha
+            </label>
+
+            <input
+              id="cliente-confirmar-senha"
+              type="password"
+              placeholder="Digite a senha novamente"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
+              autoComplete="new-password"
+              minLength={6}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="cliente-cadastrar"
+          >
+            Cadastrar Cliente
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CadastrarCliente;

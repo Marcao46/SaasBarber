@@ -1,164 +1,480 @@
+
+/* =========================================
+   CADASTRAR BARBEIRO — SAASBARBER
+   Formulário branco e pills de especialidade
+   ========================================= */
+
 .cadastro-barbeiro-page {
-    min-height: 100vh;
     width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 32px;
+    background: #f4f7f5;
+    color: #17231c;
+    font-family: inherit;
+}
 
-    background: #080808;
-    color: #ffffff;
-
-    padding: 50px 30px;
+.cadastro-barbeiro-page *,
+.cadastro-barbeiro-page *::before,
+.cadastro-barbeiro-page *::after {
+    box-sizing: border-box;
 }
 
 .cadastro-barbeiro-container {
     width: 100%;
-    max-width: 850px;
-
+    max-width: 1250px;
     margin: 0 auto;
 }
 
+/* Cabeçalho */
+
 .cadastro-barbeiro-topo {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    gap: 20px;
-
-    margin-bottom: 35px;
-    padding-bottom: 25px;
-
-    border-bottom: 1px solid #222222;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+    padding: 0 0 24px;
+    border-bottom: 1px solid #dfe7e1;
 }
 
 .cadastro-barbeiro-subtitulo {
-    color: #32c961;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 10px;
+    color: #728078;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
 }
 
-.cadastro-barbeiro-topo h1 {
-    margin: 8px 0;
-
-    font-size: 34px;
-}
-
-.cadastro-barbeiro-topo p {
+.cadastro-barbeiro-titulo h1 {
     margin: 0;
-
-    color: #777777;
+    color: #17231c;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 750;
+    line-height: 1.25;
 }
+
+.cadastro-barbeiro-titulo p {
+    margin: 9px 0 0;
+    color: #6b7770;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Botão voltar */
 
 .botao-voltar {
-    background: #111113;
-
-    color: #ffffff;
-
-    border: 1px solid #292929;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid #dce5de;
     border-radius: 10px;
-
-    padding: 12px 20px;
-
+    background: #ffffff;
+    color: #26382d;
+    font-size: 14px;
+    font-weight: 650;
     cursor: pointer;
-
-    font-weight: bold;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .botao-voltar:hover {
-    border-color: #32c961;
-    color: #32c961;
+    border-color: #29b765;
+    background: #f0fbf4;
+    transform: translateY(-1px);
 }
 
+/* Área principal branca */
+
+.cadastro-barbeiro-conteudo {
+    width: 100%;
+    padding: clamp(22px, 4vw, 42px);
+    border: 1px solid #e2e9e4;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 8px 30px rgba(28, 51, 36, 0.055);
+}
+
+/* Introdução do formulário */
+
+.cadastro-barbeiro-introducao {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #edf1ee;
+}
+
+.cadastro-barbeiro-icone-principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #e9f8ee;
+    color: #19964c;
+    font-size: 23px;
+}
+
+.cadastro-barbeiro-etiqueta {
+    display: inline-block;
+    margin-bottom: 5px;
+    color: #19964c;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.cadastro-barbeiro-introducao h2 {
+    margin: 0;
+    color: #19271e;
+    font-size: 22px;
+    font-weight: 750;
+}
+
+.cadastro-barbeiro-introducao p {
+    margin: 7px 0 0;
+    color: #758078;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Formulário */
+
 .form-barbeiro {
-    background: #111113;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #ffffff;
+    box-shadow: none;
+}
 
-    border: 1px solid #292929;
-    border-radius: 16px;
-
-    padding: 30px;
+.form-barbeiro-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
 }
 
 .campo-barbeiro {
-    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
 }
 
-.campo-barbeiro label {
-    display: block;
+.campo-barbeiro-largura {
+    grid-column: 1 / -1;
+}
 
-    margin-bottom: 8px;
+.campo-barbeiro label,
+.especialidades-cabecalho label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #27372d;
+    font-size: 14px;
+    font-weight: 700;
+}
 
-    color: #b5b5b5;
-
-    font-size: 16px;
-    font-weight: 600;
+.campo-barbeiro label svg,
+.especialidades-cabecalho label svg {
+    color: #269b53;
+    font-size: 14px;
 }
 
 .campo-barbeiro input {
     width: 100%;
-    height: 55px;
-
+    min-width: 0;
+    height: 49px;
     padding: 0 15px;
-
-    background: #0d0d0f;
-
-    color: #ffffff;
-
-    border: 1px solid #292929;
+    border: 1px solid #dce4de;
     border-radius: 10px;
-
-    font-size: 16px;
-
     outline: none;
-}
-
-.campo-barbeiro input:focus {
-    border-color: #32c961;
+    background: #ffffff;
+    color: #1d2a21;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .campo-barbeiro input::placeholder {
-    color: #666666;
+    color: #9aa59d;
+    opacity: 1;
+}
+
+.campo-barbeiro input:hover {
+    border-color: #b9c9bd;
+}
+
+.campo-barbeiro input:focus {
+    border-color: #25ad5c;
+    box-shadow: 0 0 0 3px rgba(37, 173, 92, 0.12);
+}
+
+.campo-barbeiro input:disabled {
+    background: #f3f6f4;
+    cursor: not-allowed;
+}
+
+/* Especialidades */
+
+.campo-especialidades {
+    gap: 15px;
+    padding: 22px;
+    border: 1px solid #e3ebe5;
+    border-radius: 13px;
+    background: #fbfdfb;
+}
+
+.especialidades-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.especialidades-cabecalho p {
+    margin: 7px 0 0;
+    color: #7b877e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.especialidades-contador {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #edf3ef;
+    color: #526358;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Pills clicáveis */
+
+.especialidades-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.especialidade-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 39px;
+    padding: 8px 14px;
+    border: 1px solid #d9e3dc;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #435248;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.especialidade-pill svg {
+    font-size: 11px;
+}
+
+.especialidade-pill:hover {
+    border-color: #35b568;
+    background: #f0fbf4;
+    color: #168744;
+    transform: translateY(-1px);
+}
+
+.especialidade-pill.selecionada {
+    border-color: #209b50;
+    background: #e5f7eb;
+    color: #147b3b;
+    box-shadow: inset 0 0 0 1px rgba(32, 155, 80, 0.08);
+}
+
+.especialidade-pill.selecionada:hover {
+    border-color: #168342;
+    background: #d6f1df;
+}
+
+.especialidade-pill:focus-visible,
+.botao-voltar:focus-visible,
+.botao-cancelar-barbeiro:focus-visible,
+.botao-cadastrar-barbeiro:focus-visible {
+    outline: 3px solid rgba(36, 173, 91, 0.3);
+    outline-offset: 3px;
+}
+
+/* Botões de ação */
+
+.cadastro-barbeiro-acoes {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding-top: 23px;
+    border-top: 1px solid #edf1ee;
+}
+
+.botao-cancelar-barbeiro,
+.botao-cadastrar-barbeiro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 47px;
+    padding: 0 21px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.botao-cancelar-barbeiro {
+    border: 1px solid #dce5de;
+    background: #ffffff;
+    color: #536157;
+}
+
+.botao-cancelar-barbeiro:hover:not(:disabled) {
+    background: #f3f6f4;
 }
 
 .botao-cadastrar-barbeiro {
-    width: 100%;
-    height: 58px;
-
-    margin-top: 5px;
-
-    background: #32c961;
-
+    border: 1px solid #209b50;
+    background: #209b50;
     color: #ffffff;
-
-    border: none;
-    border-radius: 10px;
-
-    font-size: 17px;
-    font-weight: bold;
-
-    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(32, 155, 80, 0.15);
 }
 
-.botao-cadastrar-barbeiro:hover {
-    background: #2bb556;
+.botao-cadastrar-barbeiro:hover:not(:disabled) {
+    background: #168542;
+    box-shadow: 0 6px 15px rgba(32, 155, 80, 0.22);
+    transform: translateY(-1px);
 }
 
-@media (max-width: 700px) {
+.botao-cancelar-barbeiro:disabled,
+.botao-cadastrar-barbeiro:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
 
+/* Rodapé */
+
+.cadastro-barbeiro-rodape {
+    padding: 22px 0 4px;
+    color: #8a968d;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Responsividade */
+
+@media (max-width: 760px) {
     .cadastro-barbeiro-page {
-        padding: 30px 20px;
+        padding: 20px 15px;
     }
 
     .cadastro-barbeiro-topo {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
+        gap: 18px;
     }
 
     .botao-voltar {
         width: 100%;
     }
 
-    .form-barbeiro {
-        padding: 22px;
+    .cadastro-barbeiro-conteudo {
+        padding: 22px 18px;
+        border-radius: 14px;
     }
 
+    .form-barbeiro-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .campo-barbeiro-largura {
+        grid-column: auto;
+    }
+
+    .campo-especialidades {
+        padding: 17px;
+    }
+
+    .especialidades-cabecalho {
+        flex-direction: column;
+    }
+
+    .especialidades-pills {
+        gap: 8px;
+    }
+
+    .especialidade-pill {
+        min-height: 38px;
+        padding: 8px 12px;
+    }
+
+    .cadastro-barbeiro-acoes {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .botao-cancelar-barbeiro,
+    .botao-cadastrar-barbeiro {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .cadastro-barbeiro-page {
+        padding: 14px 10px;
+    }
+
+    .cadastro-barbeiro-conteudo {
+        padding: 18px 13px;
+    }
+
+    .cadastro-barbeiro-introducao {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .cadastro-barbeiro-icone-principal {
+        width: 43px;
+        height: 43px;
+        border-radius: 12px;
+        font-size: 19px;
+    }
+
+    .cadastro-barbeiro-introducao h2 {
+        font-size: 19px;
+    }
+
+    .especialidade-pill {
+        font-size: 12px;
+    }
 }

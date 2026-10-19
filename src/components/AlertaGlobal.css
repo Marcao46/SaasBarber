@@ -1,0 +1,260 @@
+
+/* ========================================
+   ALERTA GLOBAL - SAASBARBER
+   ======================================== */
+
+/* Fundo escuro atrás do alerta */
+.alerta-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Caixa principal do alerta */
+.alerta-modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 440px;
+
+  padding: 32px 28px 26px;
+
+  border: 1px solid #292929;
+  border-radius: 16px;
+
+  background: #141414;
+  color: #ffffff;
+
+  text-align: center;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+
+  animation: alerta-entrada 0.25s ease;
+}
+
+/* Cabeçalho e ícone */
+.alerta-cabecalho {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 24px;
+}
+
+/* Área do ícone */
+.alerta-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 68px;
+  height: 68px;
+
+  border-radius: 20px;
+
+  font-size: 32px;
+}
+
+/* Alerta de sucesso */
+.alerta-sucesso .alerta-icone {
+  background: rgba(50, 201, 97, 0.15);
+  color: #32c961;
+}
+
+/* Alerta de atenção */
+.alerta-aviso .alerta-icone {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+/* Alerta de erro */
+.alerta-erro .alerta-icone {
+  background: rgba(255, 77, 77, 0.15);
+  color: #ff5c5c;
+}
+
+/* Alerta informativo */
+.alerta-info .alerta-icone {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Botão de fechar (X) */
+.alerta-fechar {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: #999999;
+
+  font-size: 28px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.alerta-fechar:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Título */
+.alerta-modal h2 {
+  margin: 0 0 14px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.3;
+
+  text-align: center;
+}
+
+/* Mensagem */
+.alerta-modal p {
+  margin: 0 0 28px;
+
+  color: #c5c5c5;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+
+  text-align: center;
+
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+/* Botão principal */
+.alerta-botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 48px;
+
+  padding: 13px 18px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #32c961;
+  color: #07150b;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alerta-botao:hover {
+  background: #27b653;
+  box-shadow: 0 5px 18px rgba(50, 201, 97, 0.15);
+}
+
+.alerta-botao:active {
+  transform: scale(0.98);
+}
+
+/* Destaque de acessibilidade */
+.alerta-botao:focus-visible,
+.alerta-fechar:focus-visible {
+  outline: 2px solid #32c961;
+  outline-offset: 3px;
+}
+
+/* Animação de entrada */
+@keyframes alerta-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  .alerta-overlay {
+    padding: 16px;
+  }
+
+  .alerta-modal {
+    max-width: 100%;
+    padding: 28px 22px 22px;
+    border-radius: 14px;
+  }
+
+  .alerta-icone {
+    width: 60px;
+    height: 60px;
+    border-radius: 17px;
+    font-size: 28px;
+  }
+
+  .alerta-modal h2 {
+    font-size: 22px;
+  }
+
+  .alerta-modal p {
+    font-size: 15px;
+  }
+
+  .alerta-botao {
+    min-height: 46px;
+    font-size: 15px;
+  }
+}
+
+/* Respeita a preferência por menos animações */
+@media (prefers-reduced-motion: reduce) {
+  .alerta-modal {
+    animation: none;
+  }
+
+  .alerta-botao,
+  .alerta-fechar {
+    transition: none;
+  }
+}

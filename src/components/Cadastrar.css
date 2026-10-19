@@ -324,3 +324,123 @@
     }
 
 }
+
+/* Centralização da página de cadastro */
+.cadastro-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+/* Cartão principal */
+.cadastro-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Cabeçalho centralizado */
+.cadastro-topo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.cadastro-topo > div {
+  width: 100%;
+}
+
+.cadastro-topo h1 {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.cadastro-topo p {
+  margin: 8px 0 0;
+  text-align: center;
+}
+
+/* Conteúdo do formulário */
+.cadastro-conteudo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.cadastro-form {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+/* Campos alinhados e com a mesma largura */
+.campo-cadastro {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  box-sizing: border-box;
+}
+
+.campo-cadastro label {
+  display: block;
+  text-align: left;
+  margin: 0;
+}
+
+.campo-cadastro input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Botões alinhados */
+.botao-salvar {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+}
+
+.cadastro-home {
+  align-self: center;
+  margin: 0;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 600px) {
+  .cadastro-page {
+    align-items: flex-start;
+    padding: 20px 14px;
+  }
+
+  .cadastro-container {
+    max-width: 100%;
+  }
+
+  .cadastro-form {
+    max-width: 100%;
+  }
+
+  .cadastro-topo h1 {
+    font-size: 26px;
+  }
+}

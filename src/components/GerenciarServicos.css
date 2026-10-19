@@ -1,9 +1,22 @@
 
+<<<<<<< Updated upstream
 .servicos-page {
     min-height: 100vh;
     padding: 40px 20px 70px;
     background: #080b09;
     color: white;
+=======
+/* =========================================
+   SAASBARBER — SERVIÇOS E PREÇOS
+   Tema claro
+   ========================================= */
+
+.servicos-page {
+    min-height: 100vh;
+    padding: 40px 20px 70px;
+    background: #f4f7f5;
+    color: #17231c;
+>>>>>>> Stashed changes
 }
 
 .servicos-page * {
@@ -13,14 +26,24 @@
 .servicos-container {
     max-width: 1150px;
     margin: 0 auto;
+<<<<<<< Updated upstream
 }
 
+=======
+    background: transparent;
+    color: #17231c;
+}
+
+/* Botão voltar */
+
+>>>>>>> Stashed changes
 .servicos-voltar {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     padding: 11px 17px;
     margin-bottom: 35px;
+<<<<<<< Updated upstream
     border: 1px solid #31543a;
     border-radius: 10px;
     background: #132017;
@@ -32,12 +55,33 @@
     border-color: #39dc7a;
 }
 
+=======
+    border: 1px solid #dce5de;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #26382d;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.servicos-voltar:hover {
+    border-color: #39bd69;
+    background: #f0fbf4;
+}
+
+/* Cabeçalho */
+
+>>>>>>> Stashed changes
 .servicos-topo {
     margin-bottom: 30px;
 }
 
 .servicos-etiqueta {
+<<<<<<< Updated upstream
     color: #39dc7a;
+=======
+    color: #209b50;
+>>>>>>> Stashed changes
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 2px;
@@ -45,10 +89,15 @@
 
 .servicos-topo h1 {
     margin: 13px 0;
+<<<<<<< Updated upstream
+=======
+    color: #17231c;
+>>>>>>> Stashed changes
     font-size: clamp(30px, 4vw, 43px);
 }
 
 .servicos-topo p {
+<<<<<<< Updated upstream
     color: #a5b7a9;
     line-height: 1.7;
 }
@@ -67,14 +116,51 @@
     border: 1px solid #31513a;
     border-radius: 20px;
     background: #121c15;
+=======
+    color: #65736a;
+    line-height: 1.7;
+}
+
+/* Mensagem de erro */
+
+.servicos-erro {
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #e8baba;
+    border-radius: 10px;
+    background: #fff0f0;
+    color: #a12626;
+}
+
+/* =========================================
+   CARTÃO — CADASTRAR NOVO SERVIÇO
+   ========================================= */
+
+.servicos-formulario-card {
+    padding: 32px;
+    border: 1px solid #e0e7e2;
+    border-radius: 20px;
+    background: #ffffff;
+    color: #17231c;
+    box-shadow: 0 8px 25px rgba(25, 50, 32, 0.05);
+>>>>>>> Stashed changes
 }
 
 .servicos-formulario-card h2,
 .servicos-listagem h2 {
     margin: 0 0 25px;
+<<<<<<< Updated upstream
     font-size: 23px;
 }
 
+=======
+    color: #17231c;
+    font-size: 23px;
+}
+
+/* Campos */
+
+>>>>>>> Stashed changes
 .servicos-campo {
     display: flex;
     flex-direction: column;
@@ -83,7 +169,11 @@
 }
 
 .servicos-campo label {
+<<<<<<< Updated upstream
     color: #dce9df;
+=======
+    color: #34463a;
+>>>>>>> Stashed changes
     font-size: 14px;
     font-weight: 600;
 }
@@ -92,6 +182,7 @@
     width: 100%;
     min-height: 48px;
     padding: 12px 15px;
+<<<<<<< Updated upstream
     border: 1px solid #36503e;
     border-radius: 10px;
     background: #0b120d;
@@ -104,18 +195,55 @@
     border-color: #39dc7a;
 }
 
+=======
+    border: 1px solid #d5e0d8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #17231c;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.servicos-campo input::placeholder {
+    color: #89968d;
+    opacity: 1;
+}
+
+.servicos-campo input:hover {
+    border-color: #b9c9bd;
+}
+
+.servicos-campo input:focus {
+    border-color: #209b50;
+    box-shadow: 0 0 0 3px rgba(32, 155, 80, 0.12);
+}
+
+/* Grade dos campos */
+
+>>>>>>> Stashed changes
 .servicos-form-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
 }
 
+<<<<<<< Updated upstream
+=======
+/* Ações do formulário */
+
+>>>>>>> Stashed changes
 .servicos-acoes {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
 
+<<<<<<< Updated upstream
+=======
+/* Botão salvar */
+
+>>>>>>> Stashed changes
 .servicos-salvar {
     display: inline-flex;
     align-items: center;
@@ -125,6 +253,7 @@
     padding: 0 22px;
     border: none;
     border-radius: 10px;
+<<<<<<< Updated upstream
     background: #32d374;
     color: #06140a;
     font-weight: 800;
@@ -133,6 +262,17 @@
 
 .servicos-salvar:hover {
     background: #50e48b;
+=======
+    background: #209b50;
+    color: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.servicos-salvar:hover {
+    background: #168542;
+>>>>>>> Stashed changes
 }
 
 .servicos-salvar:disabled {
@@ -140,6 +280,7 @@
     cursor: wait;
 }
 
+<<<<<<< Updated upstream
 .servicos-cancelar {
     padding: 0 20px;
     min-height: 48px;
@@ -152,6 +293,32 @@
 
 .servicos-listagem {
     margin-top: 45px;
+=======
+/* Botão cancelar */
+
+.servicos-cancelar {
+    padding: 0 20px;
+    min-height: 48px;
+    border: 1px solid #d5e0d8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #435248;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.servicos-cancelar:hover {
+    background: #f3f7f4;
+}
+
+/* =========================================
+   LISTAGEM DOS SERVIÇOS
+   ========================================= */
+
+.servicos-listagem {
+    margin-top: 45px;
+    color: #17231c;
+>>>>>>> Stashed changes
 }
 
 .servicos-grid {
@@ -160,6 +327,7 @@
     gap: 18px;
 }
 
+<<<<<<< Updated upstream
 .servicos-item {
     padding: 23px;
     border: 1px solid #2b4232;
@@ -167,6 +335,28 @@
     background: #131c16;
 }
 
+=======
+/* Cartão individual */
+
+.servicos-item {
+    min-width: 0;
+    padding: 23px;
+    border: 1px solid #e0e7e2;
+    border-radius: 17px;
+    background: #ffffff;
+    color: #17231c;
+    box-shadow: 0 5px 18px rgba(25, 50, 32, 0.045);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.servicos-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 24px rgba(25, 50, 32, 0.08);
+}
+
+/* Cabeçalho do cartão */
+
+>>>>>>> Stashed changes
 .servicos-item-topo {
     display: flex;
     align-items: center;
@@ -175,6 +365,7 @@
     margin-bottom: 23px;
 }
 
+<<<<<<< Updated upstream
 .servicos-item-icone {
     width: 48px;
     height: 48px;
@@ -197,14 +388,60 @@
     font-size: 19px;
 }
 
+=======
+/* Ícone */
+
+.servicos-item-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #e6f7ec;
+    color: #209b50;
+    font-size: 22px;
+}
+
+/* Preço */
+
+.servicos-item-topo strong {
+    color: #168542;
+    font-size: 21px;
+    overflow-wrap: anywhere;
+}
+
+/* Nome do serviço */
+
+.servicos-item h3 {
+    margin: 0 0 12px;
+    color: #17231c;
+    font-size: 19px;
+    overflow-wrap: anywhere;
+}
+
+/* Informações do serviço */
+
+>>>>>>> Stashed changes
 .servicos-item p {
     display: flex;
     align-items: center;
     gap: 8px;
+<<<<<<< Updated upstream
     color: #a6b9ab;
     font-size: 14px;
 }
 
+=======
+    color: #65736a;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* Botões de ação do cartão */
+
+>>>>>>> Stashed changes
 .servicos-item-acoes {
     display: flex;
     gap: 10px;
@@ -218,6 +455,7 @@
     gap: 7px;
     flex: 1;
     min-height: 40px;
+<<<<<<< Updated upstream
     border: 1px solid #395742;
     border-radius: 9px;
     background: #1c3022;
@@ -248,6 +486,62 @@
     font-size: 30px;
 }
 
+=======
+    padding: 8px 12px;
+    border: 1px solid #d4e7d9;
+    border-radius: 9px;
+    background: #f0f8f2;
+    color: #23683a;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.servicos-item-acoes button:hover {
+    border-color: #40bd70;
+    background: #e3f5e9;
+}
+
+/* Botão excluir */
+
+.servicos-item-acoes .servicos-excluir {
+    background: #fff1f1;
+    border-color: #f0d0d0;
+    color: #b4232c;
+}
+
+.servicos-item-acoes .servicos-excluir:hover {
+    background: #ffe4e4;
+    border-color: #e9aaaa;
+}
+
+/* Nenhum serviço cadastrado */
+
+.servicos-vazio {
+    padding: 45px 20px;
+    border: 1px dashed #cbdccf;
+    border-radius: 15px;
+    background: #ffffff;
+    text-align: center;
+    color: #65736a;
+}
+
+.servicos-vazio svg {
+    color: #209b50;
+    font-size: 30px;
+}
+
+/* Foco acessível */
+
+.servicos-page button:focus-visible {
+    outline: 3px solid rgba(32, 155, 80, 0.3);
+    outline-offset: 3px;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+
+>>>>>>> Stashed changes
 @media (max-width: 850px) {
     .servicos-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -255,16 +549,46 @@
 }
 
 @media (max-width: 600px) {
+<<<<<<< Updated upstream
     .servicos-formulario-card {
         padding: 22px;
+=======
+    .servicos-page {
+        padding: 24px 14px 45px;
+    }
+
+    .servicos-formulario-card {
+        padding: 22px;
+        border-radius: 15px;
+>>>>>>> Stashed changes
     }
 
     .servicos-form-grid,
     .servicos-grid {
+<<<<<<< Updated upstream
         grid-template-columns: 1fr;
+=======
+        grid-template-columns: minmax(0, 1fr);
+>>>>>>> Stashed changes
     }
 
     .servicos-item-acoes {
         flex-direction: column;
     }
+<<<<<<< Updated upstream
+=======
+
+    .servicos-item-acoes button {
+        width: 100%;
+    }
+
+    .servicos-acoes {
+        flex-direction: column;
+    }
+
+    .servicos-salvar,
+    .servicos-cancelar {
+        width: 100%;
+    }
+>>>>>>> Stashed changes
 }

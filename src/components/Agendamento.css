@@ -1,0 +1,279 @@
+
+/* ========================================
+   SAASBARBER — AGENDAMENTO DO CLIENTE
+   ======================================== */
+
+.ag-container {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 0 28px;
+  box-sizing: border-box;
+  color: #17251d;
+}
+
+.ag-container *,
+.ag-container *::before,
+.ag-container *::after {
+  box-sizing: border-box;
+}
+
+.ag-card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #ffffff;
+  color: #17251d;
+  border: 1px solid #e0e8e2;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(18, 45, 28, 0.07);
+}
+
+.ag-card h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 10px;
+  color: #17251d;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.25;
+  font-weight: 750;
+}
+
+.ag-card h1 svg {
+  flex-shrink: 0;
+  color: #25a94c;
+}
+
+.ag-card > p {
+  margin: 0 0 28px;
+  color: #68766d;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ag-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+}
+
+.ag-form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+  color: #263b2e;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.ag-form input:not([type="checkbox"]),
+.ag-form select,
+.ag-form textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 14px;
+  background: #ffffff;
+  color: #17251d;
+  border: 1px solid #d6e0d8;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ag-form select {
+  cursor: pointer;
+}
+
+.ag-form input:focus,
+.ag-form select:focus,
+.ag-form textarea:focus {
+  outline: none;
+  border-color: #2fc45c;
+  box-shadow: 0 0 0 3px rgba(47, 196, 92, 0.13);
+}
+
+.ag-form input:disabled,
+.ag-form select:disabled {
+  background: #f2f5f3;
+  color: #89948c;
+  cursor: not-allowed;
+}
+
+.ag-form input::placeholder,
+.ag-form textarea::placeholder {
+  color: #89948c;
+}
+
+/* Título da seleção de horários */
+.ag-form h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 14px;
+  color: #20372a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ag-form h3 svg {
+  color: #25a94c;
+}
+
+/* Grade de horários */
+.ag-fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.ag-day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 46px;
+  padding: 10px;
+  background: #ffffff;
+  color: #263b2e;
+  border: 1px solid #d6e0d8;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s,
+    color 0.2s, transform 0.2s;
+}
+
+.ag-day:hover {
+  background: #f0faf3;
+  color: #167532;
+  border-color: #2fc45c;
+  transform: translateY(-1px);
+}
+
+.ag-day[aria-pressed="true"] {
+  background: #dff6e6;
+  color: #126c2c;
+  border: 2px solid #25a94c;
+  box-shadow: 0 0 0 2px rgba(47, 196, 92, 0.08);
+}
+
+/* Resumo da seleção */
+.ag-form > p {
+  margin: 0;
+  color: #59685e;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ag-form > p strong {
+  color: #17251d;
+}
+
+/* Botões */
+.ag-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  min-height: 46px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 12px 18px;
+  background: #2fc45c;
+  color: #092212;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ag-button:hover:not(:disabled) {
+  background: #25a94c;
+  transform: translateY(-1px);
+}
+
+.ag-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ag-form > .ag-button {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 2px;
+}
+
+/* Mensagens de retorno */
+.ag-message {
+  padding: 13px 15px;
+  background: #edf9f0;
+  color: #17652d;
+  border: 1px solid #b9e8c5;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ag-loading {
+  padding: 20px 0;
+  color: #21863d;
+  text-align: center;
+}
+
+/* Responsividade */
+@media (min-width: 700px) {
+  .ag-form {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .ag-card {
+    padding: 24px 20px;
+    border-radius: 14px;
+  }
+
+  .ag-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ag-day {
+    min-height: 44px;
+    padding: 9px 6px;
+  }
+}
+
+@media (max-width: 420px) {
+  .ag-container {
+    padding-top: 4px;
+  }
+
+  .ag-card {
+    padding: 20px 14px;
+  }
+
+  .ag-card h1 {
+    gap: 9px;
+    font-size: 23px;
+  }
+
+  .ag-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ag-button {
+    width: 100%;
+  }
+}
