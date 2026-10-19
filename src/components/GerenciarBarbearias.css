@@ -1,17 +1,17 @@
+
+/* Tela de barbearias cadastradas */
 .gerenciar-page {
-    min-height: 100vh;
+    min-height: 100%;
     width: 100%;
-
-    background: #080808;
-    color: #ffffff;
-
-    padding: 45px 30px;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #202820;
+    padding: 30px;
 }
 
 .gerenciar-container {
     width: 100%;
     max-width: 1200px;
-
     margin: 0 auto;
 }
 
@@ -19,300 +19,251 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 20px;
-
-    padding-bottom: 30px;
-
-    border-bottom: 1px solid #252525;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .gerenciar-subtitulo {
-    color: #32c961;
-
-    font-size: 13px;
+    color: #239447;
+    font-size: 12px;
     font-weight: bold;
-
     letter-spacing: 2px;
 }
 
 .gerenciar-topo h1 {
     margin: 8px 0;
-
-    font-size: 34px;
+    color: #17251d;
+    font-size: 30px;
 }
 
 .gerenciar-topo p {
     margin: 0;
-
-    color: #777777;
+    color: #667085;
 }
 
 .gerenciar-voltar {
-    background: transparent;
-    color: #ffffff;
-
-    border: 1px solid #353535;
-    border-radius: 10px;
-
-    padding: 12px 20px;
-
+    background: #ffffff;
+    color: #26352b;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 12px 18px;
     cursor: pointer;
-
     font-weight: bold;
 }
 
 .gerenciar-voltar:hover {
-    color: #32c961;
-
-    border-color: #32c961;
+    color: #218c43;
+    border-color: #218c43;
 }
 
 .gerenciar-form {
-    margin-top: 30px;
-
-    padding: 25px;
-
-    background: #111113;
-
-    border: 1px solid #292929;
-    border-radius: 14px;
+    margin-top: 25px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e0e5e1;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
 .gerenciar-form h2 {
     margin-top: 0;
+    color: #17251d;
 }
 
 .gerenciar-form-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
 .gerenciar-form label {
     display: block;
-
     margin-bottom: 7px;
-
-    color: #b5b5b5;
-
+    color: #344054;
     font-size: 14px;
 }
 
 .gerenciar-form input {
     width: 100%;
-    height: 48px;
-
-    padding: 0 14px;
-
-    background: #080809;
-    color: #ffffff;
-
-    border: 1px solid #303030;
-    border-radius: 8px;
-
+    height: 46px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    background: #ffffff;
+    color: #202820;
+    border: 1px solid #d0d5dd;
+    border-radius: 7px;
     outline: none;
 }
 
 .gerenciar-form input:focus {
-    border-color: #32c961;
+    border-color: #32a852;
+    box-shadow: 0 0 0 2px rgba(50, 201, 97, 0.12);
 }
 
 .gerenciar-form-acoes {
     margin-top: 20px;
-
     display: flex;
-
     gap: 12px;
 }
 
 .gerenciar-salvar,
 .gerenciar-cancelar {
-    padding: 12px 22px;
-
+    padding: 12px 20px;
     border-radius: 8px;
-
     font-weight: bold;
-
     cursor: pointer;
 }
 
 .gerenciar-salvar {
     background: #32c961;
     color: #071009;
-
     border: none;
 }
 
 .gerenciar-cancelar {
-    background: transparent;
-    color: #ffffff;
-
-    border: 1px solid #353535;
+    background: #ffffff;
+    color: #344054;
+    border: 1px solid #d0d5dd;
 }
 
 .gerenciar-lista-topo {
-    margin-top: 35px;
+    margin-top: 30px;
     margin-bottom: 20px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 15px;
 }
 
 .gerenciar-lista-topo h2 {
     margin: 0 0 5px;
+    color: #17251d;
 }
 
 .gerenciar-lista-topo p {
     margin: 0;
-
-    color: #777777;
+    color: #667085;
 }
 
 .gerenciar-atualizar {
-    background: #111113;
-    color: #ffffff;
-
-    border: 1px solid #353535;
-    border-radius: 9px;
-
-    padding: 11px 18px;
-
+    background: #ffffff;
+    color: #26352b;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 11px 17px;
     cursor: pointer;
 }
 
 .gerenciar-atualizar:hover {
-    border-color: #32c961;
-
-    color: #32c961;
+    border-color: #239447;
+    color: #239447;
 }
 
 .gerenciar-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
 .gerenciar-card {
+    min-width: 0;
     padding: 22px;
-
-    background: #111113;
-
-    border: 1px solid #292929;
-    border-radius: 14px;
+    background: #ffffff;
+    color: #202820;
+    border: 1px solid #e0e5e1;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
 .gerenciar-card-topo {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
     gap: 15px;
 }
 
 .gerenciar-card-topo span {
-    color: #32c961;
-
+    color: #239447;
     font-size: 11px;
     font-weight: bold;
-
     letter-spacing: 1px;
 }
 
 .gerenciar-card h3 {
     margin: 5px 0 0;
-
+    color: #17251d;
     font-size: 20px;
+    overflow-wrap: anywhere;
 }
 
 .gerenciar-status {
     padding: 6px 10px;
-
-    background: #0d2715;
-    color: #32c961;
-
+    background: #e9f8ee;
+    color: #218c43;
     border-radius: 20px;
-
     font-size: 12px;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .gerenciar-dados {
-    margin-top: 20px;
-
-    padding-top: 15px;
-
-    border-top: 1px solid #262626;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #e5e7eb;
 }
 
 .gerenciar-dados p {
     margin: 8px 0;
-
-    color: #999999;
-
+    color: #667085;
     font-size: 14px;
+    overflow-wrap: anywhere;
 }
 
 .gerenciar-dados strong {
-    color: #ffffff;
+    color: #26352b;
 }
 
 .gerenciar-acoes {
     display: flex;
-
     gap: 10px;
-
     margin-top: 20px;
 }
 
 .gerenciar-editar,
 .gerenciar-excluir {
     flex: 1;
-
-    height: 42px;
-
+    min-height: 42px;
     border-radius: 8px;
-
     font-weight: bold;
-
     cursor: pointer;
 }
 
 .gerenciar-editar {
-    background: #0d2715;
-    color: #32c961;
-
-    border: 1px solid #1f6b39;
+    background: #e9f8ee;
+    color: #218c43;
+    border: 1px solid #b8e5c5;
 }
 
 .gerenciar-excluir {
-    background: #251010;
-    color: #ff6767;
-
-    border: 1px solid #693030;
+    background: #fff1f0;
+    color: #c62828;
+    border: 1px solid #f1c2bf;
 }
 
 .gerenciar-vazio {
     padding: 35px;
-
     text-align: center;
-
-    color: #777777;
-
-    background: #111113;
-
-    border: 1px dashed #333333;
+    color: #667085;
+    background: #ffffff;
+    border: 1px dashed #d0d5dd;
     border-radius: 12px;
 }
 
 @media (max-width: 800px) {
+    .gerenciar-page {
+        padding: 20px 14px;
+    }
 
     .gerenciar-grid,
     .gerenciar-form-grid {

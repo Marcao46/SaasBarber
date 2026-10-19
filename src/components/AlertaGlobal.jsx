@@ -1,6 +1,12 @@
 
 import { useEffect, useState } from "react";
-import { FaCheckCircle, FaExclamationTriangle, FaTimesCircle, FaInfoCircle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaTimesCircle,
+  FaInfoCircle,
+  FaTrashAlt,
+} from "react-icons/fa";
 import "./AlertaGlobal.css";
 
 function identificarTipo(mensagem) {
@@ -9,7 +15,8 @@ function identificarTipo(mensagem) {
   if (
     texto.includes("sucesso") ||
     texto.includes("cadastrad") ||
-    texto.includes("atualizada")
+    texto.includes("atualizada") ||
+    texto.includes("excluída")
   ) {
     return "sucesso";
   }
@@ -56,31 +63,51 @@ const configuracoes = {
 
 export default function AlertaGlobal() {
   const [alerta, setAlerta] = useState(null);
+  const [confirmacao, setConfirmacao] = useState(null);
 
   useEffect(() => {
     const alertaOriginal = window.alert;
+    const confirmarOriginal = window.confirm;
 
     window.alert = (mensagem) => {
       const texto = String(mensagem);
-      const tipo = identificarTipo(texto);
 
       setAlerta({
         mensagem: texto,
-        tipo,
+        tipo: identificarTipo(texto),
       });
     };
 
+    // Nova confirmação personalizada assíncrona.
+    window.confirmarPersonalizado = (mensagem, opcoes = {}) =>
+      new Promise((resolver) => {
+        setConfirmacao({
+          mensagem: String(mensagem),
+          titulo: opcoes.titulo || "Confirmar ação",
+          textoConfirmar: opcoes.textoConfirmar || "Confirmar",
+          tipo: opcoes.tipo || "aviso",
+          resolver,
+        });
+      });
+
     return () => {
       window.alert = alertaOriginal;
+      window.confirm = confirmarOriginal;
+      delete window.confirmarPersonalizado;
     };
   }, []);
 
   useEffect(() => {
-    if (!alerta) return;
+    if (!alerta && !confirmacao) return;
 
     const fecharComEscape = (evento) => {
       if (evento.key === "Escape") {
-        setAlerta(null);
+        if (confirmacao) {
+          confirmacao.resolver(false);
+          setConfirmacao(null);
+        } else {
+          setAlerta(null);
+        }
       }
     };
 
@@ -89,9 +116,83 @@ export default function AlertaGlobal() {
     return () => {
       window.removeEventListener("keydown", fecharComEscape);
     };
-  }, [alerta]);
+  }, [alerta, confirmacao]);
 
-  if (!alerta) return null;
+  const resolverConfirmacao = (resultado) => {
+    if (!confirmacao) return;
+
+    confirmacao.resolver(resultado);
+    setConfirmacao(null);
+  };
+
+  if (!alerta && !confirmacao) return null;
+
+  if (confirmacao) {
+    const Icone =
+      confirmacao.tipo === "exclusao"
+        ? FaTrashAlt
+        : FaExclamationTriangle;
+
+    return (
+      <div
+        className="alerta-overlay"
+        onMouseDown={(evento) => {
+          if (evento.target === evento.currentTarget) {
+            resolverConfirmacao(false);
+          }
+        }}
+      >
+        <div
+          className={`alerta-modal alerta-${confirmacao.tipo}`}
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="alerta-titulo"
+          aria-describedby="alerta-mensagem"
+        >
+          <div className="alerta-cabecalho">
+            <div className="alerta-icone">
+              <Icone />
+            </div>
+
+            <button
+              className="alerta-fechar"
+              type="button"
+              aria-label="Fechar aviso"
+              onClick={() => resolverConfirmacao(false)}
+            >
+              ×
+            </button>
+          </div>
+
+          <h2 id="alerta-titulo">{confirmacao.titulo}</h2>
+
+          <p id="alerta-mensagem">{confirmacao.mensagem}</p>
+
+          <div className="alerta-acoes">
+            <button
+              className="alerta-botao alerta-botao-secundario"
+              type="button"
+              onClick={() => resolverConfirmacao(false)}
+            >
+              Cancelar
+            </button>
+
+            <button
+              className={`alerta-botao ${
+                confirmacao.tipo === "exclusao"
+                  ? "alerta-botao-perigo"
+                  : ""
+              }`}
+              type="button"
+              onClick={() => resolverConfirmacao(true)}
+            >
+              {confirmacao.textoConfirmar}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const configuracao = configuracoes[alerta.tipo];
   const Icone = configuracao.icone;

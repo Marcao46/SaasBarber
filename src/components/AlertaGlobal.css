@@ -1,260 +1,176 @@
 
-/* ========================================
-   ALERTA GLOBAL - SAASBARBER
-   ======================================== */
-
-/* Fundo escuro atrás do alerta */
 .alerta-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
-
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(5px);
 }
 
-/* Caixa principal do alerta */
 .alerta-modal {
-  position: relative;
-
-  width: 100%;
-  max-width: 440px;
-
-  padding: 32px 28px 26px;
-
-  border: 1px solid #292929;
-  border-radius: 16px;
-
-  background: #141414;
-  color: #ffffff;
-
-  text-align: center;
-
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
-
-  animation: alerta-entrada 0.25s ease;
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+    padding: 28px;
+    background: #ffffff;
+    color: #202820;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    animation: alertaEntrada 0.2s ease-out;
 }
 
-/* Cabeçalho e ícone */
+@keyframes alertaEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .alerta-cabecalho {
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
 }
 
-/* Área do ícone */
 .alerta-icone {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 68px;
-  height: 68px;
-
-  border-radius: 20px;
-
-  font-size: 32px;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 25px;
+    background: #e9f8ee;
+    color: #239447;
 }
 
-/* Alerta de sucesso */
 .alerta-sucesso .alerta-icone {
-  background: rgba(50, 201, 97, 0.15);
-  color: #32c961;
+    background: #e9f8ee;
+    color: #239447;
 }
 
-/* Alerta de atenção */
 .alerta-aviso .alerta-icone {
-  background: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
+    background: #fff4d6;
+    color: #b7791f;
 }
 
-/* Alerta de erro */
-.alerta-erro .alerta-icone {
-  background: rgba(255, 77, 77, 0.15);
-  color: #ff5c5c;
-}
-
-/* Alerta informativo */
 .alerta-info .alerta-icone {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+    background: #eaf2ff;
+    color: #2864c5;
 }
 
-/* Botão de fechar (X) */
+.alerta-erro .alerta-icone,
+.alerta-exclusao .alerta-icone {
+    background: #fff0ef;
+    color: #d92d20;
+}
+
 .alerta-fechar {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 36px;
-  height: 36px;
-
-  padding: 0;
-
-  border: none;
-  border-radius: 50%;
-
-  background: transparent;
-  color: #999999;
-
-  font-size: 28px;
-  line-height: 1;
-
-  cursor: pointer;
-
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #667085;
+    font-size: 26px;
+    cursor: pointer;
 }
 
 .alerta-fechar:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+    background: #f2f4f7;
+    color: #202820;
 }
 
-/* Título */
 .alerta-modal h2 {
-  margin: 0 0 14px;
-
-  color: #ffffff;
-
-  font-size: 25px;
-  font-weight: 700;
-  line-height: 1.3;
-
-  text-align: center;
+    margin: 0 0 10px;
+    font-size: 23px;
+    line-height: 1.3;
+    color: #17251d;
 }
 
-/* Mensagem */
 .alerta-modal p {
-  margin: 0 0 28px;
-
-  color: #c5c5c5;
-
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.6;
-
-  text-align: center;
-
-  overflow-wrap: anywhere;
-  white-space: pre-line;
+    margin: 0 0 24px;
+    color: #667085;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
 }
 
-/* Botão principal */
 .alerta-botao {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  min-height: 48px;
-
-  padding: 13px 18px;
-
-  border: none;
-  border-radius: 9px;
-
-  background: #32c961;
-  color: #07150b;
-
-  font-size: 16px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    min-height: 44px;
+    padding: 11px 20px;
+    border: 1px solid #239447;
+    border-radius: 9px;
+    background: #32c961;
+    color: #071009;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .alerta-botao:hover {
-  background: #27b653;
-  box-shadow: 0 5px 18px rgba(50, 201, 97, 0.15);
+    background: #29b653;
 }
 
-.alerta-botao:active {
-  transform: scale(0.98);
+.alerta-modal > .alerta-botao {
+    width: 100%;
 }
 
-/* Destaque de acessibilidade */
-.alerta-botao:focus-visible,
-.alerta-fechar:focus-visible {
-  outline: 2px solid #32c961;
-  outline-offset: 3px;
+.alerta-acoes {
+    display: flex;
+    gap: 12px;
 }
 
-/* Animação de entrada */
-@keyframes alerta-entrada {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.alerta-acoes .alerta-botao {
+    flex: 1;
 }
 
-/* Celulares */
+.alerta-botao-secundario {
+    background: #ffffff;
+    color: #344054;
+    border-color: #d0d5dd;
+}
+
+.alerta-botao-secundario:hover {
+    background: #f2f4f7;
+}
+
+.alerta-botao-perigo {
+    background: #dc2626;
+    color: #ffffff;
+    border-color: #dc2626;
+}
+
+.alerta-botao-perigo:hover {
+    background: #b91c1c;
+}
+
 @media (max-width: 480px) {
-  .alerta-overlay {
-    padding: 16px;
-  }
+    .alerta-modal {
+        padding: 22px;
+    }
 
-  .alerta-modal {
-    max-width: 100%;
-    padding: 28px 22px 22px;
-    border-radius: 14px;
-  }
+    .alerta-modal h2 {
+        font-size: 21px;
+    }
 
-  .alerta-icone {
-    width: 60px;
-    height: 60px;
-    border-radius: 17px;
-    font-size: 28px;
-  }
+    .alerta-acoes {
+        flex-direction: column-reverse;
+    }
 
-  .alerta-modal h2 {
-    font-size: 22px;
-  }
-
-  .alerta-modal p {
-    font-size: 15px;
-  }
-
-  .alerta-botao {
-    min-height: 46px;
-    font-size: 15px;
-  }
-}
-
-/* Respeita a preferência por menos animações */
-@media (prefers-reduced-motion: reduce) {
-  .alerta-modal {
-    animation: none;
-  }
-
-  .alerta-botao,
-  .alerta-fechar {
-    transition: none;
-  }
+    .alerta-acoes .alerta-botao {
+        width: 100%;
+    }
 }

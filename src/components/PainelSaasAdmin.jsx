@@ -26,7 +26,6 @@ import "./PainelSaasAdmin.css";
 
 export default function PainelSaasAdmin({ voltarHome }) {
   const [totalBarbearias, setTotalBarbearias] = useState(0);
-  const [mostrarBarbearias, setMostrarBarbearias] = useState(false);
   const [secaoAtiva, setSecaoAtiva] = useState("inicio");
   const [carregando, setCarregando] = useState(true);
 
@@ -48,19 +47,16 @@ export default function PainelSaasAdmin({ voltarHome }) {
   async function sair() {
     try {
       await signOut(auth);
-      window.location.reload();
+
+      if (typeof voltarHome === "function") {
+        voltarHome();
+      } else {
+        window.location.reload();
+      }
     } catch (erro) {
       console.error("Erro ao sair:", erro);
       alert("Não foi possível sair da conta.");
     }
-  }
-
-  if (mostrarBarbearias) {
-    return (
-      <GerenciarBarbearias
-        voltarPainel={() => setMostrarBarbearias(false)}
-      />
-    );
   }
 
   const opcoes = [
@@ -68,42 +64,49 @@ export default function PainelSaasAdmin({ voltarHome }) {
       titulo: "Barbearias",
       descricao: "Consulte e gerencie as barbearias cadastradas.",
       icone: <FaStore />,
-      acao: () => setMostrarBarbearias(true),
+      secao: "barbearias",
+      acao: () => setSecaoAtiva("barbearias"),
     },
     {
       titulo: "Assinaturas",
       descricao: "Área de controle dos planos e assinaturas.",
       icone: <FaCreditCard />,
+      secao: "assinaturas",
       acao: () => setSecaoAtiva("assinaturas"),
     },
     {
       titulo: "Pendências",
       descricao: "Consulte pagamentos e vencimentos.",
       icone: <FaExclamationTriangle />,
+      secao: "pendencias",
       acao: () => setSecaoAtiva("pendencias"),
     },
     {
       titulo: "Financeiro",
       descricao: "Acompanhe as informações financeiras.",
       icone: <FaMoneyBillWave />,
+      secao: "financeiro",
       acao: () => setSecaoAtiva("financeiro"),
     },
     {
       titulo: "Planos",
       descricao: "Área para configurar os planos oferecidos.",
       icone: <FaBox />,
+      secao: "planos",
       acao: () => setSecaoAtiva("planos"),
     },
     {
       titulo: "Configurações",
       descricao: "Configurações gerais da plataforma.",
       icone: <FaCog />,
+      secao: "configuracoes",
       acao: () => setSecaoAtiva("configuracoes"),
     },
   ];
 
   const titulos = {
     inicio: "Painel Administrativo",
+    barbearias: "Barbearias",
     assinaturas: "Assinaturas",
     pendencias: "Pendências",
     financeiro: "Financeiro",
@@ -112,7 +115,7 @@ export default function PainelSaasAdmin({ voltarHome }) {
   };
 
   const opcaoAtual = opcoes.find(
-    (opcao) => opcao.titulo.toLowerCase() === secaoAtiva
+    (opcao) => opcao.secao === secaoAtiva
   );
 
   return (
@@ -138,7 +141,7 @@ export default function PainelSaasAdmin({ voltarHome }) {
             onClick={() => setSecaoAtiva("inicio")}
           >
             <FaHome />
-            Início
+            <span>Início</span>
           </button>
 
           {opcoes.map((opcao) => (
@@ -146,12 +149,12 @@ export default function PainelSaasAdmin({ voltarHome }) {
               type="button"
               key={opcao.titulo}
               className={
-                secaoAtiva === opcao.titulo.toLowerCase() ? "ativo" : ""
+                secaoAtiva === opcao.secao ? "ativo" : ""
               }
               onClick={opcao.acao}
             >
               {opcao.icone}
-              {opcao.titulo}
+              <span>{opcao.titulo}</span>
             </button>
           ))}
         </nav>
@@ -174,14 +177,14 @@ export default function PainelSaasAdmin({ voltarHome }) {
             onClick={sair}
           >
             <FaSignOutAlt />
-            Sair da conta
+            <span>Sair da conta</span>
           </button>
         </div>
       </aside>
 
       <main className="saas-conteudo">
         <header className="saas-cabecalho">
-          <div>
+          <div className="saas-cabecalho-titulo">
             <small>ADMINISTRAÇÃO DA PLATAFORMA</small>
             <h1>{titulos[secaoAtiva]}</h1>
             <p>
@@ -191,7 +194,7 @@ export default function PainelSaasAdmin({ voltarHome }) {
 
           <div className="saas-cabecalho-acoes">
             <div className="saas-boas-vindas">
-              <FaUserShield />
+              <FaUserShield className="saas-boas-vindas-icone" />
               <span>Bem-vindo, Admin!</span>
             </div>
 
@@ -234,34 +237,46 @@ export default function PainelSaasAdmin({ voltarHome }) {
                   <div className="saas-indicador-icone">
                     <FaStore />
                   </div>
-                  <p>Barbearias cadastradas</p>
-                  <strong>
-                    {carregando ? "..." : totalBarbearias}
-                  </strong>
+
+                  <div className="saas-indicador-texto">
+                    <p>Barbearias cadastradas</p>
+                    <strong>
+                      {carregando ? "..." : totalBarbearias}
+                    </strong>
+                  </div>
                 </div>
 
                 <div className="saas-indicador">
                   <div className="saas-indicador-icone">
                     <FaCheckCircle />
                   </div>
-                  <p>Assinaturas ativas</p>
-                  <strong>—</strong>
+
+                  <div className="saas-indicador-texto">
+                    <p>Assinaturas ativas</p>
+                    <strong>—</strong>
+                  </div>
                 </div>
 
                 <div className="saas-indicador">
                   <div className="saas-indicador-icone">
                     <FaExclamationTriangle />
                   </div>
-                  <p>Pendências</p>
-                  <strong>—</strong>
+
+                  <div className="saas-indicador-texto">
+                    <p>Pendências</p>
+                    <strong>—</strong>
+                  </div>
                 </div>
 
                 <div className="saas-indicador">
                   <div className="saas-indicador-icone">
                     <FaMoneyBillWave />
                   </div>
-                  <p>Receita mensal</p>
-                  <strong>—</strong>
+
+                  <div className="saas-indicador-texto">
+                    <p>Receita mensal</p>
+                    <strong>—</strong>
+                  </div>
                 </div>
               </div>
             </section>
@@ -295,6 +310,12 @@ export default function PainelSaasAdmin({ voltarHome }) {
               </div>
             </section>
           </>
+        ) : secaoAtiva === "barbearias" ? (
+          <section className="saas-secao saas-area-barbearias">
+            <GerenciarBarbearias
+              voltarPainel={() => setSecaoAtiva("inicio")}
+            />
+          </section>
         ) : (
           <section className="saas-secao">
             <div className="saas-secao-placeholder">
@@ -303,6 +324,7 @@ export default function PainelSaasAdmin({ voltarHome }) {
               </div>
 
               <h2>{titulos[secaoAtiva]}</h2>
+
               <p>
                 Esta área ainda não possui gerenciamento implementado.
               </p>
@@ -312,7 +334,8 @@ export default function PainelSaasAdmin({ voltarHome }) {
                 className="saas-botao"
                 onClick={() => setSecaoAtiva("inicio")}
               >
-                <FaArrowLeft /> Voltar ao painel
+                <FaArrowLeft />
+                <span>Voltar ao painel</span>
               </button>
             </div>
           </section>
