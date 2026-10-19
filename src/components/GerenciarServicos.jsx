@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 import {
     collection,
@@ -13,76 +13,73 @@ import {
     doc,
     setDoc,
     serverTimestamp
-} from "firebase/firestore"
+} from "firebase/firestore";
 
+import { auth, db } from "../fireBaseConfig";
 
-import { auth, db } from "../fireBaseConfig"
 import {
     FaArrowLeft,
     FaCut,
     FaPlus,
     FaEdit,
     FaTrash,
-    FaClock
-} from "react-icons/fa"
+    FaClock,
+    FaExclamationTriangle
+} from "react-icons/fa";
 
-import "./GerenciarServicos.css"
-
+import "./GerenciarServicos.css";
 
 const GerenciarServicos = ({ voltarPainel }) => {
+    const [barbeariaId, setBarbeariaId] = useState("");
+    const [servicos, setServicos] = useState([]);
+    const [nome, setNome] = useState("");
+    const [preco, setPreco] = useState("");
+    const [duracao, setDuracao] = useState("30");
+    const [editandoId, setEditandoId] = useState(null);
+    const [carregando, setCarregando] = useState(true);
+    const [salvando, setSalvando] = useState(false);
+    const [excluindo, setExcluindo] = useState(false);
+    const [erro, setErro] = useState("");
+    const [aviso, setAviso] = useState("");
+    const [servicoParaExcluir, setServicoParaExcluir] = useState(null);
 
-    const [barbeariaId, setBarbeariaId] = useState("")
-    const [servicos, setServicos] = useState([])
-    const [nome, setNome] = useState("")
-    const [preco, setPreco] = useState("")
-    const [duracao, setDuracao] = useState("30")
-    const [editandoId, setEditandoId] = useState(null)
-    const [carregando, setCarregando] = useState(true)
-    const [salvando, setSalvando] = useState(false)
-    const [erro, setErro] = useState("")
-
-
+    // Carrega os serviços cadastrados na barbearia.
     const carregarServicos = async (id) => {
-
         const referencia = collection(
             db,
             "barbearias",
             id,
             "servicos"
-        )
+        );
 
-        const resultado = await getDocs(referencia)
+        const resultado = await getDocs(referencia);
 
         const lista = resultado.docs.map((documento) => ({
             id: documento.id,
             ...documento.data()
-        }))
+        }));
 
         lista.sort((a, b) =>
-            a.nome.localeCompare(b.nome)
-        )
+            (a.nome || "").localeCompare(b.nome || "")
+        );
 
-        setServicos(lista)
+        setServicos(lista);
+    };
 
-    }
-
+    // Atualiza a vitrine pública sem apagar outros dados da barbearia.
     const sincronizarServicosPublicos = async (id) => {
-
-        // Busca os serviços reais da barbearia
         const referenciaServicos = collection(
             db,
             "barbearias",
             id,
             "servicos"
-        )
+        );
 
-        const resultado = await getDocs(referenciaServicos)
+        const resultado = await getDocs(referenciaServicos);
 
-        // Envia apenas os campos públicos
         const listaPublica = resultado.docs
             .map((documento) => {
-
-                const dados = documento.data()
+                const dados = documento.data();
 
                 return {
                     id: documento.id,
@@ -90,29 +87,24 @@ const GerenciarServicos = ({ voltarPainel }) => {
                     preco: dados.preco,
                     duracao: dados.duracao,
                     ativo: dados.ativo !== false
-                }
-
+                };
             })
-            .filter((servico) => servico.ativo)
+            .filter((servico) => servico.ativo);
 
-        // Usa o mesmo ID da barbearia
         const referenciaPublica = doc(
             db,
             "barbeariasPublicas",
             id
-        )
+        );
 
-        const documentoPublico = await getDoc(
-            referenciaPublica
-        )
+        const documentoPublico = await getDoc(referenciaPublica);
 
         if (!documentoPublico.exists()) {
             throw new Error(
-                "A barbearia ainda não possui uma vitrine pública com o mesmo ID."
-            )
+                "A barbearia não possui uma vitrine pública com o mesmo ID."
+            );
         }
 
-        // Atualiza os serviços sem apagar nome, cidade ou bairro
         await setDoc(
             referenciaPublica,
             {
@@ -121,110 +113,118 @@ const GerenciarServicos = ({ voltarPainel }) => {
             {
                 merge: true
             }
-        )
+        );
+    };
 
-    }
+    // Uma falha na vitrine não deve ser confundida com
+    // uma falha no cadastro ou na exclusão do serviço.
+    const sincronizarServicosComAviso = async (id) => {
+        try {
+            await sincronizarServicosPublicos(id);
+            setAviso("");
+            return true;
+        } catch (error) {
+            console.error(
+                "Falha ao sincronizar a vitrine pública:",
+                error
+            );
 
+            setAviso(
+                "A operação foi concluída, mas a vitrine pública não foi atualizada. Verifique o documento e as permissões do Firebase."
+            );
 
+            return false;
+        }
+    };
+
+    // Localiza a barbearia do proprietário ao abrir a tela.
     useEffect(() => {
-
-        let ativo = true
+        let ativo = true;
 
         const iniciar = async () => {
-
             try {
-
-                const usuario = auth.currentUser
+                const usuario = auth.currentUser;
 
                 if (!usuario) {
-                    throw new Error("Usuário não autenticado.")
+                    throw new Error("Usuário não autenticado.");
                 }
 
                 const consulta = query(
                     collection(db, "barbearias"),
                     where("donoId", "==", usuario.uid)
-                )
+                );
 
-                const resultado = await getDocs(consulta)
+                const resultado = await getDocs(consulta);
 
                 if (resultado.empty) {
                     throw new Error(
                         "Nenhuma barbearia encontrada para esta conta."
-                    )
+                    );
                 }
 
-                const id = resultado.docs[0].id
+                const id = resultado.docs[0].id;
 
                 const referencia = collection(
                     db,
                     "barbearias",
                     id,
                     "servicos"
-                )
+                );
 
-                const dados = await getDocs(referencia)
+                const dados = await getDocs(referencia);
 
-                if (!ativo) return
+                if (!ativo) return;
 
-                setBarbeariaId(id)
+                setBarbeariaId(id);
 
                 const lista = dados.docs.map((documento) => ({
                     id: documento.id,
                     ...documento.data()
-                }))
+                }));
 
                 lista.sort((a, b) =>
-                    a.nome.localeCompare(b.nome)
-                )
+                    (a.nome || "").localeCompare(b.nome || "")
+                );
 
-                setServicos(lista)
-
+                setServicos(lista);
             } catch (error) {
+                console.error(
+                    "Erro ao carregar serviços:",
+                    error
+                );
 
                 if (ativo) {
-                    setErro(error.message)
+                    setErro(error.message);
                 }
-
             } finally {
-
                 if (ativo) {
-                    setCarregando(false)
+                    setCarregando(false);
                 }
-
             }
+        };
 
-        }
-
-        iniciar()
+        iniciar();
 
         return () => {
-            ativo = false
-        }
-
-    }, [])
-
+            ativo = false;
+        };
+    }, []);
 
     const limparFormulario = () => {
+        setNome("");
+        setPreco("");
+        setDuracao("30");
+        setEditandoId(null);
+    };
 
-        setNome("")
-        setPreco("")
-        setDuracao("30")
-        setEditandoId(null)
-
-    }
-
-
+    // Cadastra um novo serviço ou salva uma edição.
     const salvarServico = async (event) => {
+        event.preventDefault();
 
-        event.preventDefault()
+        if (!barbeariaId || salvando) return;
 
-        if (!barbeariaId || salvando) return
-
-        const valor = Number(
-            preco.replace(",", ".")
-        )
-
-        const minutos = Number(duracao)
+        const valor = Number(preco.replace(",", "."));
+        const minutos = Number(duracao);
 
         if (
             !nome.trim() ||
@@ -233,14 +233,15 @@ const GerenciarServicos = ({ voltarPainel }) => {
             !Number.isInteger(minutos) ||
             minutos <= 0
         ) {
-            setErro("Informe nome, preço e duração válidos.")
-            return
+            setErro("Informe nome, preço e duração válidos.");
+            setAviso("");
+            return;
         }
 
         try {
-
-            setSalvando(true)
-            setErro("")
+            setSalvando(true);
+            setErro("");
+            setAviso("");
 
             const dados = {
                 nome: nome.trim(),
@@ -248,10 +249,9 @@ const GerenciarServicos = ({ voltarPainel }) => {
                 duracao: minutos,
                 ativo: true,
                 atualizadoEm: serverTimestamp()
-            }
+            };
 
             if (editandoId) {
-
                 await updateDoc(
                     doc(
                         db,
@@ -261,10 +261,8 @@ const GerenciarServicos = ({ voltarPainel }) => {
                         editandoId
                     ),
                     dados
-                )
-
+                );
             } else {
-
                 await addDoc(
                     collection(
                         db,
@@ -276,58 +274,61 @@ const GerenciarServicos = ({ voltarPainel }) => {
                         ...dados,
                         criadoEm: serverTimestamp()
                     }
-                )
-
+                );
             }
 
+            // Primeiro atualiza a lista principal.
+            await carregarServicos(barbeariaId);
 
-            await carregarServicos(barbeariaId)
+            // Limpa o formulário após a operação principal.
+            limparFormulario();
 
-            await sincronizarServicosPublicos(barbeariaId)
-
-            limparFormulario()
-
+            // Sincronização pública é tratada separadamente.
+            await sincronizarServicosComAviso(barbeariaId);
         } catch (error) {
+            console.error("Erro ao salvar serviço:", error);
 
-            console.error(error)
-            setErro("Não foi possível salvar o serviço.")
-
+            setErro(
+                "Não foi possível salvar o serviço no Firebase. Verifique sua conexão e as permissões."
+            );
         } finally {
-            setSalvando(false)
+            setSalvando(false);
         }
-
-    }
-
+    };
 
     const editarServico = (servico) => {
-
-        setEditandoId(servico.id)
-        setNome(servico.nome)
-        setPreco(String(servico.preco).replace(".", ","))
-        setDuracao(String(servico.duracao))
-        setErro("")
+        setEditandoId(servico.id);
+        setNome(servico.nome || "");
+        setPreco(
+            String(servico.preco ?? "").replace(".", ",")
+        );
+        setDuracao(String(servico.duracao || 30));
+        setErro("");
+        setAviso("");
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
-        })
+        });
+    };
 
-    }
+    // Abre o modal personalizado de confirmação.
+    const excluirServico = (servico) => {
+        setErro("");
+        setAviso("");
+        setServicoParaExcluir(servico);
+    };
 
+    // Exclui o serviço e depois tenta sincronizar a vitrine.
+    const confirmarExclusaoServico = async () => {
+        const servico = servicoParaExcluir;
 
-    const excluirServico = async (servico) => {
-
-        if (
-            !window.confirm(
-                `Deseja realmente excluir "${servico.nome}"?`
-            )
-        ) {
-            return
-        }
+        if (!servico || !barbeariaId || excluindo) return;
 
         try {
-
-            setErro("")
+            setExcluindo(true);
+            setErro("");
+            setAviso("");
 
             await deleteDoc(
                 doc(
@@ -337,41 +338,42 @@ const GerenciarServicos = ({ voltarPainel }) => {
                     "servicos",
                     servico.id
                 )
-            )
+            );
 
-
-            await carregarServicos(barbeariaId)
-
-            await sincronizarServicosPublicos(barbeariaId)
+            // A exclusão foi confirmada pelo Firebase.
+            // Atualiza a tela antes da sincronização pública.
+            await carregarServicos(barbeariaId);
 
             if (editandoId === servico.id) {
-                limparFormulario()
+                limparFormulario();
             }
 
+            setServicoParaExcluir(null);
 
+            // Se falhar, mostra apenas um aviso específico.
+            await sincronizarServicosComAviso(barbeariaId);
         } catch (error) {
+            console.error("Erro ao excluir serviço:", error);
 
-            console.error(error)
-            setErro("Não foi possível excluir o serviço.")
+            setErro(
+                "Não foi possível concluir a exclusão no Firebase. Atualize a lista e verifique se o serviço ainda existe."
+            );
 
+            setServicoParaExcluir(null);
+        } finally {
+            setExcluindo(false);
         }
-
-    }
-
+    };
 
     const formatarPreco = (valor) =>
         Number(valor).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL"
-        })
-
+        });
 
     return (
-
         <main className="servicos-page">
-
             <div className="servicos-container">
-
                 <button
                     type="button"
                     className="servicos-voltar"
@@ -381,9 +383,7 @@ const GerenciarServicos = ({ voltarPainel }) => {
                     Voltar ao painel
                 </button>
 
-
                 <header className="servicos-topo">
-
                     <span className="servicos-etiqueta">
                         GESTÃO DA BARBEARIA
                     </span>
@@ -394,9 +394,7 @@ const GerenciarServicos = ({ voltarPainel }) => {
                         Cadastre os serviços oferecidos,
                         seus valores e o tempo de atendimento.
                     </p>
-
                 </header>
-
 
                 {erro && (
                     <div className="servicos-erro" role="alert">
@@ -404,17 +402,20 @@ const GerenciarServicos = ({ voltarPainel }) => {
                     </div>
                 )}
 
+                {aviso && (
+                    <div
+                        className="servicos-aviso"
+                        role="status"
+                    >
+                        {aviso}
+                    </div>
+                )}
 
                 {carregando ? (
-
                     <p>Carregando serviços...</p>
-
                 ) : barbeariaId ? (
-
                     <>
-
                         <section className="servicos-formulario-card">
-
                             <h2>
                                 {editandoId
                                     ? "Editar serviço"
@@ -422,9 +423,7 @@ const GerenciarServicos = ({ voltarPainel }) => {
                             </h2>
 
                             <form onSubmit={salvarServico}>
-
                                 <div className="servicos-campo">
-
                                     <label htmlFor="servico-nome">
                                         Nome do serviço
                                     </label>
@@ -439,14 +438,10 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                         }
                                         required
                                     />
-
                                 </div>
 
-
                                 <div className="servicos-form-grid">
-
                                     <div className="servicos-campo">
-
                                         <label htmlFor="servico-preco">
                                             Preço (R$)
                                         </label>
@@ -462,12 +457,9 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                             }
                                             required
                                         />
-
                                     </div>
 
-
                                     <div className="servicos-campo">
-
                                         <label htmlFor="servico-duracao">
                                             Duração (minutos)
                                         </label>
@@ -483,14 +475,10 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                             }
                                             required
                                         />
-
                                     </div>
-
                                 </div>
 
-
                                 <div className="servicos-acoes">
-
                                     <button
                                         type="submit"
                                         className="servicos-salvar"
@@ -505,50 +493,37 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                     </button>
 
                                     {editandoId && (
-
                                         <button
                                             type="button"
                                             className="servicos-cancelar"
                                             onClick={limparFormulario}
+                                            disabled={salvando}
                                         >
                                             Cancelar edição
                                         </button>
-
                                     )}
-
                                 </div>
-
                             </form>
-
                         </section>
 
-
                         <section className="servicos-listagem">
-
                             <h2>Serviços cadastrados</h2>
 
                             {servicos.length === 0 ? (
-
                                 <div className="servicos-vazio">
                                     <FaCut />
                                     <p>
                                         Nenhum serviço cadastrado ainda.
                                     </p>
                                 </div>
-
                             ) : (
-
                                 <div className="servicos-grid">
-
                                     {servicos.map((servico) => (
-
                                         <article
                                             className="servicos-item"
                                             key={servico.id}
                                         >
-
                                             <div className="servicos-item-topo">
-
                                                 <div className="servicos-item-icone">
                                                     <FaCut />
                                                 </div>
@@ -558,7 +533,6 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                                         servico.preco
                                                     )}
                                                 </strong>
-
                                             </div>
 
                                             <h3>{servico.nome}</h3>
@@ -569,7 +543,6 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                             </p>
 
                                             <div className="servicos-item-acoes">
-
                                                 <button
                                                     type="button"
                                                     onClick={() =>
@@ -590,29 +563,77 @@ const GerenciarServicos = ({ voltarPainel }) => {
                                                     <FaTrash />
                                                     Excluir
                                                 </button>
-
                                             </div>
-
                                         </article>
-
                                     ))}
-
                                 </div>
-
                             )}
-
                         </section>
-
                     </>
-
-                ) : null}
-
+                ) : (
+                    <p>Nenhuma barbearia disponível para esta conta.</p>
+                )}
             </div>
 
+            {servicoParaExcluir && (
+                <div
+                    className="modal-excluir-overlay"
+                    onClick={() => {
+                        if (!excluindo) {
+                            setServicoParaExcluir(null);
+                        }
+                    }}
+                >
+                    <section
+                        className="modal-excluir-card"
+                        role="alertdialog"
+                        aria-modal="true"
+                        aria-labelledby="titulo-excluir-servico"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <div className="modal-excluir-icone">
+                            <FaExclamationTriangle />
+                        </div>
+
+                        <h2 id="titulo-excluir-servico">
+                            Excluir serviço?
+                        </h2>
+
+                        <p>
+                            Tem certeza de que deseja excluir o serviço{" "}
+                            <strong>{servicoParaExcluir.nome}</strong>?
+                            Esta ação não poderá ser desfeita.
+                        </p>
+
+                        <div className="modal-excluir-acoes">
+                            <button
+                                type="button"
+                                className="modal-excluir-cancelar"
+                                disabled={excluindo}
+                                onClick={() =>
+                                    setServicoParaExcluir(null)
+                                }
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                                type="button"
+                                className="modal-excluir-confirmar"
+                                disabled={excluindo}
+                                onClick={confirmarExclusaoServico}
+                            >
+                                <FaTrash />
+                                {excluindo
+                                    ? "Excluindo..."
+                                    : "Sim, excluir"}
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            )}
         </main>
+    );
+};
 
-    )
-
-}
-
-export default GerenciarServicos
+export default GerenciarServicos;

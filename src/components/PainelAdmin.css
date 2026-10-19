@@ -1,526 +1,3 @@
-
-<<<<<<< Updated upstream
-/* =========================================
-   SAASBARBER - PAINEL ADMINISTRATIVO
-========================================= */
-
-.painel-page {
-    width: 100%;
-    min-height: 100vh;
-    height: auto;
-    overflow-x: hidden;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 35px 0 45px;
-    background: #080b09;
-    color: #ffffff;
-}
-
-.painel-page * {
-    box-sizing: border-box;
-}
-
-.painel-container {
-    width: 90%;
-    max-width: 1350px;
-    margin: 0 auto;
-}
-
-
-/* CABEÇALHO */
-
-.painel-topo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 25px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #253329;
-}
-
-.painel-identidade {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.painel-logo {
-    width: 66px;
-    height: 66px;
-    min-width: 66px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #12301c;
-    border: 1px solid #28563a;
-    border-radius: 18px;
-    color: #42dc80;
-    font-size: 31px;
-}
-
-.painel-subtitulo {
-    display: block;
-    color: #39dc7a;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-.painel-topo h1 {
-    margin: 0;
-    color: #ffffff;
-    font-size: clamp(26px, 3vw, 36px);
-    letter-spacing: -1px;
-}
-
-.painel-topo p {
-    margin: 10px 0 0;
-    color: #a4b3a8;
-    font-size: 15px;
-}
-
-.botao-sair {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-height: 45px;
-    padding: 0 22px;
-    background: #141b16;
-    color: #e9f1eb;
-    border: 1px solid #344438;
-    border-radius: 11px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.botao-sair:hover {
-    border-color: #3bda7d;
-    color: #3bda7d;
-}
-
-.botao-sair:disabled {
-    opacity: 0.6;
-    cursor: wait;
-}
-
-
-/* BOAS-VINDAS */
-
-.painel-boas-vindas {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-    margin-top: 30px;
-    padding: 40px;
-    border: 1px solid #285b38;
-    border-radius: 22px;
-    background:
-        radial-gradient(
-            circle at 85% 50%,
-            rgba(46, 204, 113, 0.17),
-            transparent 45%
-        ),
-        linear-gradient(120deg, #14291a, #0d1710);
-    overflow: hidden;
-}
-
-.painel-boas-vindas-texto {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
-}
-
-.painel-etiqueta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #46dd83;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.8px;
-}
-
-.painel-boas-vindas h2 {
-    margin: 18px 0;
-    font-size: clamp(30px, 3.6vw, 47px);
-    line-height: 1.14;
-    letter-spacing: -1.3px;
-}
-
-.painel-boas-vindas h2 strong {
-    color: #45e18a;
-}
-
-.painel-boas-vindas p {
-    max-width: 550px;
-    color: #b4c6b8;
-    font-size: 15px;
-    line-height: 1.8;
-}
-
-.painel-botao-principal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    min-height: 49px;
-    margin-top: 15px;
-    padding: 0 23px;
-    border: 1px solid #3edc7d;
-    border-radius: 11px;
-    background: linear-gradient(135deg, #42e188, #27bd66);
-    color: #08150c;
-    font-size: 14px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.painel-botao-principal:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(46, 204, 113, 0.23);
-}
-
-.painel-boas-vindas-decoracao {
-    flex-shrink: 0;
-    padding-right: 40px;
-}
-
-.painel-circulo-decorativo {
-    width: 155px;
-    height: 155px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid #327849;
-    background: rgba(46, 204, 113, 0.09);
-    color: #43dc81;
-    font-size: 65px;
-    box-shadow: 0 0 70px rgba(46, 204, 113, 0.09);
-}
-
-
-/* SEÇÕES */
-
-.painel-conteudo {
-    margin-top: 45px;
-}
-
-.painel-titulo-secao {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 23px;
-}
-
-.painel-titulo-secao h2 {
-    margin: 10px 0 0;
-    color: #ffffff;
-    font-size: 26px;
-    letter-spacing: -0.5px;
-}
-
-.painel-titulo-secao p {
-    margin: 8px 0 0;
-    color: #94a798;
-    font-size: 14px;
-}
-
-.painel-titulo-icone {
-    color: #35cc70;
-    font-size: 26px;
-}
-
-
-/* CARDS DE RESUMO */
-
-.painel-resumo-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 17px;
-}
-
-.painel-resumo-card {
-    min-height: 175px;
-    padding: 23px;
-    border: 1px solid #2a3b2e;
-    border-radius: 17px;
-    background: #121a14;
-}
-
-.painel-resumo-icone {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 43px;
-    height: 43px;
-    margin-bottom: 16px;
-    border-radius: 11px;
-    background: #1b3824;
-    color: #42db80;
-    font-size: 20px;
-}
-
-.painel-resumo-card strong {
-    display: block;
-    color: #ffffff;
-    font-size: 31px;
-    line-height: 1.1;
-}
-
-.painel-resumo-card p {
-    margin: 8px 0 5px;
-    color: #d0ddd3;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.painel-resumo-card small {
-    color: #829588;
-    font-size: 11px;
-}
-
-
-/* CARDS DE GERENCIAMENTO */
-
-.painel-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 17px;
-}
-
-.painel-card {
-    width: 100%;
-    min-height: 125px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 23px;
-    background: #121914;
-    border: 1px solid #2b3b2e;
-    border-radius: 17px;
-    color: white;
-    text-align: left;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.painel-card:hover:not(:disabled) {
-    border-color: #39dc7a;
-    background: #17251a;
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.17);
-}
-
-.painel-card:disabled {
-    cursor: not-allowed;
-    opacity: 0.78;
-}
-
-.painel-card-destaque {
-    border-color: #356a45;
-    background: #14241a;
-}
-
-.card-icone {
-    width: 55px;
-    height: 55px;
-    min-width: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #173e26;
-    border-radius: 14px;
-    color: #42dc80;
-    font-size: 24px;
-}
-
-.card-icone svg {
-    color: #42dc80;
-    fill: currentColor;
-}
-
-.painel-card-texto {
-    flex: 1;
-    min-width: 0;
-}
-
-.painel-card h3 {
-    margin: 0 0 7px;
-    color: #f2f7f3;
-    font-size: 18px;
-    line-height: 1.3;
-}
-
-.painel-card p {
-    margin: 0;
-    color: #a0b0a4;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.painel-card-status {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 5px 9px;
-    border-radius: 6px;
-    background: #253228;
-    color: #a8b9ab;
-    font-size: 10px;
-    font-weight: 600;
-}
-
-.painel-card-seta {
-    flex-shrink: 0;
-    color: #44db81;
-    font-size: 17px;
-}
-
-
-/* DICA */
-
-.painel-dica {
-    display: flex;
-    align-items: flex-start;
-    gap: 17px;
-    margin-top: 40px;
-    padding: 25px;
-    border: 1px solid #2c4b35;
-    border-radius: 16px;
-    background: #132017;
-}
-
-.painel-dica-icone {
-    width: 45px;
-    height: 45px;
-    min-width: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: #21402a;
-    color: #48df87;
-    font-size: 22px;
-}
-
-.painel-dica h3 {
-    margin: 0 0 8px;
-    color: white;
-    font-size: 17px;
-}
-
-.painel-dica p {
-    margin: 0;
-    color: #afc2b3;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-
-/* RODAPÉ */
-
-.painel-rodape {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 45px;
-    padding-top: 23px;
-    border-top: 1px solid #243328;
-    color: #839587;
-    font-size: 12px;
-}
-
-
-/* RESPONSIVIDADE */
-
-@media (max-width: 1050px) {
-
-    .painel-resumo-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .painel-boas-vindas-decoracao {
-        padding-right: 0;
-    }
-
-}
-
-@media (max-width: 750px) {
-
-    .painel-container {
-        width: 92%;
-    }
-
-    .painel-boas-vindas {
-        padding: 30px;
-    }
-
-    .painel-boas-vindas-decoracao {
-        display: none;
-    }
-
-    .painel-grid {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-@media (max-width: 500px) {
-
-    .painel-page {
-        padding: 20px 0 35px;
-    }
-
-    .painel-topo {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .painel-identidade {
-        align-items: flex-start;
-        gap: 13px;
-    }
-
-    .painel-logo {
-        width: 48px;
-        height: 48px;
-        min-width: 48px;
-        font-size: 23px;
-        border-radius: 12px;
-    }
-
-    .painel-subtitulo {
-        font-size: 10px;
-        letter-spacing: 1px;
-    }
-
-    .painel-topo h1 {
-        font-size: 25px;
-    }
-
-    .botao-sair {
-        width: 100%;
-    }
-
-    .painel-boas-vindas {
-        padding: 25px 20px;
-    }
-
-    .painel-boas-vindas h2 {
-        font-size: 31px;
-    }
-
-    .painel-botao-principal {
-        width: 100%;
-=======
 * {
     box-sizing: border-box;
 }
@@ -528,7 +5,7 @@
 .proprietario-layout {
     --verde: #31c866;
     --verde-escuro: #168342;
-    --fundo: #f3f7f4;
+    --fundo: #ffffff;
     --texto: #17291e;
     --cinza: #718078;
 
@@ -537,12 +14,12 @@
     height: 100vh;
     min-height: 0;
     overflow: hidden;
-    background: var(--fundo);
+    background: #ffffff;
     color: var(--texto);
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* MENU LATERAL */
+/* MENU LATERAL ESCURO */
 
 .proprietario-sidebar {
     position: fixed;
@@ -557,7 +34,7 @@
     padding: 26px 18px 18px;
     overflow-y: auto;
     background: linear-gradient(180deg, #101a13 0%, #07100b 100%);
-    color: #fff;
+    color: #ffffff;
     border-right: 1px solid #26392c;
 }
 
@@ -585,7 +62,6 @@
 .proprietario-logo strong {
     display: block;
     font-size: 20px;
-    letter-spacing: .2px;
 }
 
 .proprietario-logo small {
@@ -625,7 +101,7 @@
     font-family: inherit;
     font-size: 14px;
     cursor: pointer;
-    transition: background .2s ease, color .2s ease;
+    transition: .2s ease;
 }
 
 .proprietario-menu-item > span:first-child {
@@ -698,13 +174,12 @@
     border: 1px solid #2b3c30 !important;
     border-radius: 14px;
     background: #17271c !important;
-    color: #fff !important;
+    color: #ffffff !important;
     box-shadow: none !important;
     font-family: inherit;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    transition: .2s ease;
 }
 
 .proprietario-sair:hover:not(:disabled) {
@@ -717,13 +192,7 @@
     cursor: wait;
 }
 
-.proprietario-sair:focus-visible,
-.proprietario-voltar-home:focus-visible {
-    outline: 2px solid #31c866;
-    outline-offset: 3px;
-}
-
-/* ÁREA PRINCIPAL */
+/* ÁREA PRINCIPAL BRANCA */
 
 .proprietario-area-principal {
     display: flex;
@@ -733,7 +202,7 @@
     min-width: 0;
     margin-left: 270px;
     overflow: hidden;
-    background: var(--fundo);
+    background: #ffffff;
 }
 
 /* CABEÇALHO */
@@ -747,7 +216,7 @@
     gap: 24px;
     min-height: 132px;
     padding: 25px 40px;
-    background: #f8faf8;
+    background: #ffffff;
     border-bottom: 1px solid #e9efea;
 }
 
@@ -799,10 +268,6 @@
     white-space: nowrap;
 }
 
-.proprietario-bemvindo svg {
-    font-size: 16px;
-}
-
 .proprietario-voltar-home {
     display: inline-flex;
     align-items: center;
@@ -812,22 +277,20 @@
     padding: 0 17px;
     border: 1px solid #b7dfc4;
     border-radius: 14px;
-    background: #fff;
+    background: #ffffff;
     color: #187c40;
     font-family: inherit;
     font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
     cursor: pointer;
-    transition: .2s ease;
 }
 
 .proprietario-voltar-home:hover {
     background: #e5f6e9;
-    border-color: #8dc9a0;
 }
 
-/* CONTEÚDO E ROLAGEM */
+/* CONTEÚDO COM FUNDO BRANCO E ROLAGEM */
 
 .proprietario-conteudo {
     flex: 1;
@@ -836,7 +299,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
-    background: var(--fundo);
+    background: #ffffff;
 }
 
 .proprietario-conteudo::-webkit-scrollbar,
@@ -866,7 +329,7 @@
     letter-spacing: 1px;
 }
 
-/* CARTÃO DE BOAS-VINDAS */
+/* CARTÃO DE BOAS-VINDAS VERDE */
 
 .proprietario-boas-vindas {
     position: relative;
@@ -880,7 +343,7 @@
     border: 1px solid #1c402b;
     border-radius: 22px;
     background: linear-gradient(115deg, #0c2d1a 0%, #123923 100%);
-    color: #fff;
+    color: #ffffff;
 }
 
 .proprietario-boas-vindas-texto {
@@ -899,7 +362,7 @@
 
 .proprietario-boas-vindas h2 {
     margin: 20px 0 12px;
-    color: #fff;
+    color: #ffffff;
     font-size: clamp(30px, 3vw, 42px);
     font-weight: 800;
     line-height: 1.2;
@@ -928,7 +391,7 @@
     border: 0;
     border-radius: 11px;
     background: #20954b;
-    color: #fff;
+    color: #ffffff;
     font-family: inherit;
     font-size: 13px;
     font-weight: 800;
@@ -951,7 +414,7 @@
     border: 1px solid #225c35;
     border-radius: 50%;
     background: #17472a;
-    color: #28683d;
+    color: #65e68d;
     font-size: 76px;
 }
 
@@ -1002,7 +465,7 @@
     padding: 23px 20px;
     border: 1px solid #dce8df;
     border-radius: 18px;
-    background: #fff;
+    background: #ffffff;
     box-shadow: 0 4px 15px rgba(19, 58, 32, .035);
 }
 
@@ -1055,11 +518,11 @@
     padding: 24px;
     border: 1px solid #dce8df;
     border-radius: 19px;
-    background: #fff;
+    background: #ffffff;
     color: #172d20;
     text-align: left;
     cursor: pointer;
-    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    transition: .2s ease;
 }
 
 .proprietario-ferramenta:hover {
@@ -1139,20 +602,6 @@
     line-height: 1.7;
 }
 
-/* RODAPÉ DO CONTEÚDO */
-
-.proprietario-rodape {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 32px;
-    padding: 20px 0 4px;
-    border-top: 1px solid #dfe9e1;
-    color: #829087;
-    font-size: 12px;
-}
-
 /* ÁREAS AINDA NÃO IMPLEMENTADAS */
 
 .proprietario-em-construcao {
@@ -1164,7 +613,7 @@
     padding: 35px;
     border: 1px solid #dce8df;
     border-radius: 20px;
-    background: #fff;
+    background: #ffffff;
     text-align: center;
 }
 
@@ -1200,13 +649,27 @@
     border: 0;
     border-radius: 11px;
     background: #218846;
-    color: #fff;
+    color: #ffffff;
     font-weight: 700;
     cursor: pointer;
 }
 
 .proprietario-em-construcao button:hover {
     background: #176e35;
+}
+
+/* RODAPÉ */
+
+.proprietario-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 32px;
+    padding: 20px 0 4px;
+    border-top: 1px solid #dfe9e1;
+    color: #829087;
+    font-size: 12px;
 }
 
 /* MENU MOBILE */
@@ -1254,56 +717,10 @@
     .proprietario-bemvindo,
     .proprietario-voltar-home {
         min-height: 43px;
->>>>>>> Stashed changes
         padding: 0 12px;
         font-size: 12px;
     }
 
-<<<<<<< Updated upstream
-    .painel-resumo-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .painel-resumo-card {
-        padding: 15px;
-        min-height: 160px;
-    }
-
-    .painel-resumo-card strong {
-        font-size: 26px;
-    }
-
-    .painel-resumo-card p {
-        font-size: 12px;
-    }
-
-    .painel-card {
-        padding: 17px;
-        gap: 13px;
-    }
-
-    .card-icone {
-        width: 47px;
-        height: 47px;
-        min-width: 47px;
-        font-size: 21px;
-    }
-
-    .painel-card h3 {
-        font-size: 16px;
-    }
-
-    .painel-dica {
-        padding: 20px;
-    }
-
-    .painel-rodape {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-=======
     .proprietario-boas-vindas {
         padding: 28px;
     }
@@ -1318,6 +735,7 @@
 @media (max-width: 760px) {
     .proprietario-layout {
         flex-direction: column;
+        height: 100vh;
     }
 
     .proprietario-mobile-toggle {
@@ -1332,7 +750,7 @@
         border: 0;
         border-bottom: 1px solid #29382e;
         background: #101a13;
-        color: #fff;
+        color: #ffffff;
         font-size: 17px;
         font-weight: bold;
         text-align: left;
@@ -1506,29 +924,8 @@
     }
 }
 
-/* COMPATIBILIDADE COM O BOTÃO DE SAÍDA ANTIGO */
+/* COMPATIBILIDADE COM OUTROS PAINÉIS */
 
-.painel-page .botao-sair {
-    background: transparent !important;
-    background-color: transparent !important;
-    color: #ffffff !important;
-    border: 1px solid transparent !important;
-    box-shadow: none !important;
-}
-
-.painel-page .botao-sair:hover:not(:disabled) {
-    background: #1d2921 !important;
-    background-color: #1d2921 !important;
-    color: #ffffff !important;
-}
-
-.painel-page .botao-sair:disabled {
-    opacity: .6;
-    cursor: wait;
-}
-
-/* Cabeçalho: boas-vindas e botão Home lado a lado */
-.proprietario-cabecalho-acoes,
 .cliente-cabecalho-acoes,
 .barbeiro-cabecalho-acoes,
 .saas-cabecalho-acoes {
@@ -1539,8 +936,6 @@
     flex-wrap: wrap;
 }
 
-/* Botão Voltar para Home */
-.proprietario-voltar-home,
 .cliente-voltar-home,
 .barbeiro-voltar-home,
 .saas-voltar-home {
@@ -1553,14 +948,13 @@
     border: 1px solid #238747;
     border-radius: 12px;
     background: #111713;
-    color: #fff;
+    color: #ffffff;
     font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
 }
 
-.proprietario-voltar-home:hover,
 .cliente-voltar-home:hover,
 .barbeiro-voltar-home:hover,
 .saas-voltar-home:hover {
@@ -1568,11 +962,9 @@
 }
 
 @media (max-width: 600px) {
-    .proprietario-cabecalho-acoes,
     .cliente-cabecalho-acoes,
     .barbeiro-cabecalho-acoes,
     .saas-cabecalho-acoes {
         gap: 8px;
     }
->>>>>>> Stashed changes
 }

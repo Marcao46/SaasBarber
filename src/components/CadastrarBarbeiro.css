@@ -478,3 +478,29 @@
         font-size: 12px;
     }
 }
+
+/* Fundo branco normal na tela de cadastro do barbeiro */
+.cadastro-barbeiro-page {
+    background: #ffffff !important;
+}
+
+.cadastro-barbeiro-container {
+    background: #ffffff !important;
+}
+
+.cadastro-barbeiro-conteudo {
+    background: #ffffff !important;
+}
+
+/* Cartão principal do formulário */
+.cadastro-barbeiro-conteudo,
+.cadastro-barbeiro-conteudo .cadastro-barbeiro-introducao,
+.cadastro-barbeiro-conteudo .form-barbeiro {
+    background-color: #ffffff;
+}
+
+/* Mantém o ícone principal verde-claro */
+.cadastro-barbeiro-icone-principal {
+    background-color: #e8f7ed;
+}
+

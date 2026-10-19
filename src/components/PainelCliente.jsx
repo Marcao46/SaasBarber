@@ -388,9 +388,8 @@ export default function PainelCliente({ voltarHome }) {
             <span className="cliente-sobretitulo">
               PAINEL DO CLIENTE
             </span>
-            <h1>
-              {telaAtiva === "inicio"
-                ? `Olá, ${nomeCliente}!`
+            <h1>{telaAtiva === "inicio"
+                ?`Olá,${nomeCliente}!`
                 : tituloAtual}
             </h1>
             <p>
