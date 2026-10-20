@@ -924,10 +924,7 @@
 
 }
 .home-botao-voltar {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1000;
+   position: relative;
     padding: 11px 17px;
     border: 1px solid #29c765;
     border-radius: 9px;
