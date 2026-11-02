@@ -1,9 +1,13 @@
+import ListaAgendamentos from "./ListaAgendamentos";
+import DatasConfiguradas from "./DatasConfiguradas";
+import { prepararAgendaBarbeiro } from '../agendaApi';
 
 import { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import {
   collection,
   getDocs,
+  onSnapshot,
   query,
   where,
   doc,
@@ -48,45 +52,6 @@ const disponibilidadeInicial = DIAS.map((dia) => ({
   intervaloFim: "13:00",
 }));
 
-function formatarData(data) {
-  if (!data) return "";
-
-  const partes = data.split("-");
-
-  return partes.length === 3
-    ? `${partes[2]}/${partes[1]}/${partes[0]}`
-    : data;
-}
-
-function obterNomeDia(id) {
-  return DIAS.find((dia) => dia.id === id)?.nome || id;
-}
-
-function obterStatus(statusOriginal) {
-  const status = String(statusOriginal || "confirmado")
-    .trim()
-    .toLowerCase();
-
-  if (["cancelado", "cancelada", "canceled", "cancelled"].includes(status)) {
-    return {
-      texto: "Cancelado",
-      classe: "ag-status-cancelado",
-    };
-  }
-
-  if (["pendente", "pending", "aguardando"].includes(status)) {
-    return {
-      texto: "Pendente",
-      classe: "ag-status-pendente",
-    };
-  }
-
-  return {
-    texto: "Confirmado",
-    classe: "ag-status-confirmado",
-  };
-}
-
 export default function PainelBarbeiro({ voltarHome }) {
   const usuario = auth.currentUser;
 
@@ -112,6 +77,7 @@ export default function PainelBarbeiro({ voltarHome }) {
   const [salvando, setSalvando] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [tipoMensagem, setTipoMensagem] = useState("sucesso");
+  const [mensagemExcecao, setMensagemExcecao] = useState('');
 
   useEffect(() => {
     if (!usuario) {
@@ -122,7 +88,16 @@ export default function PainelBarbeiro({ voltarHome }) {
     carregarDados();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usuario?.uid]);
+  }, [usuario]);
+
+  useEffect(() => {
+    if (!usuario) return;
+    return onSnapshot(query(collection(db, "agendamentos"), where("barbeiroId", "==", usuario.uid)), snap => {
+      const lista = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+      setAgendamentos(lista);
+      setClientes(Array.from(new Map(lista.filter(a => a.clienteId).map(a => [a.clienteId, { id: a.clienteId, nome: a.clienteNome || "Cliente" }])).values()));
+    }, () => mostrarMensagem("Não foi possível acompanhar a agenda em tempo real.", "erro"));
+  }, [usuario]);
 
   function mostrarMensagem(texto, tipo = "sucesso") {
     setMensagem(texto);
@@ -136,13 +111,9 @@ export default function PainelBarbeiro({ voltarHome }) {
     setMensagem("");
 
     try {
-      const barbeiroSnap = await getDoc(
-        doc(db, "barbeiros", usuario.uid)
-      );
-
-      if (barbeiroSnap.exists()) {
-        setNome(barbeiroSnap.data().nome || "Barbeiro");
-      }
+      const barbeirosSnap = await getDocs(query(collection(db, "barbeiros"), where("usuarioId", "==", usuario.uid)));
+      if (!barbeirosSnap.empty) setNome(barbeirosSnap.docs[0].data().nome || "Barbeiro");
+      await prepararAgendaBarbeiro();
 
       const disponibilidadeSnap = await getDoc(
         doc(db, "disponibilidades", usuario.uid)
@@ -178,54 +149,16 @@ export default function PainelBarbeiro({ voltarHome }) {
         }
       }
 
-      await carregarAgendamentos();
     } catch (erro) {
       console.error("Erro ao carregar painel:", erro);
 
       mostrarMensagem(
-        "Não foi possível carregar os dados. Verifique a conexão e as permissões do Firebase.",
+        erro.message || "Não foi possível carregar os dados. Verifique a conexão e as permissões do Firebase.",
         "erro"
       );
     } finally {
       setCarregando(false);
     }
-  }
-
-  async function carregarAgendamentos() {
-    if (!usuario) return;
-
-    const consulta = query(
-      collection(db, "agendamentos"),
-      where("barbeiroId", "==", usuario.uid)
-    );
-
-    const resultado = await getDocs(consulta);
-
-    const lista = resultado.docs.map((item) => ({
-      id: item.id,
-      ...item.data(),
-    }));
-
-    lista.sort((a, b) =>
-      `${a.data || ""} ${a.horarioInicio || ""}`.localeCompare(
-        `${b.data || ""} ${b.horarioInicio || ""}`
-      )
-    );
-
-    setAgendamentos(lista);
-
-    const unicos = new Map();
-
-    lista.forEach((item) => {
-      if (item.clienteId) {
-        unicos.set(item.clienteId, {
-          id: item.clienteId,
-          nome: item.clienteNome || "Cliente",
-        });
-      }
-    });
-
-    setClientes(Array.from(unicos.values()));
   }
 
   function atualizarDia(diaId, campo, valor) {
@@ -310,6 +243,7 @@ export default function PainelBarbeiro({ voltarHome }) {
   }
 
   async function salvarExcecao() {
+    setMensagemExcecao('');
     if (!usuario || !dataExcecao) {
       mostrarMensagem("Selecione uma data para continuar.", "erro");
       return;
@@ -373,8 +307,10 @@ export default function PainelBarbeiro({ voltarHome }) {
       );
 
       mostrarMensagem("Ajuste da data salvo com sucesso.");
+      setMensagemExcecao(`Ajuste de ${dataExcecao.split('-').reverse().join('/')} salvo: ${excecaoBloqueada ? 'dia bloqueado' : `dia liberado das ${inicioExcecao} às ${fimExcecao}`}.`);
     } catch (erro) {
       console.error("Erro ao salvar ajuste:", erro);
+      setMensagemExcecao('Não foi possível salvar o ajuste. Verifique a conexão e tente novamente.');
 
       mostrarMensagem(
         "Não foi possível salvar o ajuste da data.",
@@ -399,21 +335,11 @@ export default function PainelBarbeiro({ voltarHome }) {
     setMensagem("");
     setMenuMobileAberto(false);
 
-    if (novaAba === "agendamentos" || novaAba === "clientes") {
-      carregarAgendamentos().catch((erro) => {
-        console.error("Erro ao atualizar agendamentos:", erro);
-
-        mostrarMensagem(
-          "Não foi possível atualizar os agendamentos.",
-          "erro"
-        );
-      });
-    }
   }
 
   const agendamentosAtivos = agendamentos.filter(
     (item) =>
-      !["cancelado", "cancelada"].includes(
+      !["cancelado", "cancelada", "recusado", "concluido"].includes(
         String(item.status || "").toLowerCase()
       )
   );
@@ -683,39 +609,7 @@ export default function PainelBarbeiro({ voltarHome }) {
           </button>
         )}
 
-        {aba === "agendamentos" && (
-          <section className="barbeiro-secao">
-            <h2>Meus Agendamentos</h2>
-
-            {agendamentos.length === 0 ? (
-              <p>Nenhum agendamento encontrado.</p>
-            ) : (
-              <div className="ag-fields">
-                {agendamentos.map((item) => (
-                  <article className="ag-card" key={item.id}>
-                    <h3>{item.servicoNome || "Serviço"}</h3>
-                    <p>
-                      <strong>Cliente:</strong>{" "}
-                      {item.clienteNome || "Não informado"}
-                    </p>
-                    <p>
-                      <strong>Data:</strong> {formatarData(item.data)}
-                    </p>
-                    <p>
-                      <strong>Horário:</strong>{" "}
-                      {item.horarioInicio || "--:--"} às{" "}
-                      {item.horarioFim || "--:--"}
-                    </p>
-                    <p>
-                      <strong>Status:</strong>{" "}
-                      {item.status || "confirmado"}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
-        )}
+        {aba === "agendamentos" && <ListaAgendamentos papel="barbeiro" />}
 
         {aba === "clientes" && (
           <section className="barbeiro-secao">
@@ -1013,11 +907,19 @@ export default function PainelBarbeiro({ voltarHome }) {
               </button>
             </div>
 
+            {mensagemExcecao && <p className="ag-message" role="status">{mensagemExcecao}</p>}
+            <DatasConfiguradas barbeiroId={usuario?.uid} editar aoSelecionar={item => {
+              setDataExcecao(item.data);
+              setExcecaoBloqueada(Boolean(item.bloqueada));
+              setInicioExcecao(item.inicio || '09:00');
+              setFimExcecao(item.fim || '18:00');
+              setIntervaloInicioExcecao(item.intervaloInicio || '');
+              setIntervaloFimExcecao(item.intervaloFim || '');
+              setMensagemExcecao('Ajuste carregado para edição no formulário acima.');
+            }} />
             <p className="disp-nota">
-              <strong>Importante:</strong> salvar a disponibilidade registra os
-              horários no Firebase. Para que os clientes vejam os horários
-              atualizados, a tela de agendamento também precisa consultar esses
-              dados e respeitar os bloqueios e intervalos.
+              As datas liberadas aparecem no painel do cliente após salvar.
+              Os horários respeitam a duração do serviço, os intervalos e as reservas existentes.
             </p>
           </section>
         )}

@@ -1,6 +1,6 @@
 
-import { getFirestore } from "firebase/firestore"
-import { getAuth } from "firebase/auth"
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore"
+import { getAuth, connectAuthEmulator } from "firebase/auth"
 import { initializeApp, getApp, getApps } from "firebase/app"
 
 const firebaseConfig = {
@@ -13,6 +13,8 @@ const firebaseConfig = {
   measurementId: "G-BPJLTJMCLJ"
 }
 
+const usarEmuladores = import.meta.env.VITE_FIREBASE_EMULATORS === "true"
+if (usarEmuladores) firebaseConfig.projectId = "demo-saasbarber"
 const app = initializeApp(firebaseConfig)
 
 const db = getFirestore(app)
@@ -24,5 +26,10 @@ const secondaryApp = getApps().some(
   : initializeApp(firebaseConfig, "Secondary")
 
 const secondaryAuth = getAuth(secondaryApp)
+if (usarEmuladores) {
+  connectFirestoreEmulator(db, "127.0.0.1", 8080)
+  connectAuthEmulator(auth, "http://127.0.0.1:9099")
+  connectAuthEmulator(secondaryAuth, "http://127.0.0.1:9099")
+}
 
 export { db, auth, secondaryAuth }

@@ -1,0 +1,272 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function autenticado() { return request.auth != null; }
+    function proprio(uid) { return autenticado() && request.auth.uid == uid; }
+    function dono(id) {
+      return autenticado()
+        && get(/databases/$(database)/documents/barbearias/$(id)).data.donoId == request.auth.uid;
+    }
+    // Provisionado pelo Console/Admin SDK; nunca pelo navegador.
+    // O documento do administrador deve ter o UID como ID.
+    function adminSaas() {
+      return autenticado()
+        && exists(/databases/$(database)/documents/adminsSaas/$(request.auth.uid))
+        && get(/databases/$(database)/documents/adminsSaas/$(request.auth.uid)).data.usuarioId == request.auth.uid
+        && get(/databases/$(database)/documents/adminsSaas/$(request.auth.uid)).data.ativo == true;
+    }
+
+    match /barbeariasPublicas/{id} {
+      allow read: if true;
+      allow create, update, delete: if dono(id) || adminSaas();
+    }
+
+    match /adminsSaas/{id} {
+      // Mantém as consultas de identificação usadas nos dois logins.
+      allow get: if proprio(id) || (autenticado() && resource.data.usuarioId == request.auth.uid);
+      allow list: if autenticado() && resource.data.usuarioId == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /barbearias/{id} {
+      // Diretório dos estabelecimentos para o cliente escolher onde agendar.
+      allow read: if autenticado();
+      allow create: if autenticado()
+        && request.resource.data.donoId == request.auth.uid
+        && request.resource.data.keys().hasOnly(['donoId', 'nomeCompleto', 'nomeBarbearia', 'email', 'telefone']);
+      allow update: if (dono(id) || adminSaas())
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['nomeCompleto', 'nomeBarbearia', 'email', 'telefone']);
+      allow delete: if adminSaas();
+
+      match /servicos/{servico} {
+        allow read: if autenticado();
+        allow create, update, delete: if dono(id);
+      }
+    }
+
+    match /barbeiros/{id} {
+      // Catálogo profissional para seleção durante o agendamento.
+      allow read: if autenticado();
+      allow create: if autenticado()
+        && request.resource.data.donoId == request.auth.uid
+        && dono(request.resource.data.barbeariaId)
+        && request.resource.data.usuarioId is string
+        && request.resource.data.tipoUsuario == 'barbeiro'
+        && request.resource.data.keys().hasOnly([
+          'nome', 'email', 'telefone', 'especialidade', 'especialidades',
+          'usuarioId', 'tipoUsuario', 'donoId', 'barbeariaId'
+        ]);
+      allow update: if dono(resource.data.barbeariaId)
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['nome', 'telefone', 'especialidades', 'especialidade']);
+      allow delete: if dono(resource.data.barbeariaId);
+    }
+
+    match /clientes/{id} {
+      allow get: if proprio(id) || (autenticado() && resource.data.usuarioId == request.auth.uid);
+      allow list: if autenticado() && resource.data.usuarioId == request.auth.uid;
+      allow create: if proprio(id)
+        && request.resource.data.usuarioId == request.auth.uid
+        && request.resource.data.tipoUsuario == 'cliente'
+        && request.resource.data.keys().hasOnly(['nome', 'telefone', 'email', 'usuarioId', 'tipoUsuario', 'criadoEm']);
+      allow update: if (proprio(id) || (autenticado() && resource.data.usuarioId == request.auth.uid))
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nome', 'telefone', 'email']);
+      allow delete: if false;
+    }
+
+    function ativo(a) { return a.get('status', '') in ['pendente', 'confirmado']; }
+    function participante(a) {
+      return autenticado() && (a.clienteId == request.auth.uid || a.barbeiroId == request.auth.uid || dono(a.barbeariaId));
+    }
+    function profissionalAgenda(a) { return proprio(a.barbeiroId) || dono(a.barbeariaId); }
+    function m(h) { return int(h[0:2]) * 60 + int(h[3:5]); }
+    function dataUTC(d) { return timestamp.date(int(d[0:4]), int(d[5:7]), int(d[8:10])); }
+    function faixaValida(a, duracao) {
+      let inicio = m(a.horarioInicio);
+      let fim = m(a.horarioFim);
+      let base = dataUTC(a.data);
+      return a.data.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        && a.horarioInicio.matches('([01][0-9]|2[0-3]):[0-5][0-9]')
+        && a.horarioFim.matches('([01][0-9]|2[0-3]):[0-5][0-9]')
+        && duracao is int && duracao > 0 && duracao <= 720
+        && fim - inicio == duracao
+        && a.inicioEm == base + duration.value(inicio + 180, 'm')
+        && a.fimEm == base + duration.value(fim + 180, 'm');
+    }
+    function config(uid, data) {
+      let p = /databases/$(database)/documents/disponibilidades/$(uid);
+      let e = /databases/$(database)/documents/excecoesDisponibilidade/$(uid + '_' + data);
+      let disp = get(p).data;
+      let exc = exists(e) ? get(e).data : {};
+      let nomes = ['domingo','segunda','terca','quarta','quinta','sexta','sabado'];
+      let indice = dataUTC(data).dayOfWeek() - 1;
+      let candidato = disp.semanal.size() == 7 ? disp.semanal[indice] : {};
+      let dia = candidato.get('dia','') == nomes[indice] ? candidato : {};
+      return {
+        'ativo': exc.get('bloqueada', null) == false || (exc.get('bloqueada', null) != true && dia.get('ativo', false)),
+        'inicio': exc.get('inicio', dia.get('inicio', '09:00')),
+        'fim': exc.get('fim', dia.get('fim', '18:00')),
+        'intervaloInicio': exc.get('intervaloInicio', dia.get('intervaloInicio', '')),
+        'intervaloFim': exc.get('intervaloFim', dia.get('intervaloFim', ''))
+      };
+    }
+    function horarioLivre(uid, a, duracao) {
+      let c = config(uid, a.data);
+      let inicio = m(a.horarioInicio);
+      let fim = m(a.horarioFim);
+      let abre = m(c.inicio);
+      return faixaValida(a, duracao) && a.inicioEm > request.time && c.ativo
+        && inicio >= abre && fim <= m(c.fim) && (inicio - abre) % 30 == 0
+        && (c.intervaloInicio == '' || c.intervaloFim == '' || fim <= m(c.intervaloInicio) || inicio >= m(c.intervaloFim));
+    }
+    function preparada(uid) { return get(/databases/$(database)/documents/disponibilidades/$(uid)).data.get('agendaPreparada', false) == true; }
+    function mesmoHorario(a, b) { return a.data == b.data && a.horarioInicio == b.horarioInicio && a.horarioFim == b.horarioFim; }
+    function semSobreposicao(a, b) { return a.data != b.data || m(a.horarioFim) <= m(b.horarioInicio) || m(b.horarioFim) <= m(a.horarioInicio); }
+    function alterouSomente(a, b, chaves) {
+      return b.diff(a).affectedKeys().hasOnly(['agendaVersao', 'ultimaAcao', 'atualizadoEm', 'inicioEm', 'fimEm'].concat(chaves));
+    }
+    function mudanca(a, b) {
+      let r = a.get('reagendamento', null);
+      let n = b.get('reagendamento', null);
+      let acao = b.ultimaAcao;
+      let d = m(a.horarioFim) - m(a.horarioInicio);
+      return acao == 'cancelar'
+        ? participante(a) && b.status == 'cancelado' && n == null && b.canceladoPor == request.auth.uid && b.canceladoEm == request.time && alterouSomente(a,b,['status','reagendamento','canceladoPor','canceladoEm'])
+        : acao == 'confirmar'
+        ? profissionalAgenda(a) && a.status == 'pendente' && r == null && b.status == 'confirmado' && b.confirmadoEm == request.time && alterouSomente(a,b,['status','confirmadoEm'])
+        : acao == 'recusar'
+        ? profissionalAgenda(a) && a.status == 'pendente' && r == null && b.status == 'recusado' && b.recusadoPor == request.auth.uid && b.recusadoEm == request.time && alterouSomente(a,b,['status','recusadoPor','recusadoEm'])
+        : acao == 'concluir'
+        ? profissionalAgenda(a) && a.status == 'confirmado' && r == null && b.status == 'concluido' && b.concluidoEm == request.time && b.fimEm <= request.time && alterouSomente(a,b,['status','concluidoEm'])
+        : acao == 'reagendar'
+        ? proprio(a.clienteId) && r == null && n is map && n.keys().hasOnly(['data','horarioInicio','horarioFim','inicioEm','fimEm'])
+          && b.status == a.status && b.get('resultadoReagendamento', null) == null && b.reagendamentoSolicitadoEm == request.time
+          && horarioLivre(a.barbeiroId,n,d) && semSobreposicao(a,n) && alterouSomente(a,b,['reagendamento','resultadoReagendamento','reagendamentoSolicitadoEm'])
+        : acao == 'aceitarReagendamento'
+        ? profissionalAgenda(a) && r is map && n == null && b.status == 'confirmado' && mesmoHorario(r,b) && b.resultadoReagendamento == 'aceito'
+          && b.reagendamentoDecididoEm == request.time && horarioLivre(a.barbeiroId,b,d)
+          && alterouSomente(a,b,['data','horarioInicio','horarioFim','status','reagendamento','resultadoReagendamento','reagendamentoDecididoEm'])
+        : acao == 'recusarReagendamento'
+        ? profissionalAgenda(a) && r is map && n == null && b.status == a.status && b.resultadoReagendamento == 'recusado'
+          && b.reagendamentoDecididoEm == request.time && alterouSomente(a,b,['reagendamento','resultadoReagendamento','reagendamentoDecididoEm'])
+        : false;
+    }
+    function calendarioAtualizado(uid, data, id) {
+      let c = getAfter(/databases/$(database)/documents/reservasHorario/$(uid + '_' + data)).data;
+      return c.barbeiroId == uid && c.data == data && c.agendamentoId == id && c.atualizadoEm == request.time;
+    }
+    function calendarios(a, id) {
+      return !ativo(a) || (calendarioAtualizado(a.barbeiroId,a.data,id)
+        && (a.get('reagendamento', null) == null || a.reagendamento.data == a.data || calendarioAtualizado(a.barbeiroId,a.reagendamento.data,id)));
+    }
+    function novoAgendamento(a) {
+      let b = get(/databases/$(database)/documents/barbeiros/$(a.barbeiroDocumentoId)).data;
+      let c = get(/databases/$(database)/documents/clientes/$(a.clienteDocumentoId)).data;
+      let s = get(/databases/$(database)/documents/barbearias/$(a.barbeariaId)/servicos/$(a.servicoId)).data;
+      return proprio(a.clienteId) && (a.clienteDocumentoId == request.auth.uid || c.usuarioId == request.auth.uid)
+        && a.clienteNome == c.get('nome','Cliente')
+        && b.get('usuarioId',a.barbeiroDocumentoId) == a.barbeiroId && b.barbeariaId == a.barbeariaId && b.get('ativo',true) != false
+        && a.barbeiroNome == b.get('nome','Barbeiro') && s.get('ativo',true) != false
+        && a.servicoNome == s.get('nome','Serviço') && a.preco == s.preco && a.preco is number && a.preco >= 0
+        && a.duracaoMinutos == s.get('duracaoMinutos',s.get('duracao',30))
+        && a.status == 'pendente' && a.reagendamento == null && a.resultadoReagendamento == null
+        && a.criadoEm == request.time && a.ultimaAcao == 'criar'
+        && horarioLivre(a.barbeiroId,a,a.duracaoMinutos)
+        && a.keys().hasOnly(['clienteId','clienteDocumentoId','clienteNome','barbeiroId','barbeiroDocumentoId','barbeiroNome','barbeariaId',
+          'servicoId','servicoNome','preco','duracaoMinutos','data','horarioInicio','horarioFim','inicioEm','fimEm','status','reagendamento',
+          'resultadoReagendamento','criadoEm','agendaVersao','ultimaAcao','atualizadoEm']);
+    }
+    function vazio() { return '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'; }
+    function aplicar(bits, f, dia, reservar) {
+      let pertence = f is map && f.data == dia;
+      let inicio = pertence ? m(f.horarioInicio) : 0;
+      let fim = pertence ? m(f.horarioFim) : 0;
+      let centro = bits[inicio:fim];
+      return !pertence ? bits : centro.matches(reservar ? '0*' : '1*')
+        ? bits[0:inicio] + centro.replace(reservar ? '0' : '1',reservar ? '1' : '0') + bits[fim:1440] : '!';
+    }
+    function remover(bits, a, dia) {
+      let um = ativo(a) ? aplicar(bits,a,dia,false) : bits;
+      return ativo(a) && a.get('reagendamento',null) != null ? aplicar(um,a.reagendamento,dia,false) : um;
+    }
+    function colocar(bits, a, dia) {
+      let um = ativo(a) ? aplicar(bits,a,dia,true) : bits;
+      return ativo(a) && a.get('reagendamento',null) != null ? aplicar(um,a.reagendamento,dia,true) : um;
+    }
+    function sincronizando(uid) {
+      let d = getAfter(/databases/$(database)/documents/disponibilidades/$(uid)).data;
+      let p = /databases/$(database)/documents/disponibilidades/$(uid);
+      return proprio(uid) && (!exists(p) || get(p).data.get('agendaPreparada',false) == false)
+        && get(/databases/$(database)/documents/barbeiros/$(d.barbeiroDocumentoId)).data.get('usuarioId',d.barbeiroDocumentoId) == uid;
+    }
+    match /agendamentos/{id} {
+      allow get: if autenticado() && (!exists(/databases/$(database)/documents/agendamentos/$(id)) || participante(resource.data));
+      allow list: if participante(resource.data);
+      allow create: if autenticado() && request.resource.data.agendaVersao == 2 && request.resource.data.atualizadoEm == request.time
+        && preparada(request.resource.data.barbeiroId) && novoAgendamento(request.resource.data) && calendarios(request.resource.data,id);
+      allow update: if participante(resource.data) && ativo(resource.data)
+        && request.resource.data.agendaVersao == 2 && request.resource.data.atualizadoEm == request.time
+        && preparada(resource.data.barbeiroId)
+        && faixaValida(request.resource.data,m(resource.data.horarioFim) - m(resource.data.horarioInicio))
+        && mudanca(resource.data,request.resource.data) && calendarios(resource.data,id)
+        && (request.resource.data.get('reagendamento',null) == null || request.resource.data.reagendamento.data == resource.data.data
+          || calendarioAtualizado(resource.data.barbeiroId,request.resource.data.reagendamento.data,id));
+      allow delete: if false;
+    }
+    match /reservasHorario/{id} {
+      function escrita() {
+        let n = request.resource.data;
+        let p = /databases/$(database)/documents/agendamentos/$(n.agendamentoId);
+        let antes = exists(p) ? get(p).data : {};
+        let depois = getAfter(p).data;
+        let bits = resource == null ? vazio() : resource.data.ocupacao;
+        return participante(depois) && depois.barbeiroId == n.barbeiroId && depois.atualizadoEm == request.time
+          && n.ocupacao == colocar(remover(bits,antes,n.data),depois,n.data);
+      }
+      allow read: if autenticado();
+      allow create, update: if autenticado() && request.resource.data.keys().hasOnly(['barbeiroId','data','ocupacao','agendamentoId','atualizadoEm'])
+        && id == request.resource.data.barbeiroId + '_' + request.resource.data.data
+        && request.resource.data.data.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        && request.resource.data.ocupacao is string && request.resource.data.ocupacao.size() == 1440 && request.resource.data.ocupacao.matches('[01]*')
+        && request.resource.data.atualizadoEm == request.time
+        && (sincronizando(request.resource.data.barbeiroId) || escrita());
+      allow delete: if false;
+    }
+    match /ocupacaoAgendamentos/{id} {
+      allow read: if autenticado();
+      allow write: if false;
+    }
+    match /disponibilidades/{uid} {
+      allow read: if autenticado();
+      allow create, update: if proprio(uid)
+        && request.resource.data.barbeiroId == uid
+        && request.resource.data.semanal is list
+        && (resource == null
+          ? request.resource.data.keys().hasOnly(['barbeiroId', 'semanal', 'atualizadoEm', 'agendaPreparada', 'barbeiroDocumentoId'])
+          : request.resource.data.diff(resource.data).affectedKeys().hasOnly(['barbeiroId', 'semanal', 'atualizadoEm', 'agendaPreparada', 'barbeiroDocumentoId']))
+        && (request.resource.data.get('agendaPreparada',false) == false ||
+          get(/databases/$(database)/documents/barbeiros/$(request.resource.data.barbeiroDocumentoId)).data.get('usuarioId',request.resource.data.barbeiroDocumentoId) == uid)
+        && (resource == null || resource.data.get('agendaPreparada',false) != true ||
+          (request.resource.data.agendaPreparada == true && request.resource.data.barbeiroDocumentoId == resource.data.barbeiroDocumentoId));
+      allow delete: if proprio(uid) && resource.data.get('agendaPreparada',false) == false;
+    }
+    match /excecoesDisponibilidade/{id} {
+      allow read: if autenticado();
+      allow create: if autenticado()
+        && request.resource.data.barbeiroId == request.auth.uid
+        && id == request.auth.uid + '_' + request.resource.data.data
+        && request.resource.data.keys().hasOnly([
+          'barbeiroId', 'data', 'bloqueada', 'inicio', 'fim',
+          'intervaloInicio', 'intervaloFim', 'atualizadoEm'
+        ]);
+      allow update: if autenticado() && resource.data.barbeiroId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'bloqueada', 'inicio', 'fim', 'intervaloInicio', 'intervaloFim', 'atualizadoEm'
+        ]);
+      allow delete: if autenticado() && resource.data.barbeiroId == request.auth.uid;
+    }
+    // Caminhos não declarados não têm acesso; não adicionar allow genérico.
+  }
+}

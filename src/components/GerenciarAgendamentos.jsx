@@ -1,3 +1,4 @@
+import { alterarAgendamento } from "../agendaApi";
 
 import { useEffect, useState } from "react";
 import {
@@ -5,8 +6,7 @@ import {
   getDocs,
   query,
   where,
-  doc,
-  updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 
 import {
@@ -15,7 +15,6 @@ import {
   FaSearch,
   FaSyncAlt,
   FaClock,
-  FaUser,
   FaCut,
   FaCheckCircle,
   FaTimesCircle,
@@ -105,6 +104,7 @@ function formatarData(data) {
 
 function formatarHora(agendamento, data) {
   const horaSalva =
+    agendamento.horarioInicio ||
     agendamento.hora ||
     agendamento.horarioAgendamento ||
     agendamento.horaAgendamento;
@@ -236,7 +236,19 @@ export default function GerenciarAgendamentos({ voltarPainel }) {
   }
 
   useEffect(() => {
-    carregarAgendamentos();
+    let ativo = true;
+    let parar = () => {};
+    const usuario = auth.currentUser;
+    if (!usuario) { setCarregando(false); return; }
+    getDocs(query(collection(db, "barbearias"), where("donoId", "==", usuario.uid))).then(lojas => {
+      if (!ativo) return;
+      if (lojas.empty) { setErro("Nenhuma barbearia encontrada."); setCarregando(false); return; }
+      parar = onSnapshot(query(collection(db, "agendamentos"), where("barbeariaId", "==", lojas.docs[0].id)), snap => {
+        setAgendamentos(snap.docs.map(d => ({ ...d.data(), id: d.id })).sort((a,b) => `${b.data} ${b.horarioInicio}`.localeCompare(`${a.data} ${a.horarioInicio}`)));
+        setCarregando(false);
+      }, () => { setErro("Não foi possível acompanhar a agenda."); setCarregando(false); });
+    }).catch(() => { if (ativo) { setErro("Não foi possível carregar a agenda."); setCarregando(false); } });
+    return () => { ativo = false; parar(); };
   }, []);
 
   async function atualizarStatus(agendamento, novoStatus) {
@@ -255,21 +267,8 @@ export default function GerenciarAgendamentos({ voltarPainel }) {
     setMensagem("");
 
     try {
-      // Atualiza apenas o campo de status do documento.
-      await updateDoc(
-        doc(db, "agendamentos", agendamento.id),
-        {
-          status: novoStatus,
-        }
-      );
-
-      setAgendamentos((lista) =>
-        lista.map((item) =>
-          item.id === agendamento.id
-            ? { ...item, status: novoStatus }
-            : item
-        )
-      );
+      const acoes = { confirmado: "confirmar", cancelado: "cancelar", concluido: "concluir" };
+      await alterarAgendamento({ id: agendamento.id, acao: acoes[novoStatus] });
 
       const textos = {
         confirmado: "Agendamento confirmado com sucesso.",
@@ -578,6 +577,7 @@ export default function GerenciarAgendamentos({ voltarPainel }) {
                           {status === "cancelado" && <FaTimesCircle />}
                           {status === "concluido" && <FaCheckCircle />}
 
+                          {item.reagendamento && "Reagendamento pendente ? "}
                           {status.charAt(0).toUpperCase() +
                             status.slice(1)}
                         </span>
@@ -585,7 +585,7 @@ export default function GerenciarAgendamentos({ voltarPainel }) {
 
                       <td>
                         <div className="ga-acoes">
-                          {status === "pendente" && (
+                          {status === "pendente" && !item.reagendamento && (
                             <button
                               type="button"
                               className="ga-acao-confirmar"
@@ -597,7 +597,7 @@ export default function GerenciarAgendamentos({ voltarPainel }) {
                             </button>
                           )}
 
-                          {status === "confirmado" && (
+                          {status === "confirmado" && !item.reagendamento && (
                             <button
                               type="button"
                               className="ga-acao-concluir"

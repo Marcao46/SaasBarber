@@ -153,14 +153,14 @@
     display: flex;
     align-items: center;
     padding: 95px 6%;
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 0, 0, 0.88),
-            rgba(0, 0, 0, 0.72) 52%,
-            rgba(0, 0, 0, 0.47)
-        ),
-        url("../assets/barbearia-home.jpg");
+  background:
+    linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.88),
+        rgba(0, 0, 0, 0.72) 52%,
+        rgba(0, 0, 0, 0.47)
+    ),
+    url("../assets/barbearia-home.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -218,14 +218,26 @@
     gap: 13px;
     min-height: 52px;
     padding: 0 26px;
-    border: 1px solid #2ecc71;
+
+    border: 1px solid #22c55e;
     border-radius: 12px;
-    background: linear-gradient(135deg, #39dc7c, #23ba60);
-    color: #06140b;
+
+    background: #22c55e;
+    color: #052e16;
+
     font-size: 15px;
     font-weight: 800;
-    transition: 0.25s ease;
+    opacity: 1;
 
+    transition: background 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.home-botao-comecar:hover {
+    background: #4ade80;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(46, 204, 113, 0.3);
 }
 .home-botao-comecar:hover {
     transform: translateY(-3px);
@@ -2151,4 +2163,95 @@ html {
     backdrop-filter 0.35s ease,
     box-shadow 0.35s ease,
     padding 0.35s ease;
+}
+
+
+/* Botão principal da Home - verde destacado */
+.home-principal .home-botoes-principais .home-botao-comecar {
+    position: relative;
+    z-index: 3;
+
+   background: #16c653 !important;
+border: 1px solid #28e86a;
+box-shadow: 0 6px 20px rgba(22, 198, 83, 0.35);
+    opacity: 1 !important;
+    filter: none !important;
+
+    box-shadow: 0 8px 25px rgba(39, 216, 120, 0.35);
+}
+
+.home-principal .home-botoes-principais .home-botao-comecar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(39, 216, 120, 0.45);
+}
+
+
+/* Transição discreta somente na divisão das fotos */
+.home-page .home-principal {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+/* ==========================================
+   SAASBARBER - POSICIONAMENTO DA TRANSICAO
+   ENTRE AS DUAS FOTOGRAFIAS
+========================================== */
+
+/* Aproxima a segunda secao da primeira */
+.home-page .home-secao-clientes {
+    margin-top: -50px;
+}
+
+/* Posiciona o titulo sobre a faixa escura */
+.home-page .home-secao-clientes .home-secao-cabecalho {
+    position: relative;
+    z-index: 10;
+    transform: translateY(-130px);
+}
+
+/* ==========================================
+   SAASBARBER - LOGIN PREMIUM
+   Mesma fotografia da Home
+========================================== */
+
+/* Fundo da tela de login */
+.home-page .home-tela-acesso {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.78),
+            rgba(0, 20, 12, 0.58),
+            rgba(0, 0, 0, 0.75)
+        ),
+        url("../assets/barbearia-home.jpg")
+        center center / cover no-repeat;
+
+    background-attachment: fixed;
+}
+
+/* Painel de login com efeito de vidro */
+.home-tela-acesso form {
+    background: rgba(5, 20, 12, 0.58) !important;
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border: 1px solid rgba(46, 204, 113, 0.35);
+    border-radius: 18px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* Campos de entrada */
+.home-tela-acesso input {
+    border-radius: 9px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-tela-acesso input:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.18);
 }

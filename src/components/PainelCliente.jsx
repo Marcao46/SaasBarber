@@ -2,10 +2,6 @@
 import { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import {
-  collection,
-  getDocs,
-  query,
-  where,
   doc,
   getDoc,
 } from "firebase/firestore";
@@ -22,15 +18,14 @@ import {
 } from "react-icons/fa";
 
 import { auth, db } from "../fireBaseConfig";
+import ListaAgendamentos from "./ListaAgendamentos";
 import AgendarHorarioCliente from "./AgendarHorarioCliente";
 import "./PainelCliente.css";
 import "./Agendamento.css";
 
 export default function PainelCliente({ voltarHome }) {
   const [telaAtiva, setTelaAtiva] = useState("inicio");
-  const [agendamentos, setAgendamentos] = useState([]);
   const [dadosCliente, setDadosCliente] = useState(null);
-  const [carregando, setCarregando] = useState(false);
   const [mensagem, setMensagem] = useState("");
 
   const usuario = auth.currentUser;
@@ -59,42 +54,7 @@ export default function PainelCliente({ voltarHome }) {
     }
 
     carregarPerfil();
-  }, [usuario?.uid]);
-
-  useEffect(() => {
-    async function carregarAgendamentos() {
-      if (!usuario || telaAtiva !== "agendamentos") return;
-
-      setCarregando(true);
-      setMensagem("");
-
-      try {
-        const consulta = query(
-          collection(db, "agendamentos"),
-          where("clienteId", "==", usuario.uid)
-        );
-
-        const resultado = await getDocs(consulta);
-
-        const lista = resultado.docs
-          .map((item) => ({ id: item.id, ...item.data() }))
-          .sort((a, b) =>
-            `${a.data || ""} ${a.horarioInicio || ""}`.localeCompare(
-              `${b.data || ""} ${b.horarioInicio || ""}`
-            )
-          );
-
-        setAgendamentos(lista);
-      } catch (erro) {
-        console.error("Erro ao carregar agendamentos:", erro);
-        setMensagem("Não foi possível carregar seus agendamentos.");
-      } finally {
-        setCarregando(false);
-      }
-    }
-
-    carregarAgendamentos();
-  }, [usuario?.uid, telaAtiva]);
+  }, [usuario]);
 
   async function sair() {
     try {
@@ -103,15 +63,6 @@ export default function PainelCliente({ voltarHome }) {
       console.error("Erro ao sair:", erro);
       setMensagem("Não foi possível sair da conta.");
     }
-  }
-
-  function formatarData(data) {
-    if (!data) return "Data não informada";
-
-    const partes = data.split("-");
-    if (partes.length !== 3) return data;
-
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
   }
 
   const opcoes = [
@@ -201,65 +152,7 @@ export default function PainelCliente({ voltarHome }) {
   }
 
   function conteudoAgendamentos() {
-    return (
-      <section className="cliente-secao">
-        <h2>Meus Agendamentos</h2>
-        <p className="cliente-area-subtitulo">
-          Consulte seus próximos horários e seu histórico.
-        </p>
-
-        {mensagem && (
-          <div className="cliente-alerta">{mensagem}</div>
-        )}
-
-        {carregando && <p>Carregando agendamentos...</p>}
-
-        {!carregando &&
-          !mensagem &&
-          agendamentos.length === 0 && (
-            <div className="cliente-vazio">
-              <FaCalendarAlt />
-              <h3>Nenhum agendamento encontrado</h3>
-              <p>
-                Quando você agendar um horário, ele aparecerá aqui.
-              </p>
-              <button
-                type="button"
-                className="cliente-botao"
-                onClick={() => navegar("agendar")}
-              >
-                Agendar horário
-              </button>
-            </div>
-          )}
-
-        <div className="cliente-lista-agendamentos">
-          {agendamentos.map((item) => (
-            <article
-              className="cliente-agendamento"
-              key={item.id}
-            >
-              <h3>{item.servicoNome || "Serviço"}</h3>
-              <p>
-                <strong>Barbeiro:</strong>{" "}
-                {item.barbeiroNome || "Não informado"}
-              </p>
-              <p>
-                <strong>Data:</strong> {formatarData(item.data)}
-              </p>
-              <p>
-                <strong>Horário:</strong>{" "}
-                {item.horarioInicio || "--:--"} às{" "}
-                {item.horarioFim || "--:--"}
-              </p>
-              <span className="cliente-status">
-                {item.status || "Não informado"}
-              </span>
-            </article>
-          ))}
-        </div>
-      </section>
-    );
+    return <ListaAgendamentos />;
   }
 
   function conteudoPerfil() {
@@ -418,6 +311,7 @@ export default function PainelCliente({ voltarHome }) {
           </div>
         </header>
 
+        {mensagem && <p role="status" className="cliente-alerta">{mensagem}</p>}
         {telaAtiva === "inicio" && conteudoInicio()}
 
         {telaAtiva === "agendar" && (

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:local": "node functions/node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --project demo-saasbarber --only auth,firestore \"node scripts/iniciar-local.mjs\"",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

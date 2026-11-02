@@ -30,19 +30,16 @@ body {
   align-items: center;
   justify-content: center;
   padding: 36px 20px 54px;
-  background:
-    radial-gradient(
-      ellipse at 50% 45%,
-      rgba(0, 72, 46, 0.15) 0%,
-      rgba(0, 30, 20, 0.08) 48%,
-      transparent 78%
-    ),
-    radial-gradient(
-      ellipse at top left,
-      rgba(0, 70, 43, 0.09),
-      transparent 45%
-    ),
-    #050908;
+
+background:
+  linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.76),
+    rgba(0, 22, 14, 0.52),
+    rgba(0, 0, 0, 0.72)
+  ),
+  url("../assets/barbearia-home.jpg") center center / cover no-repeat;
+
   color: #f5f7f6;
 }
 
@@ -50,16 +47,26 @@ body {
    CONTAINER CENTRAL
 ======================================== */
 
+
 .login-container {
   width: 100%;
-  max-width: 392px;
+  max-width: 430px;
   margin: auto;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
+  padding: 30px 24px;
+
+  border: 1px solid rgba(0, 223, 131, 0.28);
+  border-radius: 22px;
+
+background: rgba(5, 18, 13, 0.25);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.5),
+    0 0 35px rgba(0, 223, 131, 0.05);
 }
+
 
 /* ========================================
    LOGO E CABEÇALHO
@@ -368,6 +375,7 @@ body {
 @media (max-width: 480px) {
   .login-page {
     padding: 28px 16px 36px;
+
   }
 
   .login-container {
@@ -410,4 +418,34 @@ body {
     margin-top: 0;
     margin-bottom: 0;
   }
+}
+
+.login-senha-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.login-form .campo .login-senha-wrapper input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.login-senha-olho {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: none;
+  background: transparent;
+  color: #00df83;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.login-senha-olho:hover {
+  color: #75ffc0;
 }

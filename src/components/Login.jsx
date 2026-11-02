@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { FaCut, FaUserTie, FaUsers } from "react-icons/fa";
+import { FaCut, FaUserTie, FaUsers, FaEye, FaEyeSlash } from "react-icons/fa";
 import "./login.css";
 
 import Cadastrar from "./Cadastrar";
@@ -31,6 +31,7 @@ import { auth, db } from "../fireBaseConfig";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [tipoCadastro, setTipoCadastro] = useState("");
   const [painelUsuario, setPainelUsuario] = useState("");
   const [carregando, setCarregando] = useState(true);
@@ -351,15 +352,29 @@ const Login = () => {
           <div className="campo">
             <label htmlFor="login-senha">Senha</label>
 
-            <input
-              id="login-senha"
-              type="password"
-              placeholder="Sua senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              autoComplete="current-password"
-              required
-            />
+
+<div className="login-senha-wrapper">
+  <input
+    id="login-senha"
+    type={mostrarSenha ? "text" : "password"}
+    placeholder="Sua senha"
+    value={senha}
+    onChange={(e) => setSenha(e.target.value)}
+    autoComplete="current-password"
+    required
+  />
+
+  <button
+    type="button"
+    className="login-senha-olho"
+    onClick={() => setMostrarSenha(!mostrarSenha)}
+    aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+    title={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+  >
+    {mostrarSenha ? <FaEyeSlash /> : <FaEye />}
+  </button>
+</div>
+
           </div>
 
           <div className="opcoes-login">
