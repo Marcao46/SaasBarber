@@ -1321,3 +1321,255 @@
     font-size: 13px;
   }
 }
+
+/* =====================================================
+   SAASBARBER - MINHA DISPONIBILIDADE
+   CORREÇÃO COMPLETA DOS TEMAS CLARO E ESCURO
+   ===================================================== */
+
+/* =========================
+   MODO CLARO
+   ========================= */
+
+html[data-tema="claro"] .barbeiro-disponibilidade {
+    background: #ffffff !important;
+    color: #17291e !important;
+    border-color: #dce7e0 !important;
+}
+
+html[data-tema="claro"] .disp-intro h2,
+html[data-tema="claro"] .disp-excecao-cabecalho h2 {
+    color: #163b26 !important;
+}
+
+html[data-tema="claro"] .disp-intro p,
+html[data-tema="claro"] .disp-excecao-cabecalho p {
+    color: #718579 !important;
+}
+
+html[data-tema="claro"] .disp-dia-card {
+    background: #fbfdfb !important;
+    border-color: #dce8e0 !important;
+}
+
+html[data-tema="claro"] .disp-dia-inativo {
+    background: #f1f4f2 !important;
+}
+
+html[data-tema="claro"] .disp-dia-identidade h3 {
+    color: #183b27 !important;
+}
+
+html[data-tema="claro"] .disp-dia-identidade span,
+html[data-tema="claro"] .disp-switch-texto {
+    color: #718579 !important;
+}
+
+html[data-tema="claro"] .disp-campo label {
+    color: #526b5b !important;
+}
+
+html[data-tema="claro"] .disp-campo input {
+    background: #ffffff !important;
+    color: #183b27 !important;
+    border-color: #d6e4da !important;
+}
+
+html[data-tema="claro"] .disp-excecao-card {
+    background: #fbfdfb !important;
+    border-color: #dce8e0 !important;
+}
+
+html[data-tema="claro"] .disp-bloquear-dia {
+    background: #ffffff !important;
+    border-color: #e1e9e3 !important;
+}
+
+html[data-tema="claro"] .disp-bloquear-dia strong {
+    color: #254631 !important;
+}
+
+html[data-tema="claro"] .disp-bloquear-dia small {
+    color: #78887d !important;
+}
+
+html[data-tema="claro"] .disp-nota {
+    background: #edf8f0 !important;
+    color: #55705e !important;
+    border-color: #d4e8da !important;
+}
+
+html[data-tema="claro"] .disp-acoes > p {
+    color: #728578 !important;
+}
+
+/* =========================
+   MODO ESCURO
+   ========================= */
+
+html[data-tema="escuro"] .barbeiro-main {
+    background: var(--tema-fundo) !important;
+    color: var(--tema-texto) !important;
+}
+
+/* Cartão principal */
+html[data-tema="escuro"] .barbeiro-secao.barbeiro-disponibilidade {
+    background: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borda) !important;
+    box-shadow: var(--tema-sombra) !important;
+}
+
+/* Cabeçalho da disponibilidade */
+html[data-tema="escuro"] .disp-intro h2,
+html[data-tema="escuro"] .disp-excecao-cabecalho h2 {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .disp-intro p,
+html[data-tema="escuro"] .disp-excecao-cabecalho p {
+    color: var(--tema-texto-secundario) !important;
+}
+
+/* Ícones */
+html[data-tema="escuro"] .disp-intro-icone,
+html[data-tema="escuro"] .disp-excecao-icone {
+    background: #1c3827 !important;
+    color: #55e98a !important;
+}
+
+/* Legenda */
+html[data-tema="escuro"] .disp-legenda > span {
+    color: var(--tema-texto-secundario) !important;
+}
+
+/* Cartões dos dias */
+html[data-tema="escuro"] .disp-dia-card {
+    background: var(--tema-superficie-secundaria) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-texto) !important;
+    box-shadow: none !important;
+}
+
+html[data-tema="escuro"] .disp-dia-inativo {
+    background: #111a15 !important;
+    border-color: #35483c !important;
+}
+
+/* Nome dos dias */
+html[data-tema="escuro"] .disp-dia-identidade h3 {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .disp-dia-identidade span {
+    color: var(--tema-texto-secundario) !important;
+}
+
+/* Siglas dos dias */
+html[data-tema="escuro"] .disp-dia-sigla {
+    background: #1c4930 !important;
+    color: #7df0a1 !important;
+}
+
+html[data-tema="escuro"] .disp-dia-inativo .disp-dia-sigla {
+    background: #303b34 !important;
+    color: #c0ccc4 !important;
+}
+
+/* Botão de ativar e desativar */
+html[data-tema="escuro"] .disp-switch-texto {
+    color: var(--tema-texto-secundario) !important;
+}
+
+html[data-tema="escuro"] .disp-switch-trilho {
+    background: #526057 !important;
+}
+
+html[data-tema="escuro"] .disp-switch input:checked + .disp-switch-trilho {
+    background: #168b43 !important;
+}
+
+/* Campos de horário */
+html[data-tema="escuro"] .disp-campo label {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .disp-campo label svg {
+    color: var(--tema-verde) !important;
+}
+
+html[data-tema="escuro"] .disp-campo input {
+    background: var(--tema-campo) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borda) !important;
+    color-scheme: dark;
+}
+
+html[data-tema="escuro"] .disp-campo input:focus {
+    border-color: var(--tema-verde) !important;
+    box-shadow: 0 0 0 3px rgba(49, 232, 121, 0.12) !important;
+}
+
+/* Ajustes de datas específicas */
+html[data-tema="escuro"] .disp-excecao-card {
+    background: var(--tema-superficie-secundaria) !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .disp-bloquear-dia {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .disp-bloquear-dia strong {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .disp-bloquear-dia small {
+    color: var(--tema-texto-secundario) !important;
+}
+
+html[data-tema="escuro"] .disp-bloquear-icone {
+    background: #1c3827 !important;
+    color: var(--tema-verde) !important;
+}
+
+/* Legenda e informações inferiores */
+html[data-tema="escuro"] .disp-acoes > p {
+    color: var(--tema-texto-secundario) !important;
+}
+
+html[data-tema="escuro"] .disp-divisor {
+    background: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .disp-nota {
+    background: #1b3022 !important;
+    border-color: #355b40 !important;
+    color: #c5dfcc !important;
+}
+
+/* Mensagens */
+html[data-tema="escuro"] .barbeiro-mensagem-sucesso {
+    background: #193923 !important;
+    border-color: #326a43 !important;
+    color: #a2f0b7 !important;
+}
+
+html[data-tema="escuro"] .barbeiro-mensagem-erro {
+    background: #3b2020 !important;
+    border-color: #784040 !important;
+    color: #ffb5b5 !important;
+}
+
+/* Transição suave */
+.barbeiro-disponibilidade,
+.disp-dia-card,
+.disp-excecao-card,
+.disp-bloquear-dia,
+.disp-campo input {
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}

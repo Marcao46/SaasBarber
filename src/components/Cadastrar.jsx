@@ -22,10 +22,18 @@ const Cadastrar = ({ voltarHome }) => {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
+  const limparCampos = () => {
+    setNomeCompleto("");
+    setNomeBarbearia("");
+    setEmail("");
+    setTelefone("");
+    setSenha("");
+    setConfirmarSenha("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Verifica se as senhas são iguais antes de cadastrar
     if (senha !== confirmarSenha) {
       alert("As senhas não coincidem. Confira e tente novamente.");
       return;
@@ -39,20 +47,18 @@ const Cadastrar = ({ voltarHome }) => {
           senha
         );
 
-      await addDoc(
-        collection(db, "barbearias"),
-        {
-          nomeCompleto,
-          nomeBarbearia,
-          email,
-          telefone,
-          donoId: usuarioCriado.user.uid
-        }
-      );
+      await addDoc(collection(db, "barbearias"), {
+        nomeCompleto,
+        nomeBarbearia,
+        email,
+        telefone,
+        donoId: usuarioCriado.user.uid
+      });
 
       alert("Barbearia cadastrada com sucesso!");
 
       limparCampos();
+
     } catch (erro) {
       console.error("Erro ao cadastrar barbearia:", erro);
 
@@ -68,45 +74,86 @@ const Cadastrar = ({ voltarHome }) => {
     }
   };
 
-  const limparCampos = () => {
-    setNomeCompleto("");
-    setNomeBarbearia("");
-    setEmail("");
-    setTelefone("");
-    setSenha("");
-    setConfirmarSenha("");
-  };
-
   return (
-    <div className="cadastro-page">
-      <div className="cadastro-container">
-        <div className="cadastro-topo">
-          <div>
-            <span className="cadastro-subtitulo">
-              SISTEMA DE BARBEARIA
-            </span>
+    <main className="cadastro-page">
 
-            <h1>Cadastro da Barbearia</h1>
+      <header className="cadastro-barra-topo">
 
-            <p>
-              Cadastre os dados do estabelecimento.
-            </p>
-          </div>
-
-          <button
-            className="cadastro-home"
-            type="button"
-            onClick={voltarHome}
-          >
-            Voltar ao Login
-          </button>
+        <div className="cadastro-marca">
+          <span className="cadastro-marca-icone">✂</span>
+          <strong>SaaSBarber</strong>
         </div>
 
-        <div className="cadastro-conteudo">
+        <button
+          className="cadastro-home"
+          type="button"
+          onClick={voltarHome}
+        >
+          <span aria-hidden="true">←</span>
+          Voltar ao Login
+        </button>
+
+      </header>
+
+      <div className="cadastro-layout">
+
+        <section className="cadastro-apresentacao">
+
+          <p className="cadastro-boas-vindas">
+            Bem-vindo ao
+          </p>
+
+          <h1>
+            SaaS<span>Barber</span>
+          </h1>
+
+          <p className="cadastro-chamada">
+            Faça parte de uma plataforma completa
+            <br />
+            e gerencie sua barbearia com praticidade.
+          </p>
+
+          <ul className="cadastro-beneficios">
+
+            <li>
+              <span>▦</span>
+              Gerencie sua barbearia
+            </li>
+
+            <li>
+              <span>◷</span>
+              Receba agendamentos
+            </li>
+
+            <li>
+              <span>✓</span>
+              Organize sua equipe
+            </li>
+
+          </ul>
+
+        </section>
+
+        <section className="cadastro-cartao">
+
+          <div className="cadastro-cartao-topo">
+
+            <div className="cadastro-cartao-icone">
+              ✂
+            </div>
+
+            <div>
+              <h2>Cadastro de Barbearia</h2>
+              <p>Cadastre os dados do estabelecimento.</p>
+            </div>
+
+          </div>
+
           <form
             className="cadastro-form"
             onSubmit={handleSubmit}
           >
+
             <div className="campo-cadastro">
               <label htmlFor="nomeCompleto">
                 Nome completo
@@ -117,9 +164,7 @@ const Cadastrar = ({ voltarHome }) => {
                 type="text"
                 placeholder="Digite seu nome completo"
                 value={nomeCompleto}
-                onChange={(e) =>
-                  setNomeCompleto(e.target.value)
-                }
+                onChange={(e) => setNomeCompleto(e.target.value)}
                 required
               />
             </div>
@@ -134,9 +179,7 @@ const Cadastrar = ({ voltarHome }) => {
                 type="text"
                 placeholder="Digite o nome da barbearia"
                 value={nomeBarbearia}
-                onChange={(e) =>
-                  setNomeBarbearia(e.target.value)
-                }
+                onChange={(e) => setNomeBarbearia(e.target.value)}
                 required
               />
             </div>
@@ -151,9 +194,7 @@ const Cadastrar = ({ voltarHome }) => {
                 type="email"
                 placeholder="seu@email.com"
                 value={email}
-                onChange={(e) =>
-                  setEmail(e.target.value)
-                }
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -168,9 +209,7 @@ const Cadastrar = ({ voltarHome }) => {
                 type="tel"
                 placeholder="(47) 99999-9999"
                 value={telefone}
-                onChange={(e) =>
-                  setTelefone(e.target.value)
-                }
+                onChange={(e) => setTelefone(e.target.value)}
                 required
               />
             </div>
@@ -185,9 +224,7 @@ const Cadastrar = ({ voltarHome }) => {
                 type="password"
                 placeholder="Crie uma senha"
                 value={senha}
-                onChange={(e) =>
-                  setSenha(e.target.value)
-                }
+                onChange={(e) => setSenha(e.target.value)}
                 autoComplete="new-password"
                 required
               />
@@ -203,9 +240,7 @@ const Cadastrar = ({ voltarHome }) => {
                 type="password"
                 placeholder="Digite a senha novamente"
                 value={confirmarSenha}
-                onChange={(e) =>
-                  setConfirmarSenha(e.target.value)
-                }
+                onChange={(e) => setConfirmarSenha(e.target.value)}
                 autoComplete="new-password"
                 required
               />
@@ -215,12 +250,16 @@ const Cadastrar = ({ voltarHome }) => {
               type="submit"
               className="botao-salvar"
             >
-              Cadastrar Barbearia
+              ✂&nbsp; Cadastrar Barbearia
             </button>
+
           </form>
-        </div>
+
+        </section>
+
       </div>
-    </div>
+
+    </main>
   );
 };
 

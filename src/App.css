@@ -1,10 +1,18 @@
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
+
+/* ==========================================
+   SAASBARBER - ESTILOS GLOBAIS
+   ========================================== */
+
+/* RESET GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-h1{
-  text-align: center;
-  padding: 10px;
-  color: rgb(61, 110, 189);
+
+/* TÍTULOS GLOBAIS */
+h1 {
+    text-align: inherit;
+    padding: 0;
+    color: inherit;
 }

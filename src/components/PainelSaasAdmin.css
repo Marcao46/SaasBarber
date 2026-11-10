@@ -766,3 +766,114 @@
     flex-direction: column;
   }
 }
+
+/* =====================================================
+   PAINEL ADMINISTRATIVO - AJUSTE DOS TEMAS
+   ===================================================== */
+
+/* MODO CLARO */
+html[data-tema="claro"] .painel-saas-admin {
+    background: #f4f7f5 !important;
+    color: #17291e !important;
+}
+
+html[data-tema="claro"] .saas-conteudo {
+    background: #f4f7f5 !important;
+    color: #17291e !important;
+}
+
+html[data-tema="claro"] .saas-cabecalho {
+    background: #ffffff !important;
+    color: #17291e !important;
+    border-bottom: 1px solid #dce7e0;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+html[data-tema="claro"] .saas-cabecalho-titulo h1 {
+    color: #17291e !important;
+}
+
+html[data-tema="claro"] .saas-cabecalho-titulo p {
+    color: #64776b !important;
+}
+
+/* MODO ESCURO */
+html[data-tema="escuro"] .painel-saas-admin {
+    background: #0e1712 !important;
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-conteudo {
+    background: #0e1712 !important;
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-cabecalho {
+    background: #17251d !important;
+    color: #f3f8f4 !important;
+    border: 1px solid #35483c !important;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+html[data-tema="escuro"] .saas-cabecalho-titulo h1 {
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-cabecalho-titulo p {
+    color: #bdc9c1 !important;
+}
+
+html[data-tema="escuro"] .saas-cabecalho .saas-voltar-home {
+    background: #1c2b22 !important;
+    border-color: #35483c !important;
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-secao > h2 {
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-subtitulo {
+    color: #bdc9c1 !important;
+}
+
+html[data-tema="escuro"] .saas-indicador-texto p {
+    color: #bdc9c1 !important;
+}
+
+html[data-tema="escuro"] .saas-indicador-texto strong {
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-cartao {
+    background: #17251d !important;
+    border-color: #35483c !important;
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-cartao-texto h3 {
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-cartao-texto p {
+    color: #bdc9c1 !important;
+}
+
+html[data-tema="escuro"] .saas-secao-placeholder {
+    background: #17251d !important;
+    border-color: #35483c !important;
+    color: #bdc9c1 !important;
+}
+
+html[data-tema="escuro"] .saas-secao-placeholder h2 {
+    color: #f3f8f4 !important;
+}
+
+/* Fundo uniforme, sem faixa preta */
+html[data-tema="escuro"] .painel-saas-admin,
+html[data-tema="escuro"] .saas-conteudo {
+    background-color: #0e1712 !important;
+}
+

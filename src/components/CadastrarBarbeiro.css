@@ -1,16 +1,15 @@
 
-/* =========================================
-   CADASTRAR BARBEIRO — SAASBARBER
-   Formulário branco e pills de especialidade
-   ========================================= */
+/* ==========================================
+   CADASTRAR BARBEIRO - SAASBARBER
+   ========================================== */
 
 .cadastro-barbeiro-page {
     width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
+    min-height: 100%;
     padding: 32px;
-    background: #f4f7f5;
-    color: #17231c;
+    box-sizing: border-box;
+    background: transparent !important;
+    color: var(--tema-texto, #17231c);
     font-family: inherit;
 }
 
@@ -20,13 +19,18 @@
     box-sizing: border-box;
 }
 
+/* CONTAINER */
+
 .cadastro-barbeiro-container {
     width: 100%;
     max-width: 1250px;
     margin: 0 auto;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-/* Cabeçalho */
+/* CABEÇALHO */
 
 .cadastro-barbeiro-topo {
     display: flex;
@@ -34,81 +38,78 @@
     justify-content: space-between;
     gap: 24px;
     margin-bottom: 28px;
-    padding: 0 0 24px;
-    border-bottom: 1px solid #dfe7e1;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--tema-borda);
+    background: transparent !important;
 }
 
 .cadastro-barbeiro-subtitulo {
     display: block;
     margin-bottom: 10px;
-    color: #728078;
+    color: var(--tema-texto-secundario);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 1.3px;
-    text-transform: uppercase;
 }
 
 .cadastro-barbeiro-titulo h1 {
     margin: 0;
-    color: #17231c;
+    color: var(--tema-texto);
     font-size: clamp(25px, 3vw, 34px);
     font-weight: 750;
-    line-height: 1.25;
 }
 
 .cadastro-barbeiro-titulo p {
     margin: 9px 0 0;
-    color: #6b7770;
+    color: var(--tema-texto-secundario);
     font-size: 15px;
-    line-height: 1.6;
 }
 
-/* Botão voltar */
+/* BOTÃO VOLTAR */
 
 .botao-voltar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
-    flex-shrink: 0;
     min-height: 44px;
     padding: 0 18px;
-    border: 1px solid #dce5de;
+    border: 1px solid var(--tema-borda);
     border-radius: 10px;
     background: #ffffff;
-    color: #26382d;
+    color: #07843d;
     font-size: 14px;
     font-weight: 650;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .botao-voltar:hover {
-    border-color: #29b765;
-    background: #f0fbf4;
-    transform: translateY(-1px);
+    border-color: var(--tema-verde);
+    background: #edf5ef;
 }
 
-/* Área principal branca */
+/* CARTÃO PRINCIPAL */
 
 .cadastro-barbeiro-conteudo {
     width: 100%;
-    padding: clamp(22px, 4vw, 42px);
-    border: 1px solid #e2e9e4;
-    border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 8px 30px rgba(28, 51, 36, 0.055);
+    padding: 28px !important;
+    margin: 0;
+    border: 1px solid var(--tema-borda) !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    box-shadow: 0 8px 25px rgba(25, 50, 32, 0.05) !important;
 }
 
-/* Introdução do formulário */
+/* INTRODUÇÃO */
 
 .cadastro-barbeiro-introducao {
     display: flex;
     align-items: center;
     gap: 17px;
-    margin-bottom: 30px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #edf1ee;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--tema-borda);
+    background: transparent !important;
 }
 
 .cadastro-barbeiro-icone-principal {
@@ -119,15 +120,15 @@
     height: 54px;
     flex-shrink: 0;
     border-radius: 15px;
-    background: #e9f8ee;
-    color: #19964c;
+    background: #edf5ef;
+    color: #07843d;
     font-size: 23px;
 }
 
 .cadastro-barbeiro-etiqueta {
     display: inline-block;
     margin-bottom: 5px;
-    color: #19964c;
+    color: #07843d;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1.3px;
@@ -135,43 +136,55 @@
 
 .cadastro-barbeiro-introducao h2 {
     margin: 0;
-    color: #19271e;
+    color: #17291e;
     font-size: 22px;
     font-weight: 750;
 }
 
 .cadastro-barbeiro-introducao p {
     margin: 7px 0 0;
-    color: #758078;
+    color: #64776b;
     font-size: 14px;
-    line-height: 1.5;
 }
 
-/* Formulário */
+/* ==========================================
+   FORMULÁRIO - CORREÇÃO DO FUNDO CINZA
+   ========================================== */
 
 .form-barbeiro {
     display: flex;
     flex-direction: column;
     gap: 25px;
     width: 100%;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: #ffffff;
-    box-shadow: none;
+    padding: 24px !important;
+    margin: 0;
+    border: 1px solid #dce7e0 !important;
+    border-radius: 14px;
+    background: #ffffff !important;
+    box-shadow: none !important;
 }
 
 .form-barbeiro-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
+    width: 100%;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
 }
+
+/* CAMPOS */
 
 .campo-barbeiro {
     display: flex;
     flex-direction: column;
     gap: 9px;
     min-width: 0;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
 }
 
 .campo-barbeiro-largura {
@@ -183,59 +196,59 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    color: #27372d;
+    color: #17291e !important;
     font-size: 14px;
     font-weight: 700;
 }
 
 .campo-barbeiro label svg,
 .especialidades-cabecalho label svg {
-    color: #269b53;
+    color: #07843d;
     font-size: 14px;
 }
+
+/* INPUTS */
 
 .campo-barbeiro input {
     width: 100%;
     min-width: 0;
     height: 49px;
     padding: 0 15px;
-    border: 1px solid #dce4de;
+    border: 1px solid #dce7e0 !important;
     border-radius: 10px;
     outline: none;
-    background: #ffffff;
-    color: #1d2a21;
+    background: #ffffff !important;
+    color: #17291e !important;
     font-family: inherit;
     font-size: 14px;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .campo-barbeiro input::placeholder {
-    color: #9aa59d;
+    color: #64776b;
     opacity: 1;
 }
 
-.campo-barbeiro input:hover {
-    border-color: #b9c9bd;
+.campo-barbeiro input:hover,
+.campo-barbeiro input:focus {
+    border-color: #07843d !important;
 }
 
 .campo-barbeiro input:focus {
-    border-color: #25ad5c;
     box-shadow: 0 0 0 3px rgba(37, 173, 92, 0.12);
 }
 
-.campo-barbeiro input:disabled {
-    background: #f3f6f4;
-    cursor: not-allowed;
-}
-
-/* Especialidades */
+/* ESPECIALIDADES */
 
 .campo-especialidades {
-    gap: 15px;
-    padding: 22px;
-    border: 1px solid #e3ebe5;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    padding: 22px !important;
+    border: 1px solid #dce7e0 !important;
     border-radius: 13px;
-    background: #fbfdfb;
+    background: #ffffff !important;
 }
 
 .especialidades-cabecalho {
@@ -243,31 +256,30 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 15px;
+    background: transparent !important;
 }
 
 .especialidades-cabecalho p {
     margin: 7px 0 0;
-    color: #7b877e;
+    color: #64776b;
     font-size: 13px;
-    line-height: 1.5;
 }
 
 .especialidades-contador {
     flex-shrink: 0;
     padding: 6px 10px;
     border-radius: 20px;
-    background: #edf3ef;
-    color: #526358;
+    background: #edf5ef;
+    color: #64776b;
     font-size: 11px;
     font-weight: 700;
 }
-
-/* Pills clicáveis */
 
 .especialidades-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    background: transparent !important;
 }
 
 .especialidade-pill {
@@ -277,55 +289,29 @@
     gap: 8px;
     min-height: 39px;
     padding: 8px 14px;
-    border: 1px solid #d9e3dc;
+    border: 1px solid #dce7e0;
     border-radius: 999px;
-    background: #ffffff;
-    color: #435248;
+    background: #ffffff !important;
+    color: #17291e;
     font-family: inherit;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    user-select: none;
-    transition:
-        background 0.18s ease,
-        color 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.18s ease,
-        box-shadow 0.18s ease;
-}
-
-.especialidade-pill svg {
-    font-size: 11px;
+    transition: 0.2s;
 }
 
 .especialidade-pill:hover {
-    border-color: #35b568;
-    background: #f0fbf4;
-    color: #168744;
-    transform: translateY(-1px);
+    border-color: #07843d;
+    background: #edf5ef !important;
 }
 
 .especialidade-pill.selecionada {
-    border-color: #209b50;
-    background: #e5f7eb;
-    color: #147b3b;
-    box-shadow: inset 0 0 0 1px rgba(32, 155, 80, 0.08);
+    border-color: #07843d;
+    background: #edf5ef !important;
+    color: #07843d;
 }
 
-.especialidade-pill.selecionada:hover {
-    border-color: #168342;
-    background: #d6f1df;
-}
-
-.especialidade-pill:focus-visible,
-.botao-voltar:focus-visible,
-.botao-cancelar-barbeiro:focus-visible,
-.botao-cadastrar-barbeiro:focus-visible {
-    outline: 3px solid rgba(36, 173, 91, 0.3);
-    outline-offset: 3px;
-}
-
-/* Botões de ação */
+/* BOTÕES DE AÇÃO */
 
 .cadastro-barbeiro-acoes {
     display: flex;
@@ -333,7 +319,8 @@
     align-items: center;
     gap: 12px;
     padding-top: 23px;
-    border-top: 1px solid #edf1ee;
+    border-top: 1px solid #dce7e0;
+    background: transparent !important;
 }
 
 .botao-cancelar-barbeiro,
@@ -349,30 +336,22 @@
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .botao-cancelar-barbeiro {
-    border: 1px solid #dce5de;
+    border: 1px solid #dce7e0;
     background: #ffffff;
-    color: #536157;
-}
-
-.botao-cancelar-barbeiro:hover:not(:disabled) {
-    background: #f3f6f4;
+    color: #17291e;
 }
 
 .botao-cadastrar-barbeiro {
-    border: 1px solid #209b50;
-    background: #209b50;
+    border: 1px solid #07843d;
+    background: #07843d;
     color: #ffffff;
-    box-shadow: 0 4px 10px rgba(32, 155, 80, 0.15);
 }
 
-.botao-cadastrar-barbeiro:hover:not(:disabled) {
-    background: #168542;
-    box-shadow: 0 6px 15px rgba(32, 155, 80, 0.22);
-    transform: translateY(-1px);
+.botao-cadastrar-barbeiro:hover {
+    background: #056b31;
 }
 
 .botao-cancelar-barbeiro:disabled,
@@ -381,20 +360,101 @@
     cursor: not-allowed;
 }
 
-/* Rodapé */
+/* RODAPÉ */
 
 .cadastro-barbeiro-rodape {
     padding: 22px 0 4px;
-    color: #8a968d;
+    color: var(--tema-texto-secundario);
     font-size: 12px;
     text-align: center;
 }
 
-/* Responsividade */
+/* ==========================================
+   MODO ESCURO
+   ========================================== */
+
+html[data-tema="escuro"] .cadastro-barbeiro-conteudo {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .form-barbeiro {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .campo-barbeiro label,
+html[data-tema="escuro"] .especialidades-cabecalho label,
+html[data-tema="escuro"] .cadastro-barbeiro-introducao h2 {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .campo-barbeiro input {
+    background: #101a14 !important;
+    color: #f3f8f4 !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .campo-barbeiro input::placeholder {
+    color: #bdc9c1;
+}
+
+html[data-tema="escuro"] .campo-especialidades {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .especialidade-pill {
+    background: #101a14 !important;
+    color: #f3f8f4 !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .especialidade-pill.selecionada {
+    background: #174c2d !important;
+    color: #ffffff !important;
+    border-color: #31e879 !important;
+}
+
+html[data-tema="escuro"] .botao-voltar,
+html[data-tema="escuro"] .botao-cancelar-barbeiro {
+    background: var(--tema-superficie) !important;
+    color: #f3f8f4 !important;
+    border-color: var(--tema-borda) !important;
+}
+
+html[data-tema="escuro"] .especialidades-contador {
+    background: var(--tema-superficie-secundaria);
+    color: var(--tema-texto-secundario);
+}
+
+html[data-tema="escuro"] .cadastro-barbeiro-acoes {
+    border-color: var(--tema-borda);
+}
+
+/* FOCO ACESSÍVEL */
+
+.especialidade-pill:focus-visible,
+.botao-voltar:focus-visible,
+.botao-cancelar-barbeiro:focus-visible,
+.botao-cadastrar-barbeiro:focus-visible {
+    outline: 3px solid rgba(36, 173, 91, 0.3);
+    outline-offset: 3px;
+}
+
+/* RESPONSIVIDADE */
 
 @media (max-width: 760px) {
     .cadastro-barbeiro-page {
         padding: 20px 15px;
+    }
+
+    .cadastro-barbeiro-conteudo {
+        padding: 20px !important;
+    }
+
+    .form-barbeiro {
+        padding: 18px !important;
     }
 
     .cadastro-barbeiro-topo {
@@ -407,13 +467,8 @@
         width: 100%;
     }
 
-    .cadastro-barbeiro-conteudo {
-        padding: 22px 18px;
-        border-radius: 14px;
-    }
-
     .form-barbeiro-grid {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 
@@ -421,21 +476,8 @@
         grid-column: auto;
     }
 
-    .campo-especialidades {
-        padding: 17px;
-    }
-
     .especialidades-cabecalho {
         flex-direction: column;
-    }
-
-    .especialidades-pills {
-        gap: 8px;
-    }
-
-    .especialidade-pill {
-        min-height: 38px;
-        padding: 8px 12px;
     }
 
     .cadastro-barbeiro-acoes {
@@ -455,7 +497,11 @@
     }
 
     .cadastro-barbeiro-conteudo {
-        padding: 18px 13px;
+        padding: 16px !important;
+    }
+
+    .form-barbeiro {
+        padding: 14px !important;
     }
 
     .cadastro-barbeiro-introducao {
@@ -473,34 +519,59 @@
     .cadastro-barbeiro-introducao h2 {
         font-size: 19px;
     }
-
-    .especialidade-pill {
-        font-size: 12px;
-    }
 }
 
-/* Fundo branco normal na tela de cadastro do barbeiro */
-.cadastro-barbeiro-page {
+/* ==========================================
+   CORREÇÃO DEFINITIVA DO FUNDO CINZA
+   PAINEL DO PROPRIETÁRIO
+   ========================================== */
+
+/* Remove o fundo e o espaçamento indesejado do formulário */
+html[data-tema="claro"] .proprietario-area-principal
+.proprietario-conteudo
+main.cadastro-barbeiro-page
+.cadastro-barbeiro-conteudo
+form.form-barbeiro {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Garante que os campos não recebam fundo cinza */
+html[data-tema="claro"] .proprietario-area-principal
+.proprietario-conteudo
+.cadastro-barbeiro-page
+.form-barbeiro-grid,
+html[data-tema="claro"] .proprietario-area-principal
+.proprietario-conteudo
+.cadastro-barbeiro-page
+.campo-barbeiro:not(.campo-especialidades) {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Mantém a área de especialidades branca */
+html[data-tema="claro"] .proprietario-area-principal
+.proprietario-conteudo
+.cadastro-barbeiro-page
+.campo-especialidades {
     background: #ffffff !important;
 }
 
-.cadastro-barbeiro-container {
-    background: #ffffff !important;
-}
-
-.cadastro-barbeiro-conteudo {
-    background: #ffffff !important;
-}
-
-/* Cartão principal do formulário */
-.cadastro-barbeiro-conteudo,
-.cadastro-barbeiro-conteudo .cadastro-barbeiro-introducao,
-.cadastro-barbeiro-conteudo .form-barbeiro {
-    background-color: #ffffff;
-}
-
-/* Mantém o ícone principal verde-claro */
-.cadastro-barbeiro-icone-principal {
-    background-color: #e8f7ed;
+/* Preserva o modo escuro */
+html[data-tema="escuro"] .proprietario-area-principal
+.proprietario-conteudo
+.cadastro-barbeiro-page
+form.form-barbeiro {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 

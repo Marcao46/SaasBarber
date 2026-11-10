@@ -1,10 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import {
   FaCalendarAlt,
   FaClock,
@@ -20,6 +17,7 @@ import {
 import { auth, db } from "../fireBaseConfig";
 import ListaAgendamentos from "./ListaAgendamentos";
 import AgendarHorarioCliente from "./AgendarHorarioCliente";
+import BotaoTema from "./BotaoTema";
 import "./PainelCliente.css";
 import "./Agendamento.css";
 
@@ -109,7 +107,9 @@ export default function PainelCliente({ voltarHome }) {
             <span className="cliente-etiqueta">
               SISTEMA DE BARBEARIA
             </span>
+
             <h2>Sua área do cliente</h2>
+
             <p>
               Aqui você pode agendar horários, consultar seus
               agendamentos e ver as barbearias disponíveis.
@@ -121,6 +121,7 @@ export default function PainelCliente({ voltarHome }) {
 
         <section className="cliente-minha-area">
           <h2>Minha Área</h2>
+
           <p className="cliente-area-subtitulo">
             Escolha uma opção para continuar.
           </p>
@@ -159,6 +160,7 @@ export default function PainelCliente({ voltarHome }) {
     return (
       <section className="cliente-secao">
         <h2>Meu Perfil</h2>
+
         <p className="cliente-area-subtitulo">
           Consulte os dados da sua conta.
         </p>
@@ -167,14 +169,17 @@ export default function PainelCliente({ voltarHome }) {
           <span className="cliente-perfil-icone">
             <FaUser />
           </span>
+
           <div>
             <h3>{nomeCliente}</h3>
+
             <p>
               <strong>E-mail:</strong>{" "}
               {dadosCliente?.email ||
                 usuario?.email ||
                 "Não informado"}
             </p>
+
             <p>
               <strong>Telefone:</strong>{" "}
               {dadosCliente?.telefone || "Não informado"}
@@ -189,6 +194,7 @@ export default function PainelCliente({ voltarHome }) {
     return (
       <section className="cliente-secao">
         <h2>Barbearias</h2>
+
         <p className="cliente-area-subtitulo">
           Consulte os profissionais e os serviços disponíveis para
           agendar seu horário.
@@ -196,11 +202,14 @@ export default function PainelCliente({ voltarHome }) {
 
         <div className="cliente-vazio">
           <FaStore />
+
           <h3>Encontre seu próximo horário</h3>
+
           <p>
             Acesse o agendamento para consultar os barbeiros e
             serviços cadastrados no sistema.
           </p>
+
           <button
             type="button"
             className="cliente-botao"
@@ -220,6 +229,7 @@ export default function PainelCliente({ voltarHome }) {
           <div className="cliente-logo">
             <FaCut />
           </div>
+
           <div>
             <h2>SaaSBarber</h2>
             <p>Painel do Cliente</p>
@@ -258,9 +268,10 @@ export default function PainelCliente({ voltarHome }) {
             <div className="cliente-avatar">
               <FaUser />
             </div>
+
             <div>
               <strong>{nomeCliente}</strong>
-              <span>Cliente do sistema</span>
+              <span>Cliente</span>
             </div>
           </div>
 
@@ -281,10 +292,12 @@ export default function PainelCliente({ voltarHome }) {
             <span className="cliente-sobretitulo">
               PAINEL DO CLIENTE
             </span>
-            <h1>{telaAtiva === "inicio"
-                ?`Olá,${nomeCliente}!`
+            <h1>
+              {telaAtiva === "inicio"
+                ? `Olá, ${nomeCliente}!`
                 : tituloAtual}
             </h1>
+
             <p>
               {telaAtiva === "inicio"
                 ? "Agende seus serviços e acompanhe seus horários."
@@ -293,10 +306,7 @@ export default function PainelCliente({ voltarHome }) {
           </div>
 
           <div className="cliente-cabecalho-acoes">
-            <div className="cliente-boas-vindas">
-              <FaUser />
-              <span>Bem-vindo(a)!</span>
-            </div>
+            <BotaoTema />
 
             {typeof voltarHome === "function" && (
               <button
@@ -311,7 +321,12 @@ export default function PainelCliente({ voltarHome }) {
           </div>
         </header>
 
-        {mensagem && <p role="status" className="cliente-alerta">{mensagem}</p>}
+        {mensagem && (
+          <p role="status" className="cliente-alerta">
+            {mensagem}
+          </p>
+        )}
+
         {telaAtiva === "inicio" && conteudoInicio()}
 
         {telaAtiva === "agendar" && (
@@ -333,9 +348,11 @@ export default function PainelCliente({ voltarHome }) {
         {telaAtiva === "agendamentos" &&
           conteudoAgendamentos()}
 
-        {telaAtiva === "barbearias" && conteudoBarbearias()}
+        {telaAtiva === "barbearias" &&
+          conteudoBarbearias()}
 
-        {telaAtiva === "perfil" && conteudoPerfil()}
+        {telaAtiva === "perfil" &&
+          conteudoPerfil()}
       </main>
     </div>
   );

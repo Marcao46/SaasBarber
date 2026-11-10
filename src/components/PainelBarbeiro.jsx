@@ -1,3 +1,4 @@
+
 import ListaAgendamentos from "./ListaAgendamentos";
 import DatasConfiguradas from "./DatasConfiguradas";
 import { prepararAgendaBarbeiro } from '../agendaApi';
@@ -30,6 +31,7 @@ import {
 } from "react-icons/fa";
 
 import { auth, db } from "../fireBaseConfig";
+import BotaoTema from "./BotaoTema";
 import "./PainelBarbeiro.css";
 import "./Agendamento.css";
 
@@ -92,11 +94,42 @@ export default function PainelBarbeiro({ voltarHome }) {
 
   useEffect(() => {
     if (!usuario) return;
-    return onSnapshot(query(collection(db, "agendamentos"), where("barbeiroId", "==", usuario.uid)), snap => {
-      const lista = snap.docs.map(d => ({ ...d.data(), id: d.id }));
-      setAgendamentos(lista);
-      setClientes(Array.from(new Map(lista.filter(a => a.clienteId).map(a => [a.clienteId, { id: a.clienteId, nome: a.clienteNome || "Cliente" }])).values()));
-    }, () => mostrarMensagem("Não foi possível acompanhar a agenda em tempo real.", "erro"));
+
+    return onSnapshot(
+      query(
+        collection(db, "agendamentos"),
+        where("barbeiroId", "==", usuario.uid)
+      ),
+      (snap) => {
+        const lista = snap.docs.map((d) => ({
+          ...d.data(),
+          id: d.id,
+        }));
+
+        setAgendamentos(lista);
+
+        setClientes(
+          Array.from(
+            new Map(
+              lista
+                .filter((a) => a.clienteId)
+                .map((a) => [
+                  a.clienteId,
+                  {
+                    id: a.clienteId,
+                    nome: a.clienteNome || "Cliente",
+                  },
+                ])
+            ).values()
+          )
+        );
+      },
+      () =>
+        mostrarMensagem(
+          "Não foi possível acompanhar a agenda em tempo real.",
+          "erro"
+        )
+    );
   }, [usuario]);
 
   function mostrarMensagem(texto, tipo = "sucesso") {
@@ -111,8 +144,17 @@ export default function PainelBarbeiro({ voltarHome }) {
     setMensagem("");
 
     try {
-      const barbeirosSnap = await getDocs(query(collection(db, "barbeiros"), where("usuarioId", "==", usuario.uid)));
-      if (!barbeirosSnap.empty) setNome(barbeirosSnap.docs[0].data().nome || "Barbeiro");
+      const barbeirosSnap = await getDocs(
+        query(
+          collection(db, "barbeiros"),
+          where("usuarioId", "==", usuario.uid)
+        )
+      );
+
+      if (!barbeirosSnap.empty) {
+        setNome(barbeirosSnap.docs[0].data().nome || "Barbeiro");
+      }
+
       await prepararAgendaBarbeiro();
 
       const disponibilidadeSnap = await getDoc(
@@ -141,19 +183,20 @@ export default function PainelBarbeiro({ voltarHome }) {
                     fim: salvo.fim || "18:00",
                     intervaloInicio:
                       salvo.intervaloInicio || "12:00",
-                    intervaloFim: salvo.intervaloFim || "13:00",
+                    intervaloFim:
+                      salvo.intervaloFim || "13:00",
                   }
                 : inicial;
             })
           );
         }
       }
-
     } catch (erro) {
       console.error("Erro ao carregar painel:", erro);
 
       mostrarMensagem(
-        erro.message || "Não foi possível carregar os dados. Verifique a conexão e as permissões do Firebase.",
+        erro.message ||
+          "Não foi possível carregar os dados. Verifique a conexão e as permissões do Firebase.",
         "erro"
       );
     } finally {
@@ -175,7 +218,12 @@ export default function PainelBarbeiro({ voltarHome }) {
     return Boolean(inicio && fim && inicio < fim);
   }
 
-  function validarIntervalo(inicio, fim, trabalhoInicio, trabalhoFim) {
+  function validarIntervalo(
+    inicio,
+    fim,
+    trabalhoInicio,
+    trabalhoFim
+  ) {
     if (!inicio && !fim) return true;
     if (!inicio || !fim || inicio >= fim) return false;
 
@@ -244,6 +292,7 @@ export default function PainelBarbeiro({ voltarHome }) {
 
   async function salvarExcecao() {
     setMensagemExcecao('');
+
     if (!usuario || !dataExcecao) {
       mostrarMensagem("Selecione uma data para continuar.", "erro");
       return;
@@ -307,10 +356,23 @@ export default function PainelBarbeiro({ voltarHome }) {
       );
 
       mostrarMensagem("Ajuste da data salvo com sucesso.");
-      setMensagemExcecao(`Ajuste de ${dataExcecao.split('-').reverse().join('/')} salvo: ${excecaoBloqueada ? 'dia bloqueado' : `dia liberado das ${inicioExcecao} às ${fimExcecao}`}.`);
+
+      setMensagemExcecao(
+        `Ajuste de ${dataExcecao
+          .split('-')
+          .reverse()
+          .join('/')} salvo: ${
+          excecaoBloqueada
+            ? 'dia bloqueado'
+            : `dia liberado das ${inicioExcecao} às ${fimExcecao}`
+        }.`
+      );
     } catch (erro) {
       console.error("Erro ao salvar ajuste:", erro);
-      setMensagemExcecao('Não foi possível salvar o ajuste. Verifique a conexão e tente novamente.');
+
+      setMensagemExcecao(
+        'Não foi possível salvar o ajuste. Verifique a conexão e tente novamente.'
+      );
 
       mostrarMensagem(
         "Não foi possível salvar o ajuste da data.",
@@ -334,14 +396,16 @@ export default function PainelBarbeiro({ voltarHome }) {
     setAba(novaAba);
     setMensagem("");
     setMenuMobileAberto(false);
-
   }
 
   const agendamentosAtivos = agendamentos.filter(
     (item) =>
-      !["cancelado", "cancelada", "recusado", "concluido"].includes(
-        String(item.status || "").toLowerCase()
-      )
+      ![
+        "cancelado",
+        "cancelada",
+        "recusado",
+        "concluido",
+      ].includes(String(item.status || "").toLowerCase())
   );
 
   const itensMenu = [
@@ -356,8 +420,16 @@ export default function PainelBarbeiro({ voltarHome }) {
       nome: "Minha Disponibilidade",
       icone: <FaClock />,
     },
-    { id: "clientes", nome: "Meus Clientes", icone: <FaUsers /> },
-    { id: "perfil", nome: "Meu Perfil", icone: <FaUser /> },
+    {
+      id: "clientes",
+      nome: "Meus Clientes",
+      icone: <FaUsers />,
+    },
+    {
+      id: "perfil",
+      nome: "Meu Perfil",
+      icone: <FaUser />,
+    },
   ];
 
   const titulos = {
@@ -424,7 +496,9 @@ export default function PainelBarbeiro({ voltarHome }) {
           </div>
         </div>
 
-        <div className="barbeiro-menu-titulo">MENU PRINCIPAL</div>
+        <div className="barbeiro-menu-titulo">
+          MENU PRINCIPAL
+        </div>
 
         <nav className="barbeiro-menu">
           {itensMenu.map((item) => (
@@ -438,6 +512,7 @@ export default function PainelBarbeiro({ voltarHome }) {
               <span className="barbeiro-menu-icone">
                 {item.icone}
               </span>
+
               <span>{item.nome}</span>
             </button>
           ))}
@@ -468,15 +543,14 @@ export default function PainelBarbeiro({ voltarHome }) {
             <span className="barbeiro-cabecalho-etiqueta">
               PAINEL DO BARBEIRO
             </span>
+
             <h1>{titulos[aba][0]}</h1>
             <p>{titulos[aba][1]}</p>
           </div>
 
+          {/* AÇÕES DO CABEÇALHO */}
           <div className="barbeiro-cabecalho-acoes">
-            <div className="barbeiro-bemvindo">
-              <FaUser />
-              <span>Bem-vindo(a)!</span>
-            </div>
+            <BotaoTema />
 
             {typeof voltarHome === "function" && (
               <button
@@ -511,7 +585,9 @@ export default function PainelBarbeiro({ voltarHome }) {
                 <span className="barbeiro-etiqueta">
                   SISTEMA DE BARBEARIA
                 </span>
+
                 <h2>Sua área do barbeiro</h2>
+
                 <p>
                   Acompanhe seus agendamentos, organize sua
                   disponibilidade e gerencie sua rotina.
@@ -535,10 +611,12 @@ export default function PainelBarbeiro({ voltarHome }) {
                   <span className="barbeiro-card-icone">
                     <FaCalendarAlt />
                   </span>
+
                   <div className="barbeiro-card-texto">
                     <h3>Meus Agendamentos</h3>
                     <p>Consulte seus próximos atendimentos.</p>
                   </div>
+
                   <span className="barbeiro-seta">→</span>
                 </button>
 
@@ -549,10 +627,12 @@ export default function PainelBarbeiro({ voltarHome }) {
                   <span className="barbeiro-card-icone">
                     <FaClock />
                   </span>
+
                   <div className="barbeiro-card-texto">
                     <h3>Minha Disponibilidade</h3>
                     <p>Defina seus dias e horários de trabalho.</p>
                   </div>
+
                   <span className="barbeiro-seta">→</span>
                 </button>
 
@@ -563,10 +643,12 @@ export default function PainelBarbeiro({ voltarHome }) {
                   <span className="barbeiro-card-icone">
                     <FaUsers />
                   </span>
+
                   <div className="barbeiro-card-texto">
                     <h3>Meus Clientes</h3>
                     <p>Consulte seus clientes e atendimentos.</p>
                   </div>
+
                   <span className="barbeiro-seta">→</span>
                 </button>
 
@@ -577,10 +659,12 @@ export default function PainelBarbeiro({ voltarHome }) {
                   <span className="barbeiro-card-icone">
                     <FaUser />
                   </span>
+
                   <div className="barbeiro-card-texto">
                     <h3>Meu Perfil</h3>
                     <p>Consulte seus dados profissionais.</p>
                   </div>
+
                   <span className="barbeiro-seta">→</span>
                 </button>
               </div>
@@ -590,6 +674,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                   <strong>{agendamentosAtivos.length}</strong>
                   <span>Agendamentos ativos</span>
                 </div>
+
                 <div>
                   <strong>{clientes.length}</strong>
                   <span>Clientes registrados</span>
@@ -609,7 +694,9 @@ export default function PainelBarbeiro({ voltarHome }) {
           </button>
         )}
 
-        {aba === "agendamentos" && <ListaAgendamentos papel="barbeiro" />}
+        {aba === "agendamentos" && (
+          <ListaAgendamentos papel="barbeiro" />
+        )}
 
         {aba === "clientes" && (
           <section className="barbeiro-secao">
@@ -636,6 +723,7 @@ export default function PainelBarbeiro({ voltarHome }) {
               <div className="disp-intro-icone">
                 <FaCalendarCheck />
               </div>
+
               <div>
                 <h2>Minha Disponibilidade Semanal</h2>
                 <p>
@@ -650,6 +738,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                 <i className="disp-ponto disp-ponto-ativo" />
                 Dia ativo
               </span>
+
               <span>
                 <i className="disp-ponto disp-ponto-inativo" />
                 Dia de folga
@@ -665,7 +754,9 @@ export default function PainelBarbeiro({ voltarHome }) {
                 return (
                   <article
                     className={`disp-dia-card ${
-                      dia.ativo ? "disp-dia-ativo" : "disp-dia-inativo"
+                      dia.ativo
+                        ? "disp-dia-ativo"
+                        : "disp-dia-inativo"
                     }`}
                     key={dia.dia}
                   >
@@ -674,6 +765,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                         <div className="disp-dia-sigla">
                           {diaInfo?.curto}
                         </div>
+
                         <div>
                           <h3>{diaInfo?.nome}</h3>
                           <span>
@@ -696,7 +788,9 @@ export default function PainelBarbeiro({ voltarHome }) {
                             )
                           }
                         />
+
                         <span className="disp-switch-trilho" />
+
                         <span className="disp-switch-texto">
                           {dia.ativo ? "Ativo" : "Folga"}
                         </span>
@@ -710,6 +804,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                             <FaClock />
                             Início do expediente
                           </label>
+
                           <input
                             id={`${dia.dia}-inicio`}
                             type="time"
@@ -729,6 +824,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                             <FaClock />
                             Fim do expediente
                           </label>
+
                           <input
                             id={`${dia.dia}-fim`}
                             type="time"
@@ -748,6 +844,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                             <FaClock />
                             Início do intervalo
                           </label>
+
                           <input
                             id={`${dia.dia}-intervalo-inicio`}
                             type="time"
@@ -767,6 +864,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                             <FaClock />
                             Fim do intervalo
                           </label>
+
                           <input
                             id={`${dia.dia}-intervalo-fim`}
                             type="time"
@@ -811,6 +909,7 @@ export default function PainelBarbeiro({ voltarHome }) {
               <div className="disp-excecao-icone">
                 <FaCalendarAlt />
               </div>
+
               <div>
                 <h2>Ajustar uma data específica</h2>
                 <p>
@@ -825,6 +924,7 @@ export default function PainelBarbeiro({ voltarHome }) {
                   <FaCalendarAlt />
                   Data do ajuste
                 </label>
+
                 <input
                   id="data-excecao"
                   type="date"
@@ -838,36 +938,52 @@ export default function PainelBarbeiro({ voltarHome }) {
                 <input
                   type="checkbox"
                   checked={excecaoBloqueada}
-                  onChange={(e) => setExcecaoBloqueada(e.target.checked)}
+                  onChange={(e) =>
+                    setExcecaoBloqueada(e.target.checked)
+                  }
                 />
+
                 <span className="disp-bloquear-icone">
                   <FaCalendarAlt />
                 </span>
+
                 <span>
                   <strong>Bloquear este dia</strong>
-                  <small>Não disponibilizar horários nesta data.</small>
+                  <small>
+                    Não disponibilizar horários nesta data.
+                  </small>
                 </span>
               </label>
 
               {!excecaoBloqueada && (
                 <div className="disp-horarios disp-horarios-excecao">
                   <div className="disp-campo">
-                    <label htmlFor="excecao-inicio">Início do expediente</label>
+                    <label htmlFor="excecao-inicio">
+                      Início do expediente
+                    </label>
+
                     <input
                       id="excecao-inicio"
                       type="time"
                       value={inicioExcecao}
-                      onChange={(e) => setInicioExcecao(e.target.value)}
+                      onChange={(e) =>
+                        setInicioExcecao(e.target.value)
+                      }
                     />
                   </div>
 
                   <div className="disp-campo">
-                    <label htmlFor="excecao-fim">Fim do expediente</label>
+                    <label htmlFor="excecao-fim">
+                      Fim do expediente
+                    </label>
+
                     <input
                       id="excecao-fim"
                       type="time"
                       value={fimExcecao}
-                      onChange={(e) => setFimExcecao(e.target.value)}
+                      onChange={(e) =>
+                        setFimExcecao(e.target.value)
+                      }
                     />
                   </div>
 
@@ -875,11 +991,14 @@ export default function PainelBarbeiro({ voltarHome }) {
                     <label htmlFor="excecao-intervalo-inicio">
                       Início do intervalo
                     </label>
+
                     <input
                       id="excecao-intervalo-inicio"
                       type="time"
                       value={intervaloInicioExcecao}
-                      onChange={(e) => setIntervaloInicioExcecao(e.target.value)}
+                      onChange={(e) =>
+                        setIntervaloInicioExcecao(e.target.value)
+                      }
                     />
                   </div>
 
@@ -887,11 +1006,14 @@ export default function PainelBarbeiro({ voltarHome }) {
                     <label htmlFor="excecao-intervalo-fim">
                       Fim do intervalo
                     </label>
+
                     <input
                       id="excecao-intervalo-fim"
                       type="time"
                       value={intervaloFimExcecao}
-                      onChange={(e) => setIntervaloFimExcecao(e.target.value)}
+                      onChange={(e) =>
+                        setIntervaloFimExcecao(e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -903,20 +1025,38 @@ export default function PainelBarbeiro({ voltarHome }) {
                 disabled={salvando}
               >
                 <FaSave />
-                {salvando ? "Salvando..." : "Salvar ajuste da data"}
+                {salvando
+                  ? "Salvando..."
+                  : "Salvar ajuste da data"}
               </button>
             </div>
 
-            {mensagemExcecao && <p className="ag-message" role="status">{mensagemExcecao}</p>}
-            <DatasConfiguradas barbeiroId={usuario?.uid} editar aoSelecionar={item => {
-              setDataExcecao(item.data);
-              setExcecaoBloqueada(Boolean(item.bloqueada));
-              setInicioExcecao(item.inicio || '09:00');
-              setFimExcecao(item.fim || '18:00');
-              setIntervaloInicioExcecao(item.intervaloInicio || '');
-              setIntervaloFimExcecao(item.intervaloFim || '');
-              setMensagemExcecao('Ajuste carregado para edição no formulário acima.');
-            }} />
+            {mensagemExcecao && (
+              <p className="ag-message" role="status">
+                {mensagemExcecao}
+              </p>
+            )}
+
+            <DatasConfiguradas
+              barbeiroId={usuario?.uid}
+              editar
+              aoSelecionar={(item) => {
+                setDataExcecao(item.data);
+                setExcecaoBloqueada(Boolean(item.bloqueada));
+                setInicioExcecao(item.inicio || '09:00');
+                setFimExcecao(item.fim || '18:00');
+                setIntervaloInicioExcecao(
+                  item.intervaloInicio || ''
+                );
+                setIntervaloFimExcecao(
+                  item.intervaloFim || ''
+                );
+                setMensagemExcecao(
+                  'Ajuste carregado para edição no formulário acima.'
+                );
+              }}
+            />
+
             <p className="disp-nota">
               As datas liberadas aparecem no painel do cliente após salvar.
               Os horários respeitam a duração do serviço, os intervalos e as reservas existentes.
@@ -927,11 +1067,14 @@ export default function PainelBarbeiro({ voltarHome }) {
         {aba === "perfil" && (
           <section className="barbeiro-secao">
             <h2>Meu Perfil</h2>
+
             <p>
               <strong>Nome:</strong> {nome}
             </p>
+
             <p>
-              <strong>E-mail:</strong> {usuario?.email || "Não disponível"}
+              <strong>E-mail:</strong>{" "}
+              {usuario?.email || "Não disponível"}
             </p>
           </section>
         )}

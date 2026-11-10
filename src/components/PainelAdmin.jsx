@@ -23,6 +23,8 @@ import { auth } from "../fireBaseConfig";
 
 import CadastrarBarbeiro from "./CadastrarBarbeiro";
 import GerenciarServicos from "./GerenciarServicos";
+import BotaoTema from "./BotaoTema";
+
 import "./PainelAdmin.css";
 
 const PainelAdmin = ({ voltarHome }) => {
@@ -396,10 +398,7 @@ const PainelAdmin = ({ voltarHome }) => {
                     </div>
 
                     <div className="proprietario-cabecalho-acoes">
-                        <div className="proprietario-bemvindo">
-                            <FaUser />
-                            <span>Bem-vindo(a)!</span>
-                        </div>
+                        <BotaoTema />
 
                         {typeof voltarHome === "function" && (
                             <button

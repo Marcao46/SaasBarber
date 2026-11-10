@@ -715,3 +715,203 @@
     padding: 18px;
   }
 }
+
+/* =============================================
+   SAASBARBER - PAINEL DO CLIENTE
+   CORREÇÃO COMPLETA DO MODO ESCURO
+   ============================================= */
+
+/* FUNDO PRINCIPAL */
+html[data-tema="escuro"] .cliente-layout {
+    background: var(--tema-fundo) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-principal {
+    background: var(--tema-fundo) !important;
+    color: var(--tema-texto) !important;
+}
+
+/* CABEÇALHO */
+html[data-tema="escuro"] .cliente-cabecalho {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-cabecalho h1 {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-sobretitulo {
+    color: #65df91 !important;
+}
+
+html[data-tema="escuro"] .cliente-cabecalho p {
+    color: var(--tema-texto-secundario) !important;
+}
+
+/* TÍTULOS E SUBTÍTULOS */
+html[data-tema="escuro"] .cliente-minha-area h2,
+html[data-tema="escuro"] .cliente-secao > h2 {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-area-subtitulo {
+    color: var(--tema-texto-secundario) !important;
+}
+
+/* CARTÕES DA TELA INICIAL */
+html[data-tema="escuro"] .cliente-cartao {
+    background: var(--tema-superficie) !important;
+    border: 1px solid var(--tema-borda) !important;
+    color: var(--tema-texto) !important;
+    box-shadow: var(--tema-sombra) !important;
+}
+
+html[data-tema="escuro"] .cliente-cartao:hover {
+    background: var(--tema-superficie-secundaria) !important;
+    border-color: var(--tema-verde) !important;
+}
+
+html[data-tema="escuro"] .cliente-cartao-texto strong {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-cartao-texto > span {
+    color: var(--tema-texto-secundario) !important;
+}
+
+html[data-tema="escuro"] .cliente-cartao-seta {
+    color: var(--tema-verde) !important;
+}
+
+/* ÍCONES DOS CARTÕES */
+html[data-tema="escuro"] .cliente-cartao-icone,
+html[data-tema="escuro"] .cliente-perfil-icone {
+    background: #1c3827 !important;
+    color: #55e98a !important;
+}
+
+/* BANNER PRINCIPAL */
+html[data-tema="escuro"] .cliente-banner {
+    background: linear-gradient(
+        110deg,
+        #102d1b,
+        #0c2617 70%,
+        #14361f
+    ) !important;
+    border-color: #285d3b !important;
+    color: #ffffff !important;
+}
+
+html[data-tema="escuro"] .cliente-banner h2 {
+    color: #ffffff !important;
+}
+
+html[data-tema="escuro"] .cliente-banner p {
+    color: #d7e9dc !important;
+}
+
+html[data-tema="escuro"] .cliente-etiqueta {
+    background: #204d2c !important;
+    color: #82f19b !important;
+}
+
+/* AGENDAMENTOS E PERFIL */
+html[data-tema="escuro"] .cliente-agendamento,
+html[data-tema="escuro"] .cliente-perfil-card {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-agendamento h3,
+html[data-tema="escuro"] .cliente-perfil-card h3 {
+    color: var(--tema-verde) !important;
+}
+
+html[data-tema="escuro"] .cliente-agendamento p,
+html[data-tema="escuro"] .cliente-perfil-card p {
+    color: var(--tema-texto-secundario) !important;
+}
+
+html[data-tema="escuro"] .cliente-agendamento strong,
+html[data-tema="escuro"] .cliente-perfil-card strong {
+    color: var(--tema-texto) !important;
+}
+
+/* ÁREA SEM RESULTADOS */
+html[data-tema="escuro"] .cliente-vazio {
+    background: var(--tema-superficie) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-vazio h3 {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-vazio p {
+    color: var(--tema-texto-secundario) !important;
+}
+
+/* STATUS */
+html[data-tema="escuro"] .cliente-status {
+    background: #1c3827 !important;
+    color: #72ed99 !important;
+}
+
+/* BOTÕES */
+html[data-tema="escuro"] .cliente-voltar {
+    background: var(--tema-superficie-secundaria) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-verde) !important;
+}
+
+html[data-tema="escuro"] .cliente-voltar-home {
+    background: var(--tema-superficie-secundaria) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-verde) !important;
+}
+
+html[data-tema="escuro"] .cliente-botao {
+    background: #168b43 !important;
+    color: #ffffff !important;
+}
+
+/* ALERTAS */
+html[data-tema="escuro"] .cliente-alerta {
+    background: #392f16 !important;
+    border-color: #806b2d !important;
+    color: #ffe6a0 !important;
+}
+
+/* CAMPOS DO PAINEL */
+html[data-tema="escuro"] .cliente-principal input,
+html[data-tema="escuro"] .cliente-principal select,
+html[data-tema="escuro"] .cliente-principal textarea {
+    background: var(--tema-campo) !important;
+    border-color: var(--tema-borda) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="escuro"] .cliente-principal input::placeholder,
+html[data-tema="escuro"] .cliente-principal textarea::placeholder {
+    color: #91a99a !important;
+}
+
+/* TRANSIÇÃO SUAVE */
+.cliente-layout,
+.cliente-principal,
+.cliente-cabecalho,
+.cliente-cartao,
+.cliente-agendamento,
+.cliente-perfil-card,
+.cliente-vazio {
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
+

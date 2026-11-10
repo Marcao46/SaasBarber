@@ -281,3 +281,144 @@
         width: 100%;
     }
 }
+
+/* =====================================================
+   GERENCIAR BARBEARIAS - TEMA CLARO E ESCURO
+   ===================================================== */
+
+/* =========================
+   MODO CLARO
+   ========================= */
+
+html[data-tema="claro"] .saas-area-barbearias,
+html[data-tema="claro"] .saas-area-barbearias .gerenciar-page {
+    background: #ffffff !important;
+    color: #17291e !important;
+}
+
+html[data-tema="claro"] .gerenciar-topo h1,
+html[data-tema="claro"] .gerenciar-lista-topo h2,
+html[data-tema="claro"] .gerenciar-form h2,
+html[data-tema="claro"] .gerenciar-card h3 {
+    color: #17291e !important;
+}
+
+html[data-tema="claro"] .gerenciar-topo p,
+html[data-tema="claro"] .gerenciar-lista-topo p,
+html[data-tema="claro"] .gerenciar-dados p {
+    color: #64776b !important;
+}
+
+html[data-tema="claro"] .gerenciar-card,
+html[data-tema="claro"] .gerenciar-form,
+html[data-tema="claro"] .gerenciar-vazio {
+    background: #ffffff !important;
+    color: #17291e !important;
+    border-color: #dce7e0 !important;
+}
+
+html[data-tema="claro"] .gerenciar-dados strong {
+    color: #263a2d !important;
+}
+
+html[data-tema="claro"] .gerenciar-form label {
+    color: #344f3c !important;
+}
+
+html[data-tema="claro"] .gerenciar-form input {
+    background: #ffffff !important;
+    color: #17291e !important;
+    border-color: #dce7e0 !important;
+}
+
+html[data-tema="claro"] .gerenciar-voltar,
+html[data-tema="claro"] .gerenciar-atualizar {
+    background: #ffffff !important;
+    color: #263a2d !important;
+    border-color: #dce7e0 !important;
+}
+
+/* =========================
+   MODO ESCURO
+   ========================= */
+
+html[data-tema="escuro"] .saas-area-barbearias {
+    background: #151f1a !important;
+    border-color: #35483c !important;
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .saas-area-barbearias .gerenciar-page {
+    background: #151f1a !important;
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-topo,
+html[data-tema="escuro"] .gerenciar-dados {
+    border-color: #35483c !important;
+}
+
+html[data-tema="escuro"] .gerenciar-topo h1,
+html[data-tema="escuro"] .gerenciar-lista-topo h2,
+html[data-tema="escuro"] .gerenciar-form h2,
+html[data-tema="escuro"] .gerenciar-card h3 {
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-topo p,
+html[data-tema="escuro"] .gerenciar-lista-topo p,
+html[data-tema="escuro"] .gerenciar-dados p {
+    color: #bdc9c1 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-card,
+html[data-tema="escuro"] .gerenciar-form,
+html[data-tema="escuro"] .gerenciar-vazio {
+    background: #1c2b22 !important;
+    color: #f3f8f4 !important;
+    border-color: #35483c !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+}
+
+html[data-tema="escuro"] .gerenciar-dados strong {
+    color: #f3f8f4 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-form label {
+    color: #d5e2d9 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-form input {
+    background: #101a14 !important;
+    color: #f3f8f4 !important;
+    border-color: #35483c !important;
+}
+
+html[data-tema="escuro"] .gerenciar-form input::placeholder {
+    color: #91a99a !important;
+}
+
+html[data-tema="escuro"] .gerenciar-voltar,
+html[data-tema="escuro"] .gerenciar-atualizar {
+    background: #1c2b22 !important;
+    color: #f3f8f4 !important;
+    border-color: #35483c !important;
+}
+
+html[data-tema="escuro"] .gerenciar-status {
+    background: #1c4930 !important;
+    color: #7df0a1 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-editar {
+    background: #1c4930 !important;
+    color: #7df0a1 !important;
+    border-color: #326a43 !important;
+}
+
+html[data-tema="escuro"] .gerenciar-excluir {
+    background: #402323 !important;
+    color: #ffaaaa !important;
+    border-color: #784040 !important;
+}
+

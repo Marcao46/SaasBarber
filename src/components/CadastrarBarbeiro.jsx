@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db, secondaryAuth } from "../fireBaseConfig";
@@ -116,6 +117,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
             setEspecialidades([]);
             setSenha("");
             setConfirmarSenha("");
+
         } catch (erro) {
             console.error("Erro ao cadastrar barbeiro:", erro);
 
@@ -126,7 +128,9 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
             } else if (erro.code === "auth/weak-password") {
                 alert("A senha é muito fraca. Use pelo menos 6 caracteres.");
             } else {
-                alert("Não foi possível cadastrar o barbeiro. Verifique os dados e tente novamente.");
+                alert(
+                    "Não foi possível cadastrar o barbeiro. Verifique os dados e tente novamente."
+                );
             }
         } finally {
             setCarregando(false);
@@ -136,6 +140,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
     return (
         <main className="cadastro-barbeiro-page">
             <div className="cadastro-barbeiro-container">
+
                 <header className="cadastro-barbeiro-topo">
                     <div className="cadastro-barbeiro-titulo">
                         <span className="cadastro-barbeiro-subtitulo">
@@ -160,6 +165,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                 </header>
 
                 <section className="cadastro-barbeiro-conteudo">
+
                     <div className="cadastro-barbeiro-introducao">
                         <div className="cadastro-barbeiro-icone-principal">
                             <FaCut />
@@ -184,6 +190,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                         onSubmit={handleSubmit}
                     >
                         <div className="form-barbeiro-grid">
+
                             <div className="campo-barbeiro">
                                 <label htmlFor="nome-barbeiro">
                                     <FaUser />
@@ -234,6 +241,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                                     required
                                 />
                             </div>
+
                         </div>
 
                         <div className="campo-barbeiro campo-especialidades">
@@ -268,9 +276,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                                             key={opcao}
                                             type="button"
                                             className={`especialidade-pill ${
-                                                selecionada
-                                                    ? "selecionada"
-                                                    : ""
+                                                selecionada ? "selecionada" : ""
                                             }`}
                                             aria-pressed={selecionada}
                                             onClick={() =>
@@ -282,6 +288,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                                             ) : (
                                                 <FaPlus />
                                             )}
+
                                             {opcao}
                                         </button>
                                     );
@@ -290,6 +297,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                         </div>
 
                         <div className="form-barbeiro-grid">
+
                             <div className="campo-barbeiro">
                                 <label htmlFor="senha-barbeiro">
                                     <FaLock />
@@ -327,6 +335,7 @@ const CadastrarBarbeiro = ({ voltarPainel }) => {
                                     required
                                 />
                             </div>
+
                         </div>
 
                         <div className="cadastro-barbeiro-acoes">

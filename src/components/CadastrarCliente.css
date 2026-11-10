@@ -1,162 +1,266 @@
+
+/* =========================================================
+   SAASBARBER - CADASTRO DE CLIENTE
+   ========================================================= */
+
 .cliente-page {
     min-height: 100vh;
     width: 100%;
-
-    background: #080808;
-    color: #ffffff;
-
-    padding: 50px 30px;
+    padding: 28px clamp(18px, 4vw, 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    color: #f5fff8;
+    background:
+        radial-gradient(circle at 12% 80%, rgba(0, 190, 105, .16), transparent 34%),
+        linear-gradient(135deg, #06130d 0%, #071b12 52%, #020906 100%);
+    font-family: Inter, Arial, sans-serif;
 }
 
 .cliente-container {
     width: 100%;
-    max-width: 850px;
-
+    max-width: 1500px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(280px, .85fr) minmax(420px, 1.15fr);
+    align-items: center;
+    gap: 28px clamp(28px, 4vw, 64px);
+    box-sizing: border-box;
 }
 
 .cliente-topo {
+    grid-column: 1 / -1;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
+    width: 100%;
+    margin: 0;
+    padding: 4px 0 24px;
+    border-bottom: 1px solid rgba(42, 210, 119, .28);
+    text-align: left;
+}
 
-    gap: 20px;
-
-    padding-bottom: 30px;
-    margin-bottom: 35px;
-
-    border-bottom: 1px solid #222222;
+.cliente-topo > div {
+    width: auto;
 }
 
 .cliente-subtitulo {
-    color: #32c961;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    letter-spacing: 2px;
+    display: inline-block;
+    color: #2ed477;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2.4px;
 }
 
 .cliente-topo h1 {
-    margin: 8px 0;
-
-    font-size: 34px;
+    margin: 7px 0;
+    color: #f5fff8;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.15;
+    text-align: left;
 }
 
 .cliente-topo p {
     margin: 0;
-
-    color: #777777;
+    color: #a8c1b1;
+    font-size: 15px;
+    text-align: left;
 }
 
 .cliente-voltar {
-    background: #111113;
-
-    color: #ffffff;
-
-    border: 1px solid #353535;
-    border-radius: 10px;
-
-    padding: 12px 20px;
-
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 0;
+    padding: 13px 21px;
+    border: 1px solid #19c96b;
+    border-radius: 999px;
+    background: rgba(5, 30, 18, .82);
+    color: #f5fff8;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
-
-    font-weight: bold;
+    transition: .2s ease;
 }
 
 .cliente-voltar:hover {
-    border-color: #32c961;
-    color: #32c961;
+    background: #16bd63;
+    color: #04140b;
+    transform: translateY(-1px);
 }
 
+/* Área principal */
+
+.cliente-conteudo {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(280px, .85fr) minmax(420px, 1.15fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 64px);
+    box-sizing: border-box;
+}
+
+/* Apresentação lateral */
+
+.cliente-conteudo::before {
+    content: "Bem-vindo ao\A SaaSBarber\A\A Crie sua conta e faça parte\A de uma plataforma completa.\A\A ✓  Agende seus horários\A ✓  Acompanhe seus agendamentos\A ✓  Mais praticidade para você";
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 570px;
+    display: flex;
+    align-items: center;
+    padding: clamp(24px, 3vw, 48px);
+    border: 1px solid rgba(44, 220, 126, .18);
+    border-radius: 24px;
+    overflow: hidden;
+    white-space: pre-line;
+    color: #f5fff8;
+    font-size: clamp(17px, 1.55vw, 22px);
+    font-weight: 600;
+    line-height: 1.8;
+    text-shadow: 0 2px 18px #000;
+    background:
+        linear-gradient(90deg, rgba(2, 15, 9, .92), rgba(2, 18, 10, .58)),
+        url("../assets/barbearia-home.jpg") center / cover no-repeat;
+    box-shadow: inset 0 0 70px rgba(0, 0, 0, .35);
+}
+
+/* Formulário */
+
 .cliente-form {
-    background: #111113;
-
-    border: 1px solid #292929;
-    border-radius: 16px;
-
-    padding: 30px;
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: clamp(22px, 3vw, 42px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    box-sizing: border-box;
+    border: 1px solid rgba(40, 220, 122, .7);
+    border-radius: 26px;
+    background: linear-gradient(145deg, rgba(5, 29, 17, .97), rgba(3, 16, 10, .98));
+    box-shadow:
+        0 0 0 1px rgba(31, 190, 101, .08),
+        0 18px 60px rgba(0, 0, 0, .38),
+        inset 0 0 35px rgba(21, 170, 84, .08);
 }
 
 .cliente-campo {
-    margin-bottom: 22px;
+    width: 100%;
+    margin: 0 0 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    box-sizing: border-box;
 }
 
 .cliente-campo label {
     display: block;
-
-    margin-bottom: 8px;
-
-    color: #b5b5b5;
-
-    font-size: 16px;
-    font-weight: 600;
+    margin: 0;
+    color: #effaf2;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
 }
 
 .cliente-campo input {
+    display: block;
     width: 100%;
-    height: 55px;
-
-    padding: 0 15px;
-
-    background: #0d0d0f;
-    color: #ffffff;
-
-    border: 1px solid #292929;
-    border-radius: 10px;
-
+    min-width: 0;
+    height: 52px;
+    margin: 0;
+    padding: 0 16px;
+    border: 1px solid rgba(139, 184, 153, .32);
+    border-radius: 12px;
     outline: none;
-
-    font-size: 16px;
-}
-
-.cliente-campo input:focus {
-    border-color: #32c961;
+    background: rgba(2, 12, 7, .78);
+    color: #ffffff;
+    font: inherit;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: border-color .2s, box-shadow .2s, background .2s;
 }
 
 .cliente-campo input::placeholder {
-    color: #666666;
+    color: #82958a;
+}
+
+.cliente-campo input:focus {
+    border-color: #25d477;
+    background: #071b10;
+    box-shadow: 0 0 0 3px rgba(37, 212, 119, .13);
 }
 
 .cliente-cadastrar {
     width: 100%;
-    height: 58px;
-
-    margin-top: 5px;
-
-    background: #32c961;
-    color: #ffffff;
-
-    border: none;
-    border-radius: 10px;
-
-    font-size: 17px;
-    font-weight: bold;
-
+    min-height: 54px;
+    margin: 4px 0 0;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #12bd65, #20d47a);
+    color: #03150a;
+    font-size: 16px;
+    font-weight: 800;
     cursor: pointer;
+    transition: .2s ease;
+    box-sizing: border-box;
 }
 
 .cliente-cadastrar:hover {
-    background: #2bb556;
+    filter: brightness(1.08);
+    transform: translateY(-1px);
 }
 
-@media (max-width: 700px) {
+/* Responsividade */
 
+@media (max-width: 900px) {
+    .cliente-container {
+        grid-template-columns: 1fr;
+    }
+
+    .cliente-conteudo {
+        grid-template-columns: 1fr;
+    }
+
+    .cliente-conteudo::before {
+        grid-column: 1;
+        grid-row: 1;
+        min-height: 260px;
+    }
+
+    .cliente-form {
+        grid-column: 1;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 600px) {
     .cliente-page {
-        padding: 30px 20px;
+        padding: 20px 14px;
     }
 
     .cliente-topo {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
     }
 
     .cliente-voltar {
         width: 100%;
     }
 
-    .cliente-form {
+    .cliente-conteudo::before {
+        min-height: 220px;
         padding: 22px;
     }
 
+    .cliente-form {
+        padding: 22px 16px;
+    }
 }
